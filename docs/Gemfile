@@ -1,0 +1,4 @@
+source "https://rubygems.org"
+
+gem "jekyll", "~> 4.2" # Or a version compatible with GitHub Pages
+gem "jekyll-theme-minimal"
