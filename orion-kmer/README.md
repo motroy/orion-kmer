@@ -2,6 +2,8 @@
 
 Orion-Kmer is a command-line bioinformatics tool designed for high-performance k-mer analysis. It leverages Rust's performance and memory safety to count k-mers, build k-mer databases, compare genomic datasets, and query reads against databases with speed and efficiency.
 
+n**For a detailed user manual, tutorials, and full documentation, please visit the [Orion-Kmer GitHub Pages site](https://motroy.github.io/orion-kmer/).**
+
 ## Features
 
 *   **Ultra-Fast K-mer Counting**: Counts k-mers from FASTA/FASTQ files.
