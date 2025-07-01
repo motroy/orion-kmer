@@ -81,6 +81,7 @@ orion-kmer compare --db1 e_coli.db --db2 salmonella.db -o comparison.json
 -o, --output <FILE> Output file for comparison stats (JSON format)
 ```
 The output comparison.json would look like:
+```
 {
   "db1_path": "e_coli.db",
   "db2_path": "salmonella.db",
@@ -91,7 +92,7 @@ The output comparison.json would look like:
   "union_size": 4747037,
   "jaccard_index": 0.800773
 }
-
+```
 Where the Jaccard index is calculated as J(A, B) = \\frac{|A \\cap B|}{|A \\cup B|}.
 ## 4. query Subcommand
 Takes a k-mer database and a short-read file (FASTQ) and efficiently finds which reads contain k-mers present in the database.
