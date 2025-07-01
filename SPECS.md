@@ -45,35 +45,41 @@ SUBCOMMANDS:
 ## 1. count Subcommand
 Counts all k-mers in the input file(s) and outputs them in a simple text format.
 ### Usage
+```
 orion-kmer count -k 21 -i genome.fasta -o counts.tsv
-
+```
 ### Arguments
+```
 -k, --kmer-size <INT>    The length of the k-mer [required]
 -i, --input <FILE>...    One or more input FASTA/FASTQ files (can be gzipped)
 -o, --output <FILE>      Output file for k-mer counts (kmer<TAB>count)
 -m, --min-count <INT>    Minimum count to report a k-mer [default: 1]
-
+```
 ## 2. build Subcommand
 Scans genome assemblies and creates a compact, binary file containing only the set of unique k-mers.
 ### Usage
+```
 orion-kmer build -k 31 -g genome1.fasta genome2.fasta -o unique_kmers.db
-
+```
 ### Arguments
+```
 -k, --kmer-size <INT>    The length of the k-mer [required]
 -g, --genomes <FILE>...  One or more input genome assembly files (FASTA)
 -o, --output <FILE>      Output path for the binary k-mer database [required]
-
+```
 The output .db file would be a serialized HashSet<u64> for maximum lookup speed.
 ## 3. compare Subcommand
 Compares two k-mer databases and reports similarity statistics.
 ### Usage
+```
 orion-kmer compare --db1 e_coli.db --db2 salmonella.db -o comparison.json
-
+```
 ### Arguments
+```
 --db1 <FILE>      First k-mer database file [required]
 --db2 <FILE>      Second k-mer database file [required]
 -o, --output <FILE> Output file for comparison stats (JSON format)
-
+```
 The output comparison.json would look like:
 {
   "db1_path": "e_coli.db",
@@ -90,14 +96,16 @@ Where the Jaccard index is calculated as J(A, B) = \\frac{|A \\cap B|}{|A \\cup 
 ## 4. query Subcommand
 Takes a k-mer database and a short-read file (FASTQ) and efficiently finds which reads contain k-mers present in the database.
 ### Usage
+```
 orion-kmer query -d reference_genome.db -r reads.fastq.gz -o matching_reads.txt
-
+```
 ### Arguments
+```
 -d, --database <FILE>    K-mer database to query against [required]
 -r, --reads <FILE>       Short-read file (FASTQ, can be gzipped) [required]
 -o, --output <FILE>      Output file for the IDs of matching reads
 -c, --min-hits <INT>     Minimum number of k-mer hits to report a read [default: 1]
-
+```
 ## Example Workflow
  * Build a database for a reference genome:
    orion-kmer build -k 31 -t 16 -g reference.fasta -o ref.db
