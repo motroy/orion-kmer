@@ -1,0 +1,1 @@
+Read the SPECS.md, generate a tasks list in TODO.md for steps required to produce the code for the specified tool. Then follow the tasks in TODO.md and generate the code for the tool, checking off the completed tasks as you go
