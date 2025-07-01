@@ -1,0 +1,1 @@
+Super fast rust bioinformatics tool for counting kmers, creating unique kmer databases from input genome assemblies, comparing kmers between genome assemblies. Allow multithreading. Allow short reads as input for comparing to db.
