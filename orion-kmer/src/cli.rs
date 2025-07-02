@@ -31,6 +31,8 @@ pub enum Commands {
     Compare(CompareArgs),
     /// Query short reads against a k-mer database
     Query(QueryArgs),
+    /// Classify sequences against k-mer databases and report coverage statistics
+    Classify(ClassifyArgs),
 }
 
 #[derive(Parser, Debug)]
@@ -126,6 +128,49 @@ pub struct QueryArgs {
     )]
     pub min_hits: usize,
 }
+
+#[derive(Parser, Debug)]
+pub struct ClassifyArgs {
+    #[clap(
+        short,
+        long,
+        required = true,
+        help = "Input genome (FASTA) or reads (FASTQ) file"
+    )]
+    pub input_file: PathBuf,
+
+    #[clap(
+        short = 'd',
+        long = "databases",
+        required = true,
+        num_args = 1..,
+        help = "One or more k-mer database files (.db)"
+    )]
+    pub database_files: Vec<PathBuf>,
+
+    #[clap(
+        short,
+        long,
+        required = true,
+        help = "Output file for classification results (JSON format)"
+    )]
+    pub output_file: PathBuf,
+
+    #[clap(
+        short,
+        long,
+        help = "Optional: K-mer size to validate against databases. If not provided, uses k from the first database."
+    )]
+    pub kmer_size: Option<u8>,
+
+    #[clap(
+        long,
+        default_value_t = 1,
+        help = "Minimum frequency for a k-mer in the input to be considered for depth calculation"
+    )]
+    pub min_kmer_frequency: usize,
+}
+
 
 pub fn parse_cli() -> Cli {
     Cli::parse()

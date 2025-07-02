@@ -96,8 +96,8 @@ fn test_compare_basic() -> Result<(), Box<dyn std::error::Error>> {
     let json_data: JsonValue = serde_json::from_str(&json_output_str)?;
 
     assert_eq!(json_data["kmer_size"], k);
-    assert_eq!(json_data["db1_unique_kmers"], 8);
-    assert_eq!(json_data["db2_unique_kmers"], 9);
+    assert_eq!(json_data["db1_total_unique_kmers_across_references"], 8);
+    assert_eq!(json_data["db2_total_unique_kmers_across_references"], 9);
 
     let intersection = 5;
     let union_val = 8 + 9 - intersection;
@@ -139,18 +139,16 @@ fn test_compare_identical_databases() -> Result<(), Box<dyn std::error::Error>> 
 
     let json_data: JsonValue = serde_json::from_reader(File::open(output_json_file.path())?)?;
     assert_eq!(json_data["kmer_size"], k);
-    assert_eq!(json_data["db1_unique_kmers"], 2); // Corrected based on new understanding
-    assert_eq!(json_data["db2_unique_kmers"], 2); // Corrected
-    assert_eq!(json_data["intersection_size"], 2); // Corrected
-    assert_eq!(json_data["union_size"], 2); // Corrected (2+2-2)
+    assert_eq!(json_data["db1_total_unique_kmers_across_references"], 2);
+    assert_eq!(json_data["db2_total_unique_kmers_across_references"], 2);
+    assert_eq!(json_data["intersection_size"], 2);
+    assert_eq!(json_data["union_size"], 2);
     assert!((json_data["jaccard_index"].as_f64().unwrap() - 1.0).abs() < 1e-6);
     Ok(())
 }
 
 #[test]
 fn test_compare_no_overlap() -> Result<(), Box<dyn std::error::Error>> {
-    let k = 5;
-    let temp_db_dir = TempDir::new()?; // For the final .db paths passed to compare
     let k = 5;
     let temp_db_dir = TempDir::new()?;
     let db1_content = ">s1\nAAAAACCCCC"; // Unique k=5: AAAAA, AAAAC, AAACC, AACCC, ACCCC, CCCCC (6)
@@ -184,8 +182,8 @@ fn test_compare_no_overlap() -> Result<(), Box<dyn std::error::Error>> {
 
     let json_data: JsonValue = serde_json::from_reader(File::open(output_json_file.path())?)?;
     assert_eq!(json_data["kmer_size"], k);
-    assert_eq!(json_data["db1_unique_kmers"], 6);
-    assert_eq!(json_data["db2_unique_kmers"], 6);
+    assert_eq!(json_data["db1_total_unique_kmers_across_references"], 6);
+    assert_eq!(json_data["db2_total_unique_kmers_across_references"], 6);
 
     let expected_intersection = 2; // AAAAA and CCCCC
     let expected_union = 6 + 6 - expected_intersection; // 10
@@ -216,7 +214,7 @@ fn test_compare_kmer_size_mismatch() -> Result<(), Box<dyn std::error::Error>> {
         .arg(output_json_file.path());
 
     cmd.assert().failure().stderr(predicate::str::contains(
-        "K-mer databases have incompatible k-mer sizes: 3 vs 4",
+        "K-mer databases have incompatible k-mer sizes (overall comparison): 3 vs 4",
     ));
     Ok(())
 }

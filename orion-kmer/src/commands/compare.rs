@@ -1,12 +1,14 @@
 use anyhow::{Context, Result};
 use log::info;
 use serde::Serialize;
-use std::{fs::File, io::BufReader, path::PathBuf};
+use std::fs::File; // Removed BufReader, PathBuf as load_kmer_db_v2 takes &Path
 
 use crate::{
     cli::CompareArgs,
-    commands::build::KmerDb, // Assuming KmerDb is accessible here
+    // KmerDbV2 is loaded by load_kmer_db_v2, direct import not needed here
+    // db_types::KmerDbV2,
     errors::OrionKmerError,
+    utils::load_kmer_db_v2, // Import the new loading function
 };
 
 #[derive(Serialize, Debug)]
@@ -14,46 +16,38 @@ struct ComparisonOutput {
     db1_path: String,
     db2_path: String,
     kmer_size: u8,
-    db1_unique_kmers: usize,
-    db2_unique_kmers: usize,
+    db1_total_unique_kmers_across_references: usize, // Name changed for clarity
+    db2_total_unique_kmers_across_references: usize, // Name changed for clarity
     intersection_size: usize,
     union_size: usize,
     jaccard_index: f64,
 }
 
-fn load_kmer_db(path: &PathBuf) -> Result<KmerDb> {
-    let file = File::open(path)
-        .with_context(|| format!("Failed to open k-mer database file: {:?}", path))?;
-    let reader = BufReader::new(file);
-    let kmer_db: KmerDb = bincode::deserialize_from(reader)
-        .with_context(|| format!("Failed to deserialize k-mer database from {:?}", path))?;
-    info!(
-        "Successfully loaded k-mer database from {:?} (k={}, {} kmers)",
-        path,
-        kmer_db.k,
-        kmer_db.kmers.len()
-    );
-    Ok(kmer_db)
-}
+// Removed local load_kmer_db function, will use utils::load_kmer_db_v2
 
 pub fn run_compare(args: CompareArgs) -> Result<()> {
     info!("Starting compare command with args: {:?}", args);
 
-    let db1 = load_kmer_db(&args.db1)?;
-    let db2 = load_kmer_db(&args.db2)?;
+    // Load KmerDbV2 instances
+    let db1_v2 = load_kmer_db_v2(&args.db1)?;
+    let db2_v2 = load_kmer_db_v2(&args.db2)?;
 
-    if db1.k != db2.k {
-        return Err(OrionKmerError::KmerSizeMismatch(db1.k, db2.k).into());
+    if db1_v2.k != db2_v2.k {
+        return Err(OrionKmerError::KmerSizeMismatch(db1_v2.k, db2_v2.k).into());
     }
-    let kmer_size = db1.k;
+    let kmer_size = db1_v2.k;
 
-    let db1_unique_kmers = db1.kmers.len();
-    let db2_unique_kmers = db2.kmers.len();
+    // Get the unified set of k-mers for each database
+    let db1_all_kmers = db1_v2.get_all_kmers_unified();
+    let db2_all_kmers = db2_v2.get_all_kmers_unified();
 
-    let intersection_size = db1.kmers.intersection(&db2.kmers).count();
+    let db1_unique_kmers_count = db1_all_kmers.len();
+    let db2_unique_kmers_count = db2_all_kmers.len();
+
+    let intersection_size = db1_all_kmers.intersection(&db2_all_kmers).count();
 
     // |A U B| = |A| + |B| - |A & B|
-    let union_size = db1_unique_kmers + db2_unique_kmers - intersection_size;
+    let union_size = db1_unique_kmers_count + db2_unique_kmers_count - intersection_size;
 
     let jaccard_index = if union_size == 0 {
         0.0 // Avoid division by zero if both sets are empty
@@ -65,15 +59,15 @@ pub fn run_compare(args: CompareArgs) -> Result<()> {
         db1_path: args.db1.to_string_lossy().into_owned(),
         db2_path: args.db2.to_string_lossy().into_owned(),
         kmer_size,
-        db1_unique_kmers,
-        db2_unique_kmers,
+        db1_total_unique_kmers_across_references: db1_unique_kmers_count,
+        db2_total_unique_kmers_across_references: db2_unique_kmers_count,
         intersection_size,
         union_size,
         jaccard_index,
     };
 
     info!("Comparison results: {:?}", output_data);
-    // Outputting results to JSON file
+
     let output_file = File::create(&args.output_file)
         .with_context(|| format!("Failed to create output JSON file: {:?}", args.output_file))?;
 

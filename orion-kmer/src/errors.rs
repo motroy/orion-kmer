@@ -1,4 +1,6 @@
+use std::path::PathBuf; // Added for KmerSizeMismatchValidation
 use thiserror::Error;
+
 
 #[derive(Error, Debug)]
 pub enum OrionKmerError {
@@ -20,8 +22,17 @@ pub enum OrionKmerError {
     #[error("Deserialization error: {0}")]
     DeserializationError(String),
 
-    #[error("K-mer databases have incompatible k-mer sizes: {0} vs {1}")]
+    #[error("K-mer databases have incompatible k-mer sizes (overall comparison): {0} vs {1}")]
     KmerSizeMismatch(u8, u8),
+
+    #[error("User-provided k-mer size {0} does not match k-mer size {1} from database: {2:?}")]
+    KmerSizeMismatchValidation(u8, u8, PathBuf),
+
+    #[error("Effective k-mer size {0} (from first database) does not match k-mer size {1} from database: {2:?}")]
+    KmerSizeMismatchBetweenDatabases(u8, u8, PathBuf), // Specific for classify
+
+    #[error("Generic error: {0}")]
+    Generic(String),
 
     #[error("An unknown error occurred")]
     Unknown,
