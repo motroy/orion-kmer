@@ -15,8 +15,9 @@ use crate::{
     // db_types::KmerDbV2,
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64},
-    utils::load_kmer_db_v2, // Import the new loading function
+    utils::{load_kmer_db_v2, track_progress_and_resources}, // Import the wrapper
 };
+// use indicatif::ProgressBar; // For passing to the closure - actually not needed
 
 // Removed local load_kmer_db function
 
@@ -63,33 +64,48 @@ pub fn run_query(args: QueryArgs) -> Result<()> {
         records.len()
     );
 
-    let matching_read_ids: Vec<Vec<u8>> = records
-        .par_iter()
-        .filter_map(|(read_id_bytes, read_seq_vec)| {
-            let mut kmer_hits = 0;
-            let norm_seq: &[u8] = read_seq_vec;
+    let num_records = records.len() as u64;
+    let matching_read_ids: Vec<Vec<u8>> = track_progress_and_resources(
+        "Querying reads against database",
+        num_records,
+        |pb_query| {
+            let result: Vec<Vec<u8>> = records
+                .par_iter()
+                .filter_map(|(read_id_bytes, read_seq_vec)| {
+                    let mut kmer_hits = 0;
+                    let norm_seq: &[u8] = read_seq_vec;
 
-            if norm_seq.len() < k as usize {
-                return None;
-            }
-
-            for window in norm_seq.windows(k as usize) {
-                if let Some(kmer_val) = seq_to_u64(window, k) {
-                    let canonical_kmer = canonical_u64(kmer_val, k);
-                    // Query against the unified set of k-mers
-                    if db_all_kmers.contains(&canonical_kmer) {
-                        kmer_hits += 1;
+                    if norm_seq.len() < k as usize {
+                        return None;
                     }
-                }
-            }
 
-            if kmer_hits >= args.min_hits {
-                Some(read_id_bytes.clone())
-            } else {
-                None
-            }
-        })
-        .collect();
+                    for window in norm_seq.windows(k as usize) {
+                        if let Some(kmer_val) = seq_to_u64(window, k) {
+                            let canonical_kmer = canonical_u64(kmer_val, k);
+                            if db_all_kmers.contains(&canonical_kmer) {
+                                kmer_hits += 1;
+                            }
+                        }
+                    }
+
+                    // Increment progress bar after processing each read
+                    // Note: In a parallel iterator, direct incrementing like this might lead to
+                    // frequent updates. For very large datasets, consider custom logic or
+                    // relying on the automatic updates if the overhead is too high.
+                    // However, indicatif is generally efficient.
+                    pb_query.inc(1);
+
+
+                    if kmer_hits >= args.min_hits {
+                        Some(read_id_bytes.clone())
+                    } else {
+                        None
+                    }
+                })
+                .collect();
+            Ok(result)
+        },
+    )?;
 
     info!(
         "Found {} reads matching criteria (min_hits: {}). Writing to output...",
