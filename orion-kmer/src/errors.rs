@@ -1,7 +1,6 @@
 use std::path::PathBuf; // Added for KmerSizeMismatchValidation
 use thiserror::Error;
 
-
 #[derive(Error, Debug)]
 pub enum OrionKmerError {
     #[error("Invalid K-mer size: {0}. Must be between 1 and 32.")]
@@ -28,7 +27,9 @@ pub enum OrionKmerError {
     #[error("User-provided k-mer size {0} does not match k-mer size {1} from database: {2:?}")]
     KmerSizeMismatchValidation(u8, u8, PathBuf),
 
-    #[error("Effective k-mer size {0} (from first database) does not match k-mer size {1} from database: {2:?}")]
+    #[error(
+        "Effective k-mer size {0} (from first database) does not match k-mer size {1} from database: {2:?}"
+    )]
     KmerSizeMismatchBetweenDatabases(u8, u8, PathBuf), // Specific for classify
 
     #[error("Generic error: {0}")]
