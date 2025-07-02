@@ -2,6 +2,7 @@
 
 pub mod cli;
 pub mod commands;
+pub mod db_types; // Added module declaration for db_types
 pub mod errors;
 pub mod kmer;
 pub mod utils;

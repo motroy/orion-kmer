@@ -1,9 +1,10 @@
 pub mod build;
+pub mod classify; // Added classify module
 pub mod compare;
 pub mod count;
 pub mod query;
 
-use crate::cli::Commands; // Keep only Commands
+use crate::cli::Commands;
 use anyhow::Result;
 
 pub fn dispatch_command(command: Commands, threads: usize, verbose: u8) -> Result<()> {
@@ -14,7 +15,9 @@ pub fn dispatch_command(command: Commands, threads: usize, verbose: u8) -> Resul
         2 => log::LevelFilter::Debug,
         _ => log::LevelFilter::Trace,
     };
-    env_logger::Builder::new().filter_level(log_level).init();
+    // Allow re-init of logger for tests, handle error if already initialized
+    let _ = env_logger::Builder::new().filter_level(log_level).try_init();
+
 
     // Initialize rayon thread pool
     crate::utils::initialize_rayon_pool(crate::utils::get_num_threads(threads))?;
@@ -24,5 +27,6 @@ pub fn dispatch_command(command: Commands, threads: usize, verbose: u8) -> Resul
         Commands::Build(args) => build::run_build(args),
         Commands::Compare(args) => compare::run_compare(args),
         Commands::Query(args) => query::run_query(args),
+        Commands::Classify(args) => classify::run_classify(args), // Added dispatch for Classify
     }
 }

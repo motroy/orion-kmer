@@ -1,38 +1,64 @@
 use anyhow::{Context, Result};
-use dashmap::DashSet; // Using DashSet to store unique k-mers concurrently
+use dashmap::DashSet; // Using DashSet for concurrent k-mer collection per file
 use log::{debug, info};
-use needletail::{Sequence, parse_fastx_file};
-use serde::{Deserialize, Serialize};
+use needletail::{parse_fastx_file, Sequence}; // Corrected import order
 use std::{
-    collections::HashSet,
+    collections::HashSet, // Keep HashSet for final storage in KmerDbV2
     fs::File,
     io::{BufWriter, Write},
+    path::PathBuf, // For getting filename
 };
 
 use crate::{
     cli::BuildArgs,
+    db_types::KmerDbV2, // Import the new database structure
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64},
 };
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct KmerDb {
-    pub k: u8,
-    pub kmers: HashSet<u64>,
-}
+// This function processes sequences for a single file and populates a DashSet for that file.
+fn process_sequences_for_file(
+    file_path: &PathBuf,
+    k: u8,
+    file_kmer_set: &DashSet<u64>,
+) -> Result<()> {
+    let path_str = file_path.to_string_lossy();
+    info!("Processing genome file: {}", path_str);
 
-fn process_sequence_for_build(seq_chunk: &[u8], k: u8, kmer_set: &DashSet<u64>) {
-    if seq_chunk.len() < k as usize {
-        return;
-    }
+    let mut reader = parse_fastx_file(file_path)
+        .with_context(|| format!("Failed to open or parse FASTA/Q file: {}", path_str))?;
 
-    for window in seq_chunk.windows(k as usize) {
-        if let Some(kmer_val) = seq_to_u64(window, k) {
-            let canonical_kmer = canonical_u64(kmer_val, k);
-            kmer_set.insert(canonical_kmer);
+    let mut record_count = 0;
+    while let Some(record) = reader.next() {
+        let record = record.with_context(|| format!("Error reading record from {}", path_str))?;
+        let norm_seq = record.normalize(false); // Ensure uppercase, no N conversion yet
+
+        if norm_seq.len() >= k as usize {
+            for window in norm_seq.windows(k as usize) {
+                // seq_to_u64 handles 'N' by returning None
+                if let Some(kmer_val) = seq_to_u64(window, k) {
+                    let canonical_kmer = canonical_u64(kmer_val, k);
+                    file_kmer_set.insert(canonical_kmer);
+                }
+            }
         }
-        // else: sequence contained 'N' or other non-ACGT char, skip this k-mer
+        record_count += 1;
+        if record_count % 100_000 == 0 {
+            debug!(
+                "Processed {} records from {}. Current unique k-mers for this file: {}",
+                record_count,
+                path_str,
+                file_kmer_set.len()
+            );
+        }
     }
+    info!(
+        "Finished processing {} records from {}. Found {} unique k-mers for this file.",
+        record_count,
+        path_str,
+        file_kmer_set.len()
+    );
+    Ok(())
 }
 
 pub fn run_build(args: BuildArgs) -> Result<()> {
@@ -43,52 +69,39 @@ pub fn run_build(args: BuildArgs) -> Result<()> {
     }
     let k = args.kmer_size;
 
-    // DashSet is suitable for concurrent insertion of unique items.
-    let kmer_set: DashSet<u64> = DashSet::new();
+    let mut kmer_db_v2 = KmerDbV2::new(k);
 
     for input_path in &args.genome_files {
-        info!("Processing genome file: {:?}", input_path);
-        let path_str = input_path.to_string_lossy();
-        let mut reader = parse_fastx_file(input_path) // Removed &
-            .with_context(|| format!("Failed to open or parse FASTA file: {}", path_str))?;
+        // For each file, create a new DashSet to collect its k-mers.
+        let file_kmer_set: DashSet<u64> = DashSet::new();
 
-        info!("Processing records from {}...", path_str);
-        let mut record_count = 0;
-        while let Some(record) = reader.next() {
-            let record =
-                record.with_context(|| format!("Error reading record from {}", path_str))?;
-            let norm_seq = record.normalize(false); // Ensure uppercase
-            process_sequence_for_build(&norm_seq, k, &kmer_set);
-            record_count += 1;
-            if record_count % 100_000 == 0 {
-                debug!(
-                    "Processed {} records from {}. Current unique k-mers: {}",
-                    record_count,
-                    path_str,
-                    kmer_set.len()
-                );
-            }
-        }
+        process_sequences_for_file(input_path, k, &file_kmer_set)?;
+
+        // Convert the DashSet for this file to a HashSet
+        let final_file_kmers: HashSet<u64> = file_kmer_set.into_iter().collect();
+
+        // Use the filename as the reference identifier.
+        // PathBuf.file_name() returns Option<&OsStr>.
+        let reference_name = input_path
+            .file_name()
+            .map_or_else(
+                || input_path.to_string_lossy().into_owned(), // Fallback to full path if no filename
+                |os_str| os_str.to_string_lossy().into_owned(),
+            );
+
         info!(
-            "Finished processing {} records from {}. Current unique k-mers: {}",
-            record_count,
-            path_str,
-            kmer_set.len()
+            "Adding {} unique k-mers from reference '{}' to the database.",
+            final_file_kmers.len(),
+            reference_name
         );
+        kmer_db_v2.add_reference(reference_name, final_file_kmers);
     }
 
     info!(
-        "Finished processing all input files. Found {} unique canonical k-mers.",
-        kmer_set.len()
+        "Finished processing all input files. Database contains {} references and a total of {} unique canonical k-mers across all references.",
+        kmer_db_v2.num_references(),
+        kmer_db_v2.total_unique_kmers()
     );
-
-    // Convert DashSet to HashSet for serialization as KmerDb
-    let final_kmers: HashSet<u64> = kmer_set.into_iter().collect();
-
-    let kmer_db = KmerDb {
-        k,
-        kmers: final_kmers,
-    };
 
     debug!(
         "Opening output database file for writing: {:?}",
@@ -102,9 +115,9 @@ pub fn run_build(args: BuildArgs) -> Result<()> {
     })?;
     let mut writer = BufWriter::new(output_file);
 
-    bincode::serialize_into(&mut writer, &kmer_db).with_context(|| {
+    bincode::serialize_into(&mut writer, &kmer_db_v2).with_context(|| {
         format!(
-            "Failed to serialize k-mer database to {:?}",
+            "Failed to serialize k-mer database (KmerDbV2) to {:?}",
             args.output_file
         )
     })?;
@@ -113,7 +126,7 @@ pub fn run_build(args: BuildArgs) -> Result<()> {
         .flush()
         .context("Failed to flush output database writer")?;
     info!(
-        "Successfully wrote k-mer database to {:?}",
+        "Successfully wrote k-mer database (KmerDbV2) to {:?}",
         args.output_file
     );
 

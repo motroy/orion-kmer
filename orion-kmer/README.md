@@ -48,6 +48,7 @@ SUBCOMMANDS:
     build      Build a unique k-mer database from genome assemblies
     compare    Compare two k-mer databases
     query      Query short reads against a k-mer database
+    classify   Classify input sequences against k-mer databases and report coverage statistics
 ```
 
 ### Global Options
@@ -82,7 +83,7 @@ orion-kmer count -k 21 -i genome.fasta -o counts.tsv
 
 #### 2. `build`
 
-Scans genome assemblies (FASTA) and creates a compact, binary database file (`.db`) containing the set of unique k-mers.
+Scans genome assemblies (FASTA) and creates a compact, binary database file (`.db`). This database stores the set of unique k-mers found in each input genome file separately, allowing for per-reference analysis by commands like `classify`.
 
 **Usage:**
 
@@ -162,6 +163,75 @@ orion-kmer query -d <DATABASE_DB> -r <READS_FASTQ> -o <OUTPUT_READ_IDS> [-c <MIN
 orion-kmer query -d reference_genome.db -r reads.fastq.gz -o matching_reads.txt -c 5
 ```
 
+#### 5. `classify`
+
+Compares an input FASTA/FASTQ file against one or more k-mer databases (built by `orion-kmer build`). It reports the proportion of k-mers from the input that match each database and each reference within those databases, along with coverage and depth statistics. The output is in JSON format.
+
+**Usage:**
+
+```bash
+orion-kmer classify -i <INPUT_FASTA_OR_FASTQ> -d <DB1.db> [DB2.db ...] -o <OUTPUT_JSON> [--kmer-size <KMER_SIZE_VALIDATION>] [--min-kmer-frequency <MIN_FREQ>]
+```
+
+**Arguments:**
+
+*   `-i, --input <FILE>`: Input genome (FASTA) or reads (FASTQ) file to classify \[required].
+*   `-d, --databases <FILE>...`: One or more k-mer database files (`.db`) to classify against \[required].
+*   `-o, --output <FILE>`: Output file for classification results (JSON format) \[required].
+*   `--kmer-size <INT>`: Optional. If provided, this k-mer size is validated against the k-mer size stored in the databases. The command will fail if they don't match. If not provided, the k-mer size from the first database is used, and subsequent databases are validated against it.
+*   `--min-kmer-frequency <INT>`: Minimum frequency for a k-mer in the input file to be considered for matching and depth calculations \[default: 1].
+
+**Example:**
+
+```bash
+orion-kmer classify -i my_reads.fastq -d ref_genome1.db pathogen_panel.db -o classification_report.json
+```
+
+**Output JSON Structure Example:**
+
+```json
+{
+  "input_file_path": "my_reads.fastq",
+  "total_unique_kmers_in_input": 150000, // After min_kmer_frequency filter
+  "min_kmer_frequency_filter": 1,
+  "databases_analyzed": [
+    {
+      "database_path": "ref_genome1.db",
+      "database_kmer_size": 31,
+      "total_unique_kmers_in_db_across_references": 4500000,
+      "overall_input_kmers_matched_in_db": 75000,
+      "overall_sum_depth_of_matched_kmers_in_input": 300000,
+      "overall_avg_depth_of_matched_kmers_in_input": 4.0,
+      "proportion_input_kmers_in_db_overall": 0.5, // 75000 / 150000
+      "proportion_db_kmers_covered_overall": 0.01666, // 75000 / 4500000
+      "references": [
+        {
+          "reference_name": "ref_genome1_contig1.fa", // Filename used during 'build'
+          "total_kmers_in_reference": 2000000,
+          "input_kmers_hitting_reference": 60000,
+          "sum_depth_of_matched_kmers_in_input": 250000,
+          "avg_depth_of_matched_kmers_in_input": 4.1667,
+          "proportion_input_kmers_hitting_reference": 0.4, // 60000 / 150000
+          "reference_breadth_of_coverage": 0.03 // 60000 / 2000000
+        },
+        {
+          "reference_name": "ref_genome1_contig2.fa",
+          "total_kmers_in_reference": 2500000,
+          "input_kmers_hitting_reference": 15000,
+          "sum_depth_of_matched_kmers_in_input": 50000,
+          "avg_depth_of_matched_kmers_in_input": 3.3333,
+          "proportion_input_kmers_hitting_reference": 0.1, // 15000 / 150000
+          "reference_breadth_of_coverage": 0.006 // 15000 / 2500000
+        }
+      ]
+    },
+    {
+      // ... results for pathogen_panel.db ...
+    }
+  ]
+}
+```
+
 ## Example Workflow
 
 1.  **Build a database for a reference genome:**
@@ -182,6 +252,11 @@ orion-kmer query -d reference_genome.db -r reads.fastq.gz -o matching_reads.txt 
 4.  **Check which reads from a sequencing experiment belong to the reference:**
     ```bash
     orion-kmer query -d ref.db -r experiment.fastq.gz -o matched_reads.txt -c 5 -t 8
+    ```
+
+5.  **Classify reads against multiple databases (e.g., the reference and the new assembly):**
+    ```bash
+    orion-kmer classify -i experiment.fastq.gz -d ref.db new.db -o read_classification.json -t 8
     ```
 
 ## Technical Details

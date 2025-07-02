@@ -110,6 +110,38 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_problematic_classify_kmers() {
+        let k = 4;
+        // Input sequence TTTTGGGG
+        let tttt_val = seq_to_u64(b"TTTT", k).unwrap(); // 255
+        let tttt_canon = canonical_u64(tttt_val, k);   // Should be AAAA (0)
+        let aaaa_val = seq_to_u64(b"AAAA", k).unwrap();   // 0
+        assert_eq!(tttt_canon, aaaa_val, "Canonical of TTTT should be AAAA value (0)");
+
+        let tggg_val = seq_to_u64(b"TGGG", k).unwrap(); // 234 (11101010)
+        let tggg_canon = canonical_u64(tggg_val, k);   // RC is CCCA (01010100 = 84). So canon is CCCA (84).
+        let ccca_val = seq_to_u64(b"CCCA", k).unwrap();   // 84
+        assert_eq!(tggg_canon, ccca_val, "Canonical of TGGG should be CCCA value (84)");
+
+        // DB sequence GGGAAAAATTTT
+        let ggga_val = seq_to_u64(b"GGGA", k).unwrap(); // 168 (10101000)
+        let ggga_canon = canonical_u64(ggga_val, k);   // RC is TCCC (11010101 = 213). So canon is GGGA (168).
+        assert_eq!(ggga_canon, ggga_val, "Canonical of GGGA (168) should be GGGA (168)");
+        // This was the line that failed: assert_eq!(ggga_canon, ccca_val) which is 168 == 84 (false)
+
+        // Critical checks based on correct canonicals:
+        // 1. Input TTTT (canon AAAA) vs DB AAAA (canon AAAA)
+        let db_aaaa_from_db_seq_val = seq_to_u64(b"AAAA", k).unwrap();
+        let db_aaaa_from_db_seq_canon = canonical_u64(db_aaaa_from_db_seq_val, k);
+        assert_eq!(tttt_canon, db_aaaa_from_db_seq_canon, "Canon(TTTT) from input should match Canon(AAAA) from DB");
+
+        // 2. Input TGGG (canon CCCA=84) vs DB GGGA (canon GGGA=168)
+        // These should NOT match.
+        assert_ne!(tggg_canon, ggga_canon, "Canon(TGGG) from input should NOT match Canon(GGGA) from DB");
+    }
+
+
+    #[test]
     fn test_dna_base_to_u64() {
         assert_eq!(dna_base_to_u64(b'A'), Some(0b00));
         assert_eq!(dna_base_to_u64(b'c'), Some(0b01));
