@@ -54,6 +54,7 @@ The following tutorials demonstrate how to use each of Orion-Kmer's subcommands 
 *   **[Building K-mer Databases (`build`)](./tutorials/build_tutorial.md)**: Learn how to create compact k-mer databases from genome assemblies.
 *   **[Comparing K-mer Databases (`compare`)](./tutorials/compare_tutorial.md)**: Learn how to compare two k-mer databases and interpret the results.
 *   **[Querying Reads against a Database (`query`)](./tutorials/query_tutorial.md)**: Learn how to screen short reads against a k-mer database.
+*   **[Classifying Sequences (`classify`)](./tutorials/classify_tutorial.md)**: Learn how to classify sequences against k-mer databases and interpret results.
 
 ## Example Workflow
 
@@ -77,6 +78,11 @@ Here's a typical workflow using Orion-Kmer:
 4.  **Check which reads from a sequencing experiment belong to the reference:**
     ```bash
     orion-kmer query -d ref.db -r experiment.fastq.gz -o matched_reads.txt -c 5 -t 8
+    ```
+
+5.  **Classify reads against multiple databases (e.g., the reference and the new assembly):**
+    ```bash
+    orion-kmer classify -i experiment.fastq.gz -d ref.db new.db -o read_classification.json -t 8
     ```
 
 ---
