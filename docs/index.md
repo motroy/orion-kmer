@@ -1,5 +1,4 @@
 ---
-layout: default
 title: Orion-Kmer User Manual
 ---
 
