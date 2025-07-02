@@ -169,8 +169,20 @@ pub struct ClassifyArgs {
         help = "Minimum frequency for a k-mer in the input to be considered for depth calculation"
     )]
     pub min_kmer_frequency: usize,
-}
 
+    #[clap(
+        long,
+        default_value_t = 0.0,
+        help = "Minimum reference breadth of coverage to include a reference in the output"
+    )]
+    pub min_coverage: f64,
+
+    #[clap(
+        long,
+        help = "Optional: Output file path for a TSV summary of the classification results"
+    )]
+    pub output_tsv: Option<PathBuf>,
+}
 
 pub fn parse_cli() -> Cli {
     Cli::parse()

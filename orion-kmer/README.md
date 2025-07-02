@@ -180,11 +180,13 @@ orion-kmer classify -i <INPUT_FASTA_OR_FASTQ> -d <DB1.db> [DB2.db ...] -o <OUTPU
 *   `-o, --output <FILE>`: Output file for classification results (JSON format) \[required].
 *   `--kmer-size <INT>`: Optional. If provided, this k-mer size is validated against the k-mer size stored in the databases. The command will fail if they don't match. If not provided, the k-mer size from the first database is used, and subsequent databases are validated against it.
 *   `--min-kmer-frequency <INT>`: Minimum frequency for a k-mer in the input file to be considered for matching and depth calculations \[default: 1].
+    *   `--min-coverage <FLOAT>`: Minimum reference breadth of coverage (proportion of reference k-mers found in input) to include a reference in the output JSON and TSV reports \[default: 0.0].
+    *   `--output-tsv <FILE>`: Optional. Output file path for a TSV summary of the classification results. This summary includes one row per reference that meets the `--min-coverage` threshold.
 
 **Example:**
 
 ```bash
-orion-kmer classify -i my_reads.fastq -d ref_genome1.db pathogen_panel.db -o classification_report.json
+orion-kmer classify -i my_reads.fastq -d ref_genome1.db pathogen_panel.db -o classification_report.json --min-coverage 0.05 --output-tsv classification_summary.tsv
 ```
 
 **Output JSON Structure Example:**

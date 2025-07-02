@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use dashmap::DashSet; // Using DashSet for concurrent k-mer collection per file
 use log::{debug, info};
-use needletail::{parse_fastx_file, Sequence}; // Corrected import order
+use needletail::{Sequence, parse_fastx_file}; // Corrected import order
 use std::{
     collections::HashSet, // Keep HashSet for final storage in KmerDbV2
     fs::File,
@@ -52,7 +52,8 @@ fn process_sequences_for_file(
             }
         }
         record_count += 1;
-        if record_count % 100_000 == 0 { // Keep debug logging for detailed progress
+        if record_count % 100_000 == 0 {
+            // Keep debug logging for detailed progress
             debug!(
                 "Processed {} records from {}. Current unique k-mers for this file: {}",
                 record_count,
@@ -97,12 +98,10 @@ pub fn run_build(args: BuildArgs) -> Result<()> {
 
             let final_file_kmers: HashSet<u64> = file_kmer_set.into_iter().collect();
 
-            let reference_name = input_path
-                .file_name()
-                .map_or_else(
-                    || input_path.to_string_lossy().into_owned(),
-                    |os_str| os_str.to_string_lossy().into_owned(),
-                );
+            let reference_name = input_path.file_name().map_or_else(
+                || input_path.to_string_lossy().into_owned(),
+                |os_str| os_str.to_string_lossy().into_owned(),
+            );
 
             info!(
                 "Adding {} unique k-mers from reference '{}' to the database.",

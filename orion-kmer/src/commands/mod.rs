@@ -16,8 +16,9 @@ pub fn dispatch_command(command: Commands, threads: usize, verbose: u8) -> Resul
         _ => log::LevelFilter::Trace,
     };
     // Allow re-init of logger for tests, handle error if already initialized
-    let _ = env_logger::Builder::new().filter_level(log_level).try_init();
-
+    let _ = env_logger::Builder::new()
+        .filter_level(log_level)
+        .try_init();
 
     // Initialize rayon thread pool
     crate::utils::initialize_rayon_pool(crate::utils::get_num_threads(threads))?;

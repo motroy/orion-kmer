@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use log::info;
-use needletail::{parse_fastx_file, Sequence}; // Corrected import order
+use needletail::{Sequence, parse_fastx_file}; // Corrected import order
 use rayon::prelude::*;
 use std::{
     collections::HashSet, // Required for the unified k-mer set
@@ -65,10 +65,8 @@ pub fn run_query(args: QueryArgs) -> Result<()> {
     );
 
     let num_records = records.len() as u64;
-    let matching_read_ids: Vec<Vec<u8>> = track_progress_and_resources(
-        "Querying reads against database",
-        num_records,
-        |pb_query| {
+    let matching_read_ids: Vec<Vec<u8>> =
+        track_progress_and_resources("Querying reads against database", num_records, |pb_query| {
             let result: Vec<Vec<u8>> = records
                 .par_iter()
                 .filter_map(|(read_id_bytes, read_seq_vec)| {
@@ -95,7 +93,6 @@ pub fn run_query(args: QueryArgs) -> Result<()> {
                     // However, indicatif is generally efficient.
                     pb_query.inc(1);
 
-
                     if kmer_hits >= args.min_hits {
                         Some(read_id_bytes.clone())
                     } else {
@@ -104,8 +101,7 @@ pub fn run_query(args: QueryArgs) -> Result<()> {
                 })
                 .collect();
             Ok(result)
-        },
-    )?;
+        })?;
 
     info!(
         "Found {} reads matching criteria (min_hits: {}). Writing to output...",

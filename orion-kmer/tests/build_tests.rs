@@ -20,7 +20,6 @@ fn run_build_and_load_db_v2(
     let mut input_file_paths: Vec<PathBuf> = Vec::new();
     let mut input_filenames: Vec<String> = Vec::new();
 
-
     for (name, content) in &input_files_content {
         let file_path = temp_dir.path().join(name);
         // Ensure parent directory exists if `name` includes subdirectories.
@@ -70,15 +69,13 @@ fn kmers_from_strings(strs: &[&str], k: u8) -> HashSet<u64> {
         .collect()
 }
 
-
 const SAMPLE1_FASTA_CONTENT: &str =
     ">seq1\nACGTACGTACGT\n>seq2\nTTTTCCCCGGGGAAAA\n>seq3\nAgCtAgCtNaCcGgTt";
 const MINI_FASTA_CONTENT: &str = ">s1\nACGT\n>s2\nACGT"; // Same k-mers
 
 #[test]
 fn test_build_simple_fasta_k3() -> Result<(), Box<dyn std::error::Error>> {
-    let kmer_db_v2 =
-        run_build_and_load_db_v2(3, vec![("sample1.fasta", SAMPLE1_FASTA_CONTENT)])?;
+    let kmer_db_v2 = run_build_and_load_db_v2(3, vec![("sample1.fasta", SAMPLE1_FASTA_CONTENT)])?;
 
     assert_eq!(kmer_db_v2.k, 3);
     assert_eq!(kmer_db_v2.references.len(), 1);
@@ -122,10 +119,10 @@ fn test_build_multiple_files_k4_v2() -> Result<(), Box<dyn std::error::Error>> {
         4,
         vec![
             ("s1.fa", ">s1\nACGTACGT"), // K-mers: ACGT, CGTA, GTAC, TACG (CGTA), ACGT
-                                        // Canonical unique for s1.fa: ACGT, CGTA, GTAC
+            // Canonical unique for s1.fa: ACGT, CGTA, GTAC
             ("s2.fa", ">s2\nTACGTACG"), // K-mers: TACG (CGTA), ACGT, CGTA, GTAC, TACG (CGTA)
-                                        // Canonical unique for s2.fa: ACGT, CGTA, GTAC
-            ("s3.fa", ">s3\nGGGATCCC")  // K-mers: GGGA, GGAT, GATC, ATCC, TCCC
+            // Canonical unique for s2.fa: ACGT, CGTA, GTAC
+            ("s3.fa", ">s3\nGGGATCCC"), // K-mers: GGGA, GGAT, GATC, ATCC, TCCC
                                         // Canonical: CCC(GGGA), ATCC(GGAT), GATC, ATCC, GGG(TCCC)
                                         // Unique for s3.fa: CCC, ATCC, GATC
         ],
@@ -140,20 +137,26 @@ fn test_build_multiple_files_k4_v2() -> Result<(), Box<dyn std::error::Error>> {
     let expected_s2_kmers = kmers_from_strings(&["ACGT", "CGTA", "GTAC"], 4); // Same as s1
     let expected_s3_kmers = kmers_from_strings(&["GGGA", "GGAT", "GATC", "ATCC", "TCCC"], 4);
 
-
     assert_eq!(kmer_db_v2.references["s1.fa"], expected_s1_kmers);
     assert_eq!(kmer_db_v2.references["s2.fa"], expected_s2_kmers);
     assert_eq!(kmer_db_v2.references["s3.fa"], expected_s3_kmers);
 
     // Total unique k-mers: (ACGT, CGTA, GTAC) U (CCC, ATCC, GATC) = 6
-    let all_expected_unique_kmers = expected_s1_kmers.union(&expected_s3_kmers).cloned().collect::<HashSet<u64>>();
-    assert_eq!(kmer_db_v2.total_unique_kmers(), all_expected_unique_kmers.len());
-    assert_eq!(kmer_db_v2.get_all_kmers_unified(), all_expected_unique_kmers);
-
+    let all_expected_unique_kmers = expected_s1_kmers
+        .union(&expected_s3_kmers)
+        .cloned()
+        .collect::<HashSet<u64>>();
+    assert_eq!(
+        kmer_db_v2.total_unique_kmers(),
+        all_expected_unique_kmers.len()
+    );
+    assert_eq!(
+        kmer_db_v2.get_all_kmers_unified(),
+        all_expected_unique_kmers
+    );
 
     Ok(())
 }
-
 
 #[test]
 fn test_build_0_byte_empty_file() -> Result<(), Box<dyn std::error::Error>> {
@@ -197,7 +200,6 @@ fn test_build_fasta_with_no_sequences() -> Result<(), Box<dyn std::error::Error>
     Ok(())
 }
 
-
 #[test]
 fn test_build_malformed_fasta_file() -> Result<(), Box<dyn std::error::Error>> {
     // A file that is not valid FASTA (e.g. binary, or bad header) should cause an error during parsing.
@@ -225,7 +227,6 @@ fn test_build_malformed_fasta_file() -> Result<(), Box<dyn std::error::Error>> {
     ));
     Ok(())
 }
-
 
 #[test]
 fn test_build_invalid_k_too_large() {

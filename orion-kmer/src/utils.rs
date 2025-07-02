@@ -63,7 +63,9 @@ where
     let pb = ProgressBar::new(total_items);
     pb.set_style(
         ProgressStyle::default_bar()
-            .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})")
+            .template(
+                "{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})",
+            )
             .unwrap_or_else(|e| {
                 debug!("Error setting progress bar style: {}", e);
                 ProgressStyle::default_bar()
