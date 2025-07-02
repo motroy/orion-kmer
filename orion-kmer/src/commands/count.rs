@@ -15,7 +15,9 @@ use crate::{
     cli::CountArgs,
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64, u64_to_seq},
+    utils::track_progress_and_resources, // Import the wrapper function
 };
+// use indicatif::ProgressBar; // Not needed if progress is per file
 
 fn process_sequence_chunk(seq_chunk: &[u8], k: u8, kmer_counts: &DashMap<u64, AtomicUsize>) {
     if seq_chunk.len() < k as usize {
@@ -43,33 +45,42 @@ pub fn run_count(args: CountArgs) -> Result<()> {
     let k = args.kmer_size;
 
     let kmer_counts: DashMap<u64, AtomicUsize> = DashMap::new();
+    let num_files = args.input_files.len() as u64;
 
-    for input_path in &args.input_files {
-        info!("Processing file: {:?}", input_path);
-        let path_str = input_path.to_string_lossy();
-        let mut reader = parse_fastx_file(input_path) // Removed &
-            .with_context(|| format!("Failed to open or parse file: {}", path_str))?;
+    track_progress_and_resources("Counting k-mers from input files", num_files, |pb_files| {
+        for input_path in &args.input_files {
+            let path_str = input_path.to_string_lossy();
+            info!("Processing file: {}", path_str);
+            // Update progress bar message for the current file
+            pb_files.set_message(format!("Processing: {}", path_str));
 
-        // Changed to process record by record to reduce memory for very large files
-        info!("Processing records from {}...", path_str);
-        let mut record_count = 0;
-        while let Some(record) = reader.next() {
-            let record =
-                record.with_context(|| format!("Error reading record from {}", path_str))?;
-            // Normalize to uppercase to ensure consistent k-mer encoding
-            let norm_seq = record.normalize(false);
-            process_sequence_chunk(&norm_seq, k, &kmer_counts);
-            record_count += 1;
-            if record_count % 100000 == 0 {
-                // Log progress every 100k records
-                debug!("Processed {} records from {}", record_count, path_str);
+            let mut reader = parse_fastx_file(input_path)
+                .with_context(|| format!("Failed to open or parse file: {}", path_str))?;
+
+            info!("Processing records from {}...", path_str);
+            let mut record_count = 0;
+            while let Some(record) = reader.next() {
+                let record =
+                    record.with_context(|| format!("Error reading record from {}", path_str))?;
+                let norm_seq = record.normalize(false);
+                process_sequence_chunk(&norm_seq, k, &kmer_counts);
+                record_count += 1;
+                if record_count % 100_000 == 0 {
+                    debug!("Processed {} records from {}", record_count, path_str);
+                }
+                // If we wanted a per-file progress bar based on records, we'd need total records first.
+                // For now, the main progress bar is for files.
             }
+            info!(
+                "Finished processing {} records from {}. Unique k-mers so far: {}",
+                record_count,
+                path_str,
+                kmer_counts.len()
+            );
+            pb_files.inc(1); // Increment file progress bar
         }
-        info!(
-            "Finished processing {} records from {}",
-            record_count, path_str
-        );
-    }
+        Ok(())
+    })?;
 
     info!(
         "Finished processing all input files. Found {} unique canonical k-mers.",

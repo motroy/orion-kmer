@@ -13,9 +13,10 @@ use crate::{
     db_types::KmerDbV2,
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64},
-    utils::load_kmer_db_v2,
+    utils::{load_kmer_db_v2, track_progress_and_resources}, // Import the wrapper
 };
 use needletail::{parse_fastx_file, Sequence};
+// use indicatif::ProgressBar; // Not strictly needed for the closure signature if pb is not used inside
 
 // --- Output Structures ---
 
@@ -112,35 +113,46 @@ pub fn run_classify(args: ClassifyArgs) -> Result<()> {
 
 
     // --- 2. Process input file: count k-mers ---
-    info!("Processing input file: {:?}", args.input_file);
     let mut input_kmer_counts: HashMap<u64, usize> = HashMap::new();
-    let mut reader = parse_fastx_file(&args.input_file).with_context(|| {
-        format!(
-            "Failed to open or parse input file: {:?}",
-            args.input_file
-        )
-    })?;
+    let input_file_path_str = args.input_file.to_string_lossy().into_owned();
 
-    let mut processed_records = 0;
-    while let Some(record) = reader.next() {
-        let record = record.with_context(|| {
-            format!("Error reading record from input file: {:?}", args.input_file)
-        })?;
-        let norm_seq = record.normalize(false); // Get sequence as Vec<u8>
+    track_progress_and_resources(
+        &format!("Processing input file: {}", input_file_path_str),
+        0, // 0 for indeterminate progress bar (spinner style) as we don't know total records easily
+        |pb_input| {
+            let mut reader = parse_fastx_file(&args.input_file).with_context(|| {
+                format!(
+                    "Failed to open or parse input file: {:?}",
+                    args.input_file
+                )
+            })?;
 
-        if norm_seq.len() >= k as usize {
-            for window in norm_seq.windows(k as usize) {
-                if let Some(kmer_val) = seq_to_u64(window, k) {
-                    let canonical_kmer = canonical_u64(kmer_val, k);
-                    *input_kmer_counts.entry(canonical_kmer).or_insert(0) += 1;
+            let mut processed_records = 0;
+            while let Some(record) = reader.next() {
+                let record = record.with_context(|| {
+                    format!("Error reading record from input file: {:?}", args.input_file)
+                })?;
+                let norm_seq = record.normalize(false);
+
+                if norm_seq.len() >= k as usize {
+                    for window in norm_seq.windows(k as usize) {
+                        if let Some(kmer_val) = seq_to_u64(window, k) {
+                            let canonical_kmer = canonical_u64(kmer_val, k);
+                            *input_kmer_counts.entry(canonical_kmer).or_insert(0) += 1;
+                        }
+                    }
                 }
+                processed_records += 1;
+                if processed_records % 100_000 == 0 { // Update progress bar message periodically
+                    pb_input.set_message(format!("Processed {} records...", processed_records));
+                }
+                // We don't call pb_input.inc() here as length is 0 (spinner)
             }
-        }
-        processed_records += 1;
-        if processed_records % 1_000_000 == 0 {
-            debug!("Processed {} records from input file...", processed_records);
-        }
-    }
+            pb_input.set_message(format!("Processed {} total records from input file.", processed_records));
+            Ok(())
+        },
+    )?;
+
     info!(
         "Finished processing input file. Found {} unique k-mers with total occurrences before frequency filtering.",
         input_kmer_counts.len()
@@ -158,18 +170,19 @@ pub fn run_classify(args: ClassifyArgs) -> Result<()> {
         args.min_kmer_frequency,
         total_unique_input_kmers_after_filter
     );
-    // ---- END DEBUG PRINT ----
-
 
     // --- 3. Perform classification ---
     let mut db_results: Vec<DatabaseClassificationResult> = Vec::new();
+    let num_databases = loaded_databases.len() as u64;
 
-    for (idx, kmer_db_v2) in loaded_databases.iter().enumerate() {
-        let db_path_str = args.database_files[idx].to_string_lossy().into_owned();
-        info!("Classifying against database: {}", db_path_str);
+    track_progress_and_resources("Classifying against databases", num_databases, |pb_classify| {
+        for (idx, kmer_db_v2) in loaded_databases.iter().enumerate() {
+            let db_path_str = args.database_files[idx].to_string_lossy().into_owned();
+            info!("Classifying against database: {}", db_path_str);
+            pb_classify.set_message(format!("Classifying against: {}", db_path_str));
 
-        let mut overall_matched_kmers_in_db_set: HashSet<u64> = HashSet::new();
-        let overall_sum_depth_for_db: usize;
+            let mut overall_matched_kmers_in_db_set: HashSet<u64> = HashSet::new();
+            let overall_sum_depth_for_db: usize;
         let mut per_reference_results: Vec<ReferenceClassificationResult> = Vec::new();
 
         for (ref_name, ref_kmers_set) in &kmer_db_v2.references {
@@ -233,7 +246,10 @@ pub fn run_classify(args: ClassifyArgs) -> Result<()> {
             } else { 0.0 },
             references: per_reference_results,
         });
+        pb_classify.inc(1); // Increment after processing each database
     }
+    Ok(()) // Return Ok from the closure
+    })?;
 
     // --- 4. Write output ---
     let final_output = ClassificationOutput {

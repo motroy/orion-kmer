@@ -17,6 +17,8 @@ log = "0.4"
 env_logger = "0.10"
 thiserror = "1.0"
 anyhow = "1.0"
+indicatif = "0.17" # For progress bars
+psutil = "3.2"     # For system utilities like RAM usage
 
 [dev-dependencies]
 assert_cmd = "2.0"
