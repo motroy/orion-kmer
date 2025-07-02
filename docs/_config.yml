@@ -1,4 +1,4 @@
-theme: jekyll-theme-minimal
+theme: jekyll-theme-cayman
 title: Orion-Kmer User Manual
 description: A comprehensive guide to using Orion-Kmer, a blazing-fast k-mer toolkit.
 baseurl: "/orion-kmer" # Assuming the repo name is orion-kmer
