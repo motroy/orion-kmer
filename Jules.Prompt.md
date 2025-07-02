@@ -1,1 +1,2 @@
-Read the SPECS.md, generate a tasks list in TODO.md for steps required to produce the code for the specified tool. Then follow the tasks in TODO.md and generate the code for the tool, checking off the completed tasks as you go
+- Read the SPECS.md, generate a tasks list in TODO.md for steps required to produce the code for the specified tool. Then follow the tasks in TODO.md and generate the code for the tool, checking off the completed tasks as you go
+- add function classify - user gives genome or reads and orion-kmer compares to database (or multiple databases) generating output of proportion of matches in the database and their coverage (depth and breadth)
