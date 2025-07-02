@@ -18,6 +18,7 @@ This manual provides a comprehensive guide to installing and using Orion-Kmer.
     *   [Building K-mer Databases (`build`)](./tutorials/build_tutorial.md)
     *   [Comparing K-mer Databases (`compare`)](./tutorials/compare_tutorial.md)
     *   [Querying Reads against a Database (`query`)](./tutorials/query_tutorial.md)
+    *   [Classifying Sequences (`classify`)](./tutorials/classify_tutorial.md)
 *   [Example Workflow](#example-workflow)
 
 ## Installation
