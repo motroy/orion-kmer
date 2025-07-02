@@ -12,7 +12,7 @@
     <![endif]-->
     {% include head-custom.html %}
   </head>
-  <body>
+  <body {% if page.url == "/" or page.name == "index.md" %}class="homepage"{% endif %}>
     <div class="wrapper">
       <div class="sidebar">
         {% include sidebar.html %}
