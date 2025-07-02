@@ -68,3 +68,33 @@
     max-width: 100%;
   }
 }
+
+// Customizations for non-home pages
+body:not(.homepage) .main-content-wrapper header {
+  padding-top: 1rem;    // Reduce top padding of the header area
+  padding-bottom: 1rem; // Reduce bottom padding of the header area
+  margin-bottom: 1rem; // Default might be more, this tightens space to section
+}
+
+body:not(.homepage) .main-content-wrapper header h1 {
+  font-size: 1.8em; // Reduce project name font size (adjust as needed)
+}
+
+body:not(.homepage) .main-content-wrapper header p {
+  font-size: 0.9em; // Reduce tagline font size
+  margin-bottom: 0.5rem; // Reduce space below tagline
+}
+
+// Hide the .view class (View on GitHub links) in header on non-home pages to save space
+body:not(.homepage) .main-content-wrapper header p.view {
+  display: none;
+}
+
+// Example: If we wanted to make the sidebar slightly narrower on non-home pages
+// body:not(.homepage) .sidebar {
+//   width: 220px; // Slightly narrower sidebar
+// }
+
+// body:not(.homepage) .main-content-wrapper {
+//   max-width: calc(100% - 260px); // Adjust if sidebar width changes
+// }
