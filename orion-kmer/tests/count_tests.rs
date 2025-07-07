@@ -7,6 +7,79 @@ use std::process::Command;
 use tempfile::{NamedTempFile, TempDir};
 
 // Helper function to run the count command
+// Helper function to run the count command using actual files (potentially compressed)
+fn run_count_test_with_files(
+    k: u8,
+    input_file_paths: Vec<PathBuf>, // Vec of PathBuf to actual files
+    output_is_compressed: bool, // True if the output file should have a compression extension
+    min_count: Option<usize>,
+) -> Result<String, Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin("orion-kmer")?;
+    let project_root = std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".to_string());
+    cmd.current_dir(&project_root); // Use `&project_root`
+
+    // Use NamedTempFile for output, but manage its path and extension
+    let mut temp_output_file = NamedTempFile::new()?;
+    let mut output_path_buf = temp_output_file.path().to_path_buf();
+
+    if output_is_compressed {
+        // For simplicity in testing, we'll use .gz for compressed output tests.
+        // This could be parameterized if needed.
+        output_path_buf.set_extension("counts.gz");
+        // Recreate NamedTempFile with new path if necessary, or manage deletion.
+        // For now, we'll let NamedTempFile delete its original path, and we'll manually
+        // ensure the new path is also cleaned up or handled.
+        // The easiest is to close the original temp file and then use its path.
+        let temp_path_for_output = temp_output_file.into_temp_path();
+        // We must keep temp_path_for_output in scope until command finishes if it's to be auto-deleted.
+        // Or, convert to PathBuf and manage manually.
+        // For this test, we'll use the path from NamedTempFile and append .gz.
+        // The actual file will be created by orion-kmer.
+        // We need to ensure NamedTempFile doesn't delete it if we change the path.
+        // A simpler approach for testing output: create a temp dir and define output path within it.
+    }
+    // Fallback to a simpler output naming for now to avoid NamedTempFile complexities with extensions
+    let output_dir = TempDir::new()?;
+    let mut output_file_path = output_dir.path().join("test_output.counts");
+    if output_is_compressed {
+        output_file_path.set_extension("counts.gz");
+    }
+
+
+    cmd.arg("count")
+        .arg("-k")
+        .arg(k.to_string())
+        .arg("-o")
+        .arg(&output_file_path); // Use &output_file_path
+
+    for input_path in &input_file_paths { // Iterate over &input_file_paths
+        cmd.arg("-i").arg(input_path); // Use input_path directly
+    }
+
+    if let Some(mc) = min_count {
+        cmd.arg("-m").arg(mc.to_string());
+    }
+
+    // Print the command for debugging
+    // println!("Running command: {:?}", cmd);
+
+    cmd.assert().success();
+
+    // Read the output file, potentially decompressing it
+    let result_content = if output_is_compressed && output_file_path.extension().map_or(false, |ext| ext == "gz") {
+        let file = File::open(&output_file_path)?; // Use &output_file_path
+        let mut decoder = flate2::read::MultiGzDecoder::new(file);
+        let mut s = String::new();
+        decoder.read_to_string(&mut s)?;
+        s
+    } else {
+        fs::read_to_string(&output_file_path)? // Use &output_file_path
+    };
+    Ok(result_content)
+}
+
+
+// Helper function to run the count command (original version for content-based tests)
 fn run_count_test_with_setup(
     k: u8,
     input_files_content: Vec<(&str, &str)>, // Vec of (filename, content)
@@ -16,10 +89,9 @@ fn run_count_test_with_setup(
     let mut input_file_paths: Vec<PathBuf> = Vec::new();
 
     for (name, content) in &input_files_content {
-        // Iterate over a slice here
         let file_path = temp_dir.path().join(name);
         let mut file = File::create(&file_path)?;
-        writeln!(file, "{}", content)?; // Ensure newline like typical files
+        writeln!(file, "{}", content)?;
         input_file_paths.push(file_path);
     }
 
@@ -32,8 +104,8 @@ fn run_count_test_with_setup(
     let project_root = std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".to_string());
     cmd.current_dir(project_root);
 
-    let output_file = NamedTempFile::new()?;
-    let output_path_str = output_file.path().to_str().unwrap();
+    let output_file_temp = NamedTempFile::new()?; // Renamed to avoid conflict
+    let output_path_str = output_file_temp.path().to_str().unwrap();
 
     cmd.arg("count")
         .arg("-k")
@@ -54,6 +126,7 @@ fn run_count_test_with_setup(
     let result_content = fs::read_to_string(output_path_str)?;
     Ok(result_content)
 }
+
 
 fn sort_lines(content: &str) -> String {
     let mut lines: Vec<&str> = content.trim().lines().collect();
@@ -274,4 +347,121 @@ fn test_count_actual_file_not_found() {
     cmd.assert().failure().stderr(predicate::str::contains(
         "Failed to open or parse file: nonexistent_file.fasta",
     ));
+}
+
+// --- Tests for Compressed I/O ---
+
+fn get_test_data_path(file_name: &str) -> PathBuf {
+    let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    path.push("tests/data");
+    path.push(file_name);
+    path
+}
+
+// Expected output for test_input1.fasta, k=7
+// ACGTACG:2, CGTACGT:2, GTACGTA:1, TACGTAC:1, GATTACA:2
+// Canonical:
+// ACGTACG: 4 (ACGTACG, CGTACGT)
+// GATTACA: 2
+// GTACGTA: 1
+// TACGTAC: 1
+const EXPECTED_K7_INPUT1: &str = "ACGTACG\t4\nGATTACA\t2\nGTACGTA\t1\nTACGTAC\t1";
+
+
+#[test]
+fn test_count_fasta_gz_input_k7() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file = get_test_data_path("test_input1.fasta.gz");
+    let content = run_count_test_with_files(7, vec![input_file], false, None)?;
+    assert_eq!(sort_lines(&content), sort_lines(EXPECTED_K7_INPUT1));
+    Ok(())
+}
+
+#[test]
+fn test_count_fasta_xz_input_k7() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file = get_test_data_path("test_input1.fasta.xz");
+    let content = run_count_test_with_files(7, vec![input_file], false, None)?;
+    assert_eq!(sort_lines(&content), sort_lines(EXPECTED_K7_INPUT1));
+    Ok(())
+}
+
+#[test]
+fn test_count_fasta_zst_input_k7() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file = get_test_data_path("test_input1.fasta.zst");
+    if !input_file.exists() {
+        eprintln!("Skipping Zstandard test, input file not found: {:?}", input_file);
+        return Ok(()); // Skip if zstd wasn't available during setup
+    }
+    let content = run_count_test_with_files(7, vec![input_file], false, None)?;
+    assert_eq!(sort_lines(&content), sort_lines(EXPECTED_K7_INPUT1));
+    Ok(())
+}
+
+// Expected output for test_input2.fastq, k=6
+// CGTACG:1, GTACGT:1, TACGTA:1, GCATGC:1, CATGCA:1, ATGCAT:1, TGCATG:1, GATTAC:1
+// Canonical:
+// ATGCAT: 1
+// CATGCA: 1
+// CGTACG: 2 (CGTACG, GTACGT)
+// GATTAC: 1
+// GCATGC: 1
+// TACGTA: 1
+// TGCATG: 1
+const EXPECTED_K6_INPUT2: &str = "ATGCAT\t1\nCATGCA\t1\nCGTACG\t2\nGATTAC\t1\nGCATGC\t1\nTACGTA\t1\nTGCATG\t1";
+
+#[test]
+fn test_count_fastq_gz_input_k6() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file = get_test_data_path("test_input2.fastq.gz");
+    let content = run_count_test_with_files(6, vec![input_file], false, None)?;
+    assert_eq!(sort_lines(&content), sort_lines(EXPECTED_K6_INPUT2));
+    Ok(())
+}
+
+#[test]
+fn test_count_uncompressed_input_gz_output_k7() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file = get_test_data_path("test_input1.fasta");
+    // The run_count_test_with_files helper will handle reading .gz output if second arg is true
+    let content = run_count_test_with_files(7, vec![input_file], true, None)?;
+    assert_eq!(sort_lines(&content), sort_lines(EXPECTED_K7_INPUT1));
+    Ok(())
+}
+
+#[test]
+fn test_count_gz_input_gz_output_k6() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file = get_test_data_path("test_input2.fastq.gz");
+    let content = run_count_test_with_files(6, vec![input_file], true, None)?;
+    assert_eq!(sort_lines(&content), sort_lines(EXPECTED_K6_INPUT2));
+    Ok(())
+}
+
+#[test]
+fn test_count_multiple_compressed_inputs_k5() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file1 = get_test_data_path("test_input1.fasta.xz");
+    let input_file2 = get_test_data_path("test_input2.fastq.zst");
+
+    if !input_file2.exists() {
+         eprintln!("Skipping multi-compressed test, input file not found: {:?}", input_file2);
+        return Ok(()); // Skip if zstd wasn't available
+    }
+
+    let k = 5;
+    // Expected for k=5:
+    // test_input1.fasta: ACGTA:2, CGTAC:2, GTACG:2, TACGT:1, GATTAC:1, ATTACA:1
+    //  Canonical: ACGTA:4, CGTAC:2, GATTAC:1, GTACG:2, ATTACA:1, TACGT:1
+    // test_input2.fastq: CGTAC:1, GTACG:1, TACGT:1, ACGTA:1, GCATG:1, CATGC:1, ATGCA:1, TGCAT:1, GATTAC:1
+    //  Canonical: ACGTA:1, ATCAR:1, CATGC:1, CGTAC:1, GATTAC:1, GCATG:1, GTACG:1, TACGT:1
+    // Combined (k=5):
+    // ACGTA: 5
+    // ATCAR: 1 (from TGCAT in test_input2)
+    // ATTACA: 1
+    // CATGC: 1
+    // CGTAC: 3
+    // GATTAC: 2
+    // GCATG: 1
+    // GTACG: 3
+    // TACGT: 2
+    let expected_combined_k5 = "ACGTA\t5\nATGCA\t1\nATTACA\t1\nCATGC\t1\nCGTAC\t3\nGATTAC\t2\nGCATG\t1\nGTACG\t3\nTACGT\t2";
+
+    let content = run_count_test_with_files(k, vec![input_file1, input_file2], false, None)?;
+    assert_eq!(sort_lines(&content), sort_lines(expected_combined_k5));
+    Ok(())
 }

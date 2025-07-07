@@ -40,14 +40,14 @@ pub struct CountArgs {
     #[clap(short, long, required = true, help = "The length of the k-mer")]
     pub kmer_size: u8,
 
-    #[clap(short, long, required = true, num_args = 1.., help = "One or more input FASTA/FASTQ files (can be gzipped)")]
+    #[clap(short, long, required = true, num_args = 1.., help = "One or more input FASTA/FASTQ files. Supports .gz, .xz, .zst compression.")]
     pub input_files: Vec<PathBuf>,
 
     #[clap(
         short,
         long,
         required = true,
-        help = "Output file for k-mer counts (kmer<TAB>count)"
+        help = "Output file for k-mer counts (kmer<TAB>count). Supports .gz, .xz, .zst compression based on extension."
     )]
     pub output_file: PathBuf,
 
@@ -65,31 +65,31 @@ pub struct BuildArgs {
     #[clap(short, long, required = true, help = "The length of the k-mer")]
     pub kmer_size: u8,
 
-    #[clap(short = 'g', long = "genomes", required = true, num_args = 1.., help = "One or more input genome assembly files (FASTA)")]
+    #[clap(short = 'g', long = "genomes", required = true, num_args = 1.., help = "One or more input genome assembly files (FASTA). Supports .gz, .xz, .zst compression.")]
     pub genome_files: Vec<PathBuf>,
 
     #[clap(
         short,
         long,
         required = true,
-        help = "Output path for the binary k-mer database"
+        help = "Output path for the binary k-mer database. Supports .gz, .xz, .zst compression based on extension."
     )]
     pub output_file: PathBuf,
 }
 
 #[derive(Parser, Debug)]
 pub struct CompareArgs {
-    #[clap(long, required = true, help = "First k-mer database file")]
+    #[clap(long, required = true, help = "First k-mer database file. Supports .gz, .xz, .zst compression.")]
     pub db1: PathBuf,
 
-    #[clap(long, required = true, help = "Second k-mer database file")]
+    #[clap(long, required = true, help = "Second k-mer database file. Supports .gz, .xz, .zst compression.")]
     pub db2: PathBuf,
 
     #[clap(
         short,
         long,
         required = true,
-        help = "Output file for comparison stats (JSON format)"
+        help = "Output file for comparison stats (JSON format). Supports .gz, .xz, .zst compression based on extension."
     )]
     pub output_file: PathBuf,
 }
@@ -100,7 +100,7 @@ pub struct QueryArgs {
         short = 'd',
         long = "database",
         required = true,
-        help = "K-mer database to query against"
+        help = "K-mer database to query against. Supports .gz, .xz, .zst compression."
     )]
     pub database_file: PathBuf,
 
@@ -108,7 +108,7 @@ pub struct QueryArgs {
         short = 'r',
         long = "reads",
         required = true,
-        help = "Short-read file (FASTQ, can be gzipped)"
+        help = "Short-read file (FASTQ). Supports .gz, .xz, .zst compression."
     )]
     pub reads_file: PathBuf,
 
@@ -116,7 +116,7 @@ pub struct QueryArgs {
         short,
         long,
         required = true,
-        help = "Output file for the IDs of matching reads"
+        help = "Output file for the IDs of matching reads. Supports .gz, .xz, .zst compression based on extension."
     )]
     pub output_file: PathBuf,
 
@@ -135,7 +135,7 @@ pub struct ClassifyArgs {
         short,
         long,
         required = true,
-        help = "Input genome (FASTA) or reads (FASTQ) file"
+        help = "Input genome (FASTA) or reads (FASTQ) file. Supports .gz, .xz, .zst compression."
     )]
     pub input_file: PathBuf,
 
@@ -144,7 +144,7 @@ pub struct ClassifyArgs {
         long = "databases",
         required = true,
         num_args = 1..,
-        help = "One or more k-mer database files (.db)"
+        help = "One or more k-mer database files (.db). Supports .gz, .xz, .zst compression."
     )]
     pub database_files: Vec<PathBuf>,
 
@@ -152,7 +152,7 @@ pub struct ClassifyArgs {
         short,
         long,
         required = true,
-        help = "Output file for classification results (JSON format)"
+        help = "Output file for classification results (JSON format). Supports .gz, .xz, .zst compression based on extension."
     )]
     pub output_file: PathBuf,
 
@@ -179,7 +179,7 @@ pub struct ClassifyArgs {
 
     #[clap(
         long,
-        help = "Optional: Output file path for a TSV summary of the classification results"
+        help = "Optional: Output file path for a TSV summary of the classification results. Supports .gz, .xz, .zst compression based on extension."
     )]
     pub output_tsv: Option<PathBuf>,
 }

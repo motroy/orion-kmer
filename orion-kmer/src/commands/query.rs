@@ -1,11 +1,11 @@
 use anyhow::{Context, Result};
 use log::info;
-use needletail::{Sequence, parse_fastx_file}; // Corrected import order
+use needletail::{parse_fastx_reader, Sequence}; // Corrected import order & changed to parse_fastx_reader
 use rayon::prelude::*;
 use std::{
     collections::HashSet, // Required for the unified k-mer set
-    fs::File,
-    io::{BufWriter, Write}, // Removed BufReader
+    // fs::File, // No longer directly used
+    io::Write, // Only Write is needed for Mutex<Box<dyn Write>>
     sync::Mutex,
 };
 
@@ -15,7 +15,7 @@ use crate::{
     // db_types::KmerDbV2,
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64},
-    utils::{load_kmer_db_v2, track_progress_and_resources}, // Import the wrapper
+    utils::{get_input_reader, get_output_writer, load_kmer_db_v2, track_progress_and_resources}, // Import the wrapper & I/O helpers
 };
 // use indicatif::ProgressBar; // For passing to the closure - actually not needed
 
@@ -41,16 +41,23 @@ pub fn run_query(args: QueryArgs) -> Result<()> {
         db_all_kmers.len()
     );
 
-    let mut reader = parse_fastx_file(&args.reads_file)
-        .with_context(|| format!("Failed to open or parse FASTQ file: {:?}", args.reads_file))?;
-
-    let output_file = File::create(&args.output_file).with_context(|| {
+    // Use get_input_reader for the reads file
+    let input_buf_reader = get_input_reader(&args.reads_file).with_context(|| {
         format!(
-            "Failed to create output file for matching reads: {:?}",
-            args.output_file
+            "Failed to get input reader for reads file: {:?}",
+            args.reads_file
         )
     })?;
-    let writer = Mutex::new(BufWriter::new(output_file));
+    let mut reader = parse_fastx_reader(input_buf_reader)
+        .with_context(|| format!("Failed to parse FASTQ content from: {:?}", args.reads_file))?;
+
+    // Use get_output_writer for the output file
+    let writer = Mutex::new(get_output_writer(&args.output_file).with_context(|| {
+        format!(
+            "Failed to get output writer for matching reads: {:?}",
+            args.output_file
+        )
+    })?);
 
     let mut records = Vec::new();
     while let Some(record) = reader.next() {
