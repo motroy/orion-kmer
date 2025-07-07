@@ -14,6 +14,7 @@ bincode = "1.3"
 flate2 = "1.0" # Already present, used by needletail, good for explicit use too
 xz2 = "0.1"
 zstd = "0.12" # Using a version known to be stable
+sevenz-rust2 = "0.2.0"
 num_cpus = "1.16"
 log = "0.4"
 env_logger = "0.10"

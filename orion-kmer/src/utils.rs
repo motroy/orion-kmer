@@ -1,9 +1,10 @@
-use anyhow::{Context, Result};
+use anyhow::{Context, Result, bail};
 use flate2::{read::MultiGzDecoder, write::GzEncoder, Compression as GzCompression};
 use log::{debug, info}; // Added info
+use sevenz_rust2::{Password, SevenZReader, SevenZWriter, Aes256Sha256Algorithm, CompressionMethod, FileInfo};
 use std::{
     fs::File,
-    io::{BufRead, BufReader, BufWriter, Read, Write}, // Added BufRead, Write, BufWriter, Read
+    io::{BufRead, BufReader, BufWriter, Cursor, Read, Write}, // Added BufRead, Write, BufWriter, Read, Cursor
     path::Path,
 };
 use xz2::{read::XzDecoder, write::XzEncoder};
@@ -143,6 +144,32 @@ pub fn get_input_reader(path: &Path) -> Result<Box<dyn BufRead>> {
                 .with_context(|| format!("Failed to create ZstdDecoder for {:?}", path))?;
             Ok(Box::new(BufReader::new(decoder)))
         }
+        Some("7z") => {
+            info!("Reading 7z compressed file: {:?}", path);
+            // sevenz-rust2 reads the whole entry into memory.
+            // We find the first non-directory entry and read it.
+            let mut sz_reader = SevenZReader::open(path, Password::empty())
+                .with_context(|| format!("Failed to open 7z archive: {:?}", path))?;
+
+            let mut entry_data: Option<Vec<u8>> = None;
+            // sz_reader.for_each_entries(|entry, reader| { // API seems to have changed or my memory was off
+            // Let's try to find the first file entry directly
+            for (idx, entry) in sz_reader.archive().files.iter().enumerate() {
+                if !entry.is_directory() {
+                    let mut buffer = Vec::new();
+                    sz_reader.read_entry_to_end(idx, &mut buffer)
+                        .with_context(|| format!("Failed to read entry {} from 7z archive: {:?}", entry.name(), path))?;
+                    entry_data = Some(buffer);
+                    break; // Found the first file, stop.
+                }
+            }
+
+            if let Some(data) = entry_data {
+                Ok(Box::new(BufReader::new(Cursor::new(data))))
+            } else {
+                bail!("No suitable file entry found in 7z archive: {:?}", path)
+            }
+        }
         _ => {
             info!("Reading uncompressed file: {:?}", path);
             Ok(Box::new(BufReader::new(file)))
@@ -151,7 +178,7 @@ pub fn get_input_reader(path: &Path) -> Result<Box<dyn BufRead>> {
 }
 
 /// Opens a file for writing, handling compression based on file extension.
-/// Supported extensions: .gz, .xz, .zst.
+/// Supported extensions: .gz, .xz, .zst, .7z
 /// Returns a `Box<dyn Write>` for generic writing.
 /// Note: The writers are typically `BufWriter`s wrapping compressing encoders.
 pub fn get_output_writer(path: &Path) -> Result<Box<dyn Write>> {
@@ -181,9 +208,97 @@ pub fn get_output_writer(path: &Path) -> Result<Box<dyn Write>> {
                 .auto_finish(); // Ensures finish is called on drop
             Ok(Box::new(BufWriter::new(encoder)))
         }
+        Some("7z") => {
+            info!("Writing 7z compressed file: {:?}", path);
+            // sevenz-rust2 write_entry takes a Read source.
+            // So, we create a temporary buffer that implements Write.
+            // On flush/drop, this buffer's content will be compressed into the 7z file.
+            Ok(Box::new(SevenZCompressingWriter::new(file)?))
+        }
         _ => {
             info!("Writing uncompressed file: {:?}", path);
             Ok(Box::new(BufWriter::new(file)))
+        }
+    }
+}
+
+struct SevenZCompressingWriter {
+    target_file: Option<File>, // The actual output file for the .7z archive
+    buffer: Cursor<Vec<u8>>, // In-memory buffer to store data before compression
+    // We need path to give a name to the entry in 7z archive
+    // entry_name: String, // Name for the entry within the 7z archive
+}
+
+impl SevenZCompressingWriter {
+    fn new(target_file: File) -> Result<Self> {
+        // let entry_name = path
+        //     .file_name()
+        //     .and_then(|n| n.to_str())
+        //     .map(|s| s.trim_end_matches(".7z").to_string())
+        //     .unwrap_or_else(|| "data.bin".to_string());
+
+        Ok(Self {
+            target_file: Some(target_file),
+            buffer: Cursor::new(Vec::new()),
+            // entry_name,
+        })
+    }
+
+    fn Suffix(mut self) -> Result<()> { // Changed name to Suffix to avoid conflict with Write::flush
+        if let Some(target_file) = self.target_file.take() {
+            // Reset cursor position to the beginning to read its content
+            self.buffer.set_position(0);
+
+            // Use SevenZWriter to write the buffer to the target_file
+            let mut sz_writer = SevenZWriter::new(target_file)
+                .with_context(|| "Failed to create SevenZWriter")?;
+
+            // Configure the entry - use a generic name or derive from path
+            let entry_name = "content"; // Or derive from self.path if stored
+            let entry_file_info = FileInfo::new(
+                entry_name.into(),
+                false, // is_directory
+                None, // last_modified_date
+                None, // attributes
+                None, // created_date
+                None, // last_accessed_date
+                None, // crc (will be calculated)
+                None, // size (will be calculated)
+            );
+
+
+            // CompressionMethod::Lzma2 is a good default
+            sz_writer.push_entry(entry_file_info, Some(CompressionMethod::Lzma2(None)), &mut self.buffer)
+                .with_context(|| "Failed to write entry to 7z archive")?;
+
+            sz_writer.finish().with_context(|| "Failed to finish writing 7z archive")?;
+            info!("Successfully wrote and finalized 7z archive.");
+        }
+        Ok(())
+    }
+}
+
+impl Write for SevenZCompressingWriter {
+    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+        self.buffer.write(buf)
+    }
+
+    fn flush(&mut self) -> std::io::Result<()> {
+        self.buffer.flush()
+        // Actual compression happens on drop (or explicit finish)
+    }
+}
+
+impl Drop for SevenZCompressingWriter {
+    fn drop(&mut self) {
+        // Ensure data is written on drop
+        if self.target_file.is_some() { // Only if not already finalized
+            if let Err(e) = self.Suffix() { // Renamed from flush to Suffix
+                // Log error, but can't propagate it from drop.
+                // Consider adding an explicit close/finish method to the public API
+                // that users *should* call to handle errors properly.
+                log::error!("Failed to write 7z archive on drop: {:?}", e);
+            }
         }
     }
 }
