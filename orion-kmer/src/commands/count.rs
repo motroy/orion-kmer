@@ -2,12 +2,13 @@ use anyhow::{Context, Result};
 use dashmap::DashMap;
 // use flate2::read::MultiGzDecoder; // Removed
 use log::{debug, info};
-use needletail::{Sequence, parse_fastx_file};
+use needletail::{parse_fastx_reader, Sequence}; // Changed parse_fastx_file to parse_fastx_reader
 // use rayon::prelude::*;
 use std::{
-    fs::File,
-    io::{BufWriter, Write}, // Removed BufRead, BufReader
+    // fs::File, // No longer directly used
+    // io::{BufWriter, Write}, // No longer directly used
     // path::Path, // Removed
+    io::Write, // Only Write is needed for writeln! macro with Box<dyn Write>
     sync::atomic::{AtomicUsize, Ordering},
 };
 
@@ -15,7 +16,7 @@ use crate::{
     cli::CountArgs,
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64, u64_to_seq},
-    utils::track_progress_and_resources, // Import the wrapper function
+    utils::{get_input_reader, get_output_writer, track_progress_and_resources}, // Import I/O helpers
 };
 // use indicatif::ProgressBar; // Not needed if progress is per file
 
@@ -54,8 +55,13 @@ pub fn run_count(args: CountArgs) -> Result<()> {
             // Update progress bar message for the current file
             pb_files.set_message(format!("Processing: {}", path_str));
 
-            let mut reader = parse_fastx_file(input_path)
-                .with_context(|| format!("Failed to open or parse file: {}", path_str))?;
+            // Use get_input_reader to handle potential compression
+            let input_buf_reader = get_input_reader(input_path)
+                .with_context(|| format!("Failed to get input reader for file: {}", path_str))?;
+
+            // Pass the BufRead to parse_fastx_reader
+            let mut reader = parse_fastx_reader(input_buf_reader)
+                .with_context(|| format!("Failed to parse FASTA/Q content from: {}", path_str))?;
 
             info!("Processing records from {}...", path_str);
             let mut record_count = 0;
@@ -89,9 +95,13 @@ pub fn run_count(args: CountArgs) -> Result<()> {
 
     // Outputting results
     debug!("Opening output file: {:?}", args.output_file);
-    let output_file = File::create(&args.output_file)
-        .with_context(|| format!("Failed to create output file: {:?}", args.output_file))?;
-    let mut writer = BufWriter::new(output_file);
+    // Use get_output_writer to handle potential compression
+    let mut writer = get_output_writer(&args.output_file).with_context(|| {
+        format!(
+            "Failed to get output writer for counts file: {:?}",
+            args.output_file
+        )
+    })?;
 
     let mut kmer_vec: Vec<(u64, usize)> = kmer_counts
         .into_iter()

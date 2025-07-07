@@ -1,11 +1,11 @@
 use anyhow::{Context, Result};
 use dashmap::DashSet; // Using DashSet for concurrent k-mer collection per file
 use log::{debug, info};
-use needletail::{Sequence, parse_fastx_file}; // Corrected import order
+use needletail::{parse_fastx_reader, Sequence}; // Corrected import order & added parse_fastx_reader
 use std::{
     collections::HashSet, // Keep HashSet for final storage in KmerDbV2
-    fs::File,
-    io::{BufWriter, Write},
+    // fs::File, // No longer directly used for output
+    // io::{BufWriter, Write}, // No longer directly used for output
     path::PathBuf, // For getting filename
 };
 
@@ -14,7 +14,7 @@ use crate::{
     db_types::KmerDbV2, // Import the new database structure
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64},
-    utils::track_progress_and_resources, // Import the wrapper function
+    utils::{get_input_reader, get_output_writer, track_progress_and_resources}, // Import the wrapper function and I/O helpers
 };
 // use indicatif::ProgressBar; // Required for the closure signature - actually not needed
 
@@ -34,8 +34,13 @@ fn process_sequences_for_file(
     // let total_records = ...;
     // pb.set_length(total_records); // If using a per-file progress bar
 
-    let mut reader = parse_fastx_file(file_path)
-        .with_context(|| format!("Failed to open or parse FASTA/Q file: {}", path_str))?;
+    // Use get_input_reader to handle potential compression
+    let input_buf_reader = get_input_reader(file_path)
+        .with_context(|| format!("Failed to get input reader for file: {}", path_str))?;
+
+    // Pass the BufRead to parse_fastx_reader instead of a path to parse_fastx_file
+    let mut reader = parse_fastx_reader(input_buf_reader)
+        .with_context(|| format!("Failed to parse FASTA/Q content from: {}", path_str))?;
 
     let mut record_count = 0;
     while let Some(record) = reader.next() {
@@ -125,13 +130,13 @@ pub fn run_build(args: BuildArgs) -> Result<()> {
         "Opening output database file for writing: {:?}",
         args.output_file
     );
-    let output_file = File::create(&args.output_file).with_context(|| {
+    // Use get_output_writer to handle potential compression
+    let mut writer = get_output_writer(&args.output_file).with_context(|| {
         format!(
-            "Failed to create output database file: {:?}",
+            "Failed to get output writer for database file: {:?}",
             args.output_file
         )
     })?;
-    let mut writer = BufWriter::new(output_file);
 
     bincode::serialize_into(&mut writer, &kmer_db_v2).with_context(|| {
         format!(
@@ -140,6 +145,9 @@ pub fn run_build(args: BuildArgs) -> Result<()> {
         )
     })?;
 
+    // The writer from get_output_writer is already buffered (e.g. BufWriter wrapping an encoder)
+    // and will flush on drop (especially ZstdEncoder with auto_finish, GzEncoder, XzEncoder).
+    // Explicit flush can still be called if desired, but might be redundant.
     writer
         .flush()
         .context("Failed to flush output database writer")?;

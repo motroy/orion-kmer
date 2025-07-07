@@ -11,25 +11,75 @@ use std::{
 };
 use tempfile::{NamedTempFile, TempDir};
 
-// Helper to run build and load the resulting KmerDbV2 database
+use std::io::Read; // For MultiGzDecoder
+
+// Helper to run build with actual files and load the resulting KmerDbV2 database
+fn run_build_with_files_and_load_db(
+    k: u8,
+    input_file_paths_and_expected_names: Vec<(PathBuf, String)>, // Vec of (path_to_actual_file, expected_ref_name_in_db)
+    output_is_compressed: bool, // True if the output DB file should have a .gz extension
+) -> Result<KmerDbV2, Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin("orion-kmer")?;
+    let project_root = std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".to_string());
+    cmd.current_dir(&project_root);
+
+    let output_dir = TempDir::new()?;
+    let mut output_db_path = output_dir.path().join("test_db.db");
+    if output_is_compressed {
+        output_db_path.set_extension("db.gz");
+    }
+
+    cmd.arg("build")
+        .arg("-k")
+        .arg(k.to_string())
+        .arg("-o")
+        .arg(&output_db_path);
+
+    for (input_path, _expected_name) in &input_file_paths_and_expected_names {
+        cmd.arg("-g").arg(input_path);
+    }
+
+    // println!("Running command: {:?}", cmd); // For debugging test setup
+    cmd.assert().success();
+
+    let db_bytes = if output_is_compressed {
+        let file = File::open(&output_db_path)?;
+        let mut decoder = flate2::read::MultiGzDecoder::new(file);
+        let mut bytes = Vec::new();
+        decoder.read_to_end(&mut bytes)?;
+        bytes
+    } else {
+        fs::read(&output_db_path)?
+    };
+
+    let kmer_db_v2: KmerDbV2 = bincode::deserialize(&db_bytes)?;
+
+    // Verify reference names if needed (important if original filenames had extensions)
+    // For simplicity in this helper, we assume the caller will verify the KmerDbV2 content including ref names.
+    // The `input_file_paths_and_expected_names` provides the expected name for such checks.
+
+    Ok(kmer_db_v2)
+}
+
+
+// Original helper to run build and load the resulting KmerDbV2 database (using content strings)
 fn run_build_and_load_db_v2(
     k: u8,
     input_files_content: Vec<(&str, &str)>, // Vec of (filename, content)
 ) -> Result<KmerDbV2, Box<dyn std::error::Error>> {
     let temp_dir = TempDir::new()?;
     let mut input_file_paths: Vec<PathBuf> = Vec::new();
-    let mut input_filenames: Vec<String> = Vec::new();
+    // let mut input_filenames: Vec<String> = Vec::new(); // No longer needed here
 
     for (name, content) in &input_files_content {
         let file_path = temp_dir.path().join(name);
-        // Ensure parent directory exists if `name` includes subdirectories.
         if let Some(parent_dir) = file_path.parent() {
             fs::create_dir_all(parent_dir)?;
         }
         let mut file = File::create(&file_path)?;
         writeln!(file, "{}", content)?;
         input_file_paths.push(file_path);
-        input_filenames.push(name.to_string());
+        // input_filenames.push(name.to_string()); // No longer needed here
     }
 
     let string_input_paths: Vec<String> = input_file_paths
@@ -267,4 +317,143 @@ fn test_build_file_not_found() {
     cmd.assert().failure().stderr(predicate::str::contains(
         "Failed to open or parse FASTA/Q file: nonexistent_file.fasta",
     ));
+}
+
+// --- Tests for Compressed I/O ---
+
+fn get_test_data_path(file_name: &str) -> PathBuf {
+    let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    path.push("tests/data");
+    path.push(file_name);
+    path
+}
+
+// Expected k-mers for test_input1.fasta, k=7
+// ACGTACG, CGTACGT, GTACGTA, TACGTAC, GATTACA (twice)
+// Canonical: ACGTACG (from ACGTACG & CGTACGT), GTACGTA, TACGTAC, GATTACA
+fn get_expected_kmers_input1_k7() -> HashSet<u64> {
+    kmers_from_strings(&["ACGTACG", "GTACGTA", "TACGTAC", "GATTACA"], 7)
+}
+
+// Expected k-mers for test_input2.fastq, k=6
+// CGTACG, GTACGT, TACGTA, GCATGC, CATGCA, ATGCAT, TGCATG, GATTAC
+// Canonical: CGTACG (from CGTACG & GTACGT), TACGTA, GCATGC, CATGCA, ATGCAT, TGCATG, GATTAC
+fn get_expected_kmers_input2_k6() -> HashSet<u64> {
+    kmers_from_strings(
+        &[
+            "CGTACG", "TACGTA", "GCATGC", "CATGCA", "ATGCAT", "TGCATG", "GATTAC",
+        ],
+        6,
+    )
+}
+
+
+#[test]
+fn test_build_fasta_gz_input_k7() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file_path = get_test_data_path("test_input1.fasta.gz");
+    let expected_ref_name = "test_input1.fasta.gz".to_string();
+    let kmer_db = run_build_with_files_and_load_db(7, vec![(input_file_path, expected_ref_name.clone())], false)?;
+
+    assert_eq!(kmer_db.k, 7);
+    assert_eq!(kmer_db.references.len(), 1);
+    assert_eq!(kmer_db.references[&expected_ref_name], get_expected_kmers_input1_k7());
+    assert_eq!(kmer_db.total_unique_kmers(), get_expected_kmers_input1_k7().len());
+    Ok(())
+}
+
+#[test]
+fn test_build_fasta_xz_input_k7() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file_path = get_test_data_path("test_input1.fasta.xz");
+    let expected_ref_name = "test_input1.fasta.xz".to_string();
+    let kmer_db = run_build_with_files_and_load_db(7, vec![(input_file_path, expected_ref_name.clone())], false)?;
+
+    assert_eq!(kmer_db.k, 7);
+    assert_eq!(kmer_db.references.len(), 1);
+    assert_eq!(kmer_db.references[&expected_ref_name], get_expected_kmers_input1_k7());
+    Ok(())
+}
+
+#[test]
+fn test_build_fasta_zst_input_k7() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file_path = get_test_data_path("test_input1.fasta.zst");
+    if !input_file_path.exists() {
+        eprintln!("Skipping Zstandard build test, input file not found: {:?}", input_file_path);
+        return Ok(());
+    }
+    let expected_ref_name = "test_input1.fasta.zst".to_string();
+    let kmer_db = run_build_with_files_and_load_db(7, vec![(input_file_path, expected_ref_name.clone())], false)?;
+
+    assert_eq!(kmer_db.k, 7);
+    assert_eq!(kmer_db.references.len(), 1);
+    assert_eq!(kmer_db.references[&expected_ref_name], get_expected_kmers_input1_k7());
+    Ok(())
+}
+
+#[test]
+fn test_build_uncompressed_input_gz_output_k7() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file_path = get_test_data_path("test_input1.fasta");
+    let expected_ref_name = "test_input1.fasta".to_string();
+    // Pass true for output_is_compressed
+    let kmer_db = run_build_with_files_and_load_db(7, vec![(input_file_path, expected_ref_name.clone())], true)?;
+
+    assert_eq!(kmer_db.k, 7);
+    assert_eq!(kmer_db.references.len(), 1);
+    assert_eq!(kmer_db.references[&expected_ref_name], get_expected_kmers_input1_k7());
+    Ok(())
+}
+
+#[test]
+fn test_build_fastq_gz_input_gz_output_k6() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file_path = get_test_data_path("test_input2.fastq.gz");
+    let expected_ref_name = "test_input2.fastq.gz".to_string();
+    let kmer_db = run_build_with_files_and_load_db(6, vec![(input_file_path, expected_ref_name.clone())], true)?;
+
+    assert_eq!(kmer_db.k, 6);
+    assert_eq!(kmer_db.references.len(), 1);
+    assert_eq!(kmer_db.references[&expected_ref_name], get_expected_kmers_input2_k6());
+    assert_eq!(kmer_db.total_unique_kmers(), get_expected_kmers_input2_k6().len());
+    Ok(())
+}
+
+#[test]
+fn test_build_multiple_compressed_inputs_k5() -> Result<(), Box<dyn std::error::Error>> {
+    let input_file1_path = get_test_data_path("test_input1.fasta.xz");
+    let expected_ref_name1 = "test_input1.fasta.xz".to_string();
+    let input_file2_path = get_test_data_path("test_input2.fastq.zst");
+    let expected_ref_name2 = "test_input2.fastq.zst".to_string();
+
+    if !input_file2_path.exists() {
+        eprintln!("Skipping multi-compressed build test, zst input file not found: {:?}", input_file2_path);
+        return Ok(());
+    }
+
+    let k = 5;
+    let kmer_db = run_build_with_files_and_load_db(
+        k,
+        vec![
+            (input_file1_path, expected_ref_name1.clone()),
+            (input_file2_path, expected_ref_name2.clone())
+        ],
+        false
+    )?;
+
+    assert_eq!(kmer_db.k, k);
+    assert_eq!(kmer_db.references.len(), 2);
+
+    // Expected k-mers for test_input1.fasta, k=5
+    // ACGTA, CGTAC, GTACG, TACGT, GATTAC, ATTACA
+    // Canonical: ACGTA, CGTAC, GTACG, TACGT, GATTAC, ATTACA
+    let expected_kmers1_k5 = kmers_from_strings(&["ACGTA", "CGTAC", "GTACG", "TACGT", "GATTAC", "ATTACA"], k);
+    assert_eq!(kmer_db.references[&expected_ref_name1], expected_kmers1_k5);
+
+    // Expected k-mers for test_input2.fastq, k=5
+    // CGTAC, GTACG, TACGT, ACGTA, GCATG, CATGC, ATGCA, TGCAT, GATTAC
+    // Canonical: CGTAC, GTACG, TACGT, ACGTA, GCATG, CATGC, ATGCA, TGCAT, GATTAC
+    let expected_kmers2_k5 = kmers_from_strings(&["CGTAC", "GTACG", "TACGT", "ACGTA", "GCATG", "CATGC", "ATGCA", "TGCAT", "GATTAC"], k);
+    assert_eq!(kmer_db.references[&expected_ref_name2], expected_kmers2_k5);
+
+    let all_expected_kmers = expected_kmers1_k5.union(&expected_kmers2_k5).cloned().collect::<HashSet<u64>>();
+    assert_eq!(kmer_db.total_unique_kmers(), all_expected_kmers.len());
+
+    Ok(())
 }

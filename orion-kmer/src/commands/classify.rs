@@ -13,10 +13,10 @@ use crate::{
     db_types::KmerDbV2,
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64},
-    utils::{load_kmer_db_v2, track_progress_and_resources}, // Import the wrapper
+    utils::{get_input_reader, get_output_writer, load_kmer_db_v2, track_progress_and_resources}, // Import the wrapper & I/O helpers
 };
 use csv;
-use needletail::{Sequence, parse_fastx_file};
+use needletail::{parse_fastx_reader, Sequence}; // Changed to parse_fastx_reader
 // use indicatif::ProgressBar; // Not strictly needed for the closure signature if pb is not used inside
 
 // --- Output Structures ---
@@ -141,8 +141,19 @@ pub fn run_classify(args: ClassifyArgs) -> Result<()> {
         &format!("Processing input file: {}", input_file_path_str),
         0, // 0 for indeterminate progress bar (spinner style) as we don't know total records easily
         |pb_input| {
-            let mut reader = parse_fastx_file(&args.input_file).with_context(|| {
-                format!("Failed to open or parse input file: {:?}", args.input_file)
+            // Use get_input_reader to handle potential compression
+            let input_buf_reader = get_input_reader(&args.input_file).with_context(|| {
+                format!(
+                    "Failed to get input reader for file: {:?}",
+                    args.input_file
+                )
+            })?;
+            // Pass the BufRead to parse_fastx_reader
+            let mut reader = parse_fastx_reader(input_buf_reader).with_context(|| {
+                format!(
+                    "Failed to parse FASTA/Q content from: {:?}",
+                    args.input_file
+                )
             })?;
 
             let mut processed_records = 0;
@@ -310,24 +321,32 @@ pub fn run_classify(args: ClassifyArgs) -> Result<()> {
     };
 
     info!("Writing classification results to: {:?}", args.output_file);
-    let output_file = File::create(&args.output_file)
-        .with_context(|| format!("Failed to create output JSON file: {:?}", args.output_file))?;
-    let writer = BufWriter::new(output_file);
-    serde_json::to_writer_pretty(writer, &final_output).with_context(|| {
+    // Use get_output_writer for the main JSON output
+    let mut writer = get_output_writer(&args.output_file).with_context(|| {
+        format!(
+            "Failed to get output writer for JSON file: {:?}",
+            args.output_file
+        )
+    })?;
+    serde_json::to_writer_pretty(&mut writer, &final_output).with_context(|| {
         format!(
             "Failed to write classification JSON to {:?}",
             args.output_file
         )
     })?;
+    writer.flush().context("Failed to flush JSON output writer")?;
+
 
     // --- 5. Optionally write TSV output ---
     if let Some(tsv_path) = &args.output_tsv {
         info!("Writing classification summary TSV to: {:?}", tsv_path);
-        let tsv_file = File::create(tsv_path)
-            .with_context(|| format!("Failed to create output TSV file: {:?}", tsv_path))?;
+        // Use get_output_writer for the TSV output
+        let tsv_writer_boxed = get_output_writer(tsv_path).with_context(|| {
+            format!("Failed to get output writer for TSV file: {:?}", tsv_path)
+        })?;
         let mut tsv_writer = csv::WriterBuilder::new()
             .delimiter(b'\t')
-            .from_writer(BufWriter::new(tsv_file));
+            .from_writer(tsv_writer_boxed); // from_writer expects W: Write
 
         // Write header
         tsv_writer.write_record(&[
