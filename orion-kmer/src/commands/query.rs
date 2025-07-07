@@ -15,7 +15,7 @@ use crate::{
     // db_types::KmerDbV2,
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64},
-    utils::{get_input_reader, get_output_writer, load_kmer_db_v2, track_progress_and_resources}, // Import the wrapper & I/O helpers
+    utils::{get_decompressed_input_reader, get_output_writer, load_kmer_db_v2, track_progress_and_resources}, // Import the wrapper & I/O helpers
 };
 // use indicatif::ProgressBar; // For passing to the closure - actually not needed
 
@@ -41,8 +41,8 @@ pub fn run_query(args: QueryArgs) -> Result<()> {
         db_all_kmers.len()
     );
 
-    // Use get_input_reader for the reads file
-    let input_buf_reader = get_input_reader(&args.reads_file).with_context(|| {
+    // Use get_decompressed_input_reader for the reads file
+    let input_buf_reader = get_decompressed_input_reader(&args.reads_file).with_context(|| {
         format!(
             "Failed to get input reader for reads file: {:?}",
             args.reads_file
