@@ -36,11 +36,11 @@ pub fn initialize_rayon_pool(num_threads: usize) -> Result<()> {
 /// Handles decompression automatically based on file extension.
 pub fn load_kmer_db_v2(path: &Path) -> Result<KmerDbV2> {
     info!("Loading k-mer database (KmerDbV2) from: {:?}", path);
-    // Use get_input_reader to handle potential compression
-    let mut reader = get_input_reader(path)
+    // Use get_decompressed_input_reader to handle potential compression
+    let mut reader = get_decompressed_input_reader(path)
         .with_context(|| format!("Failed to get input reader for k-mer database: {:?}", path))?;
 
-    // bincode::deserialize_from directly takes a Read, which Box<dyn BufRead> implements.
+    // bincode::deserialize_from directly takes a Read, which Box<dyn BufRead + Send> implements.
     let kmer_db: KmerDbV2 = bincode::deserialize_from(&mut reader)
         .with_context(|| format!("Failed to deserialize KmerDbV2 from {:?}", path))?;
 
@@ -120,8 +120,9 @@ fn get_extension(path: &Path) -> Option<String> {
 
 /// Opens a file for reading, handling decompression based on file extension.
 /// Supported extensions: .gz, .xz, .zst.
-/// Returns a `Box<dyn BufRead>` for generic reading.
-pub fn get_input_reader(path: &Path) -> Result<Box<dyn BufRead>> {
+/// Returns a `Box<dyn BufRead + Send>` for generic reading.
+/// This reader provides a decompressed stream.
+pub fn get_decompressed_input_reader(path: &Path) -> Result<Box<dyn BufRead + Send>> {
     let file = File::open(path)
         .with_context(|| format!("Failed to open input file: {:?}", path))?;
     let extension = get_extension(path);
@@ -148,6 +149,15 @@ pub fn get_input_reader(path: &Path) -> Result<Box<dyn BufRead>> {
             Ok(Box::new(BufReader::new(file)))
         }
     }
+}
+
+/// Opens a file and returns a BufReader<File>.
+/// This reader is Send + Sync + BufRead + Read.
+/// It does NOT perform any decompression; it provides the raw (potentially compressed) file stream.
+pub fn get_buffered_file_reader(path: &Path) -> Result<BufReader<File>> {
+    let file = File::open(path)
+        .with_context(|| format!("Failed to open input file for buffered reading: {:?}", path))?;
+    Ok(BufReader::new(file))
 }
 
 /// Opens a file for writing, handling compression based on file extension.

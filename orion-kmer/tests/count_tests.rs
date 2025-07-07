@@ -1,5 +1,6 @@
 use assert_cmd::prelude::*;
 use predicates::prelude::*;
+use std::io::Read;
 use std::fs::{self, File};
 use std::io::Write;
 use std::path::PathBuf;

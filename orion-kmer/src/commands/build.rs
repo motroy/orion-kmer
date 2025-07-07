@@ -14,7 +14,7 @@ use crate::{
     db_types::KmerDbV2, // Import the new database structure
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64},
-    utils::{get_input_reader, get_output_writer, track_progress_and_resources}, // Import the wrapper function and I/O helpers
+    utils::{get_buffered_file_reader, get_output_writer, track_progress_and_resources}, // Import the wrapper function and I/O helpers
 };
 // use indicatif::ProgressBar; // Required for the closure signature - actually not needed
 
@@ -34,9 +34,9 @@ fn process_sequences_for_file(
     // let total_records = ...;
     // pb.set_length(total_records); // If using a per-file progress bar
 
-    // Use get_input_reader to handle potential compression
-    let input_buf_reader = get_input_reader(file_path)
-        .with_context(|| format!("Failed to get input reader for file: {}", path_str))?;
+    // Use get_buffered_file_reader, needletail will handle decompression
+    let input_buf_reader = get_buffered_file_reader(file_path)
+        .with_context(|| format!("Failed to get buffered file reader for file: {}", path_str))?;
 
     // Pass the BufRead to parse_fastx_reader instead of a path to parse_fastx_file
     let mut reader = parse_fastx_reader(input_buf_reader)
