@@ -3,7 +3,7 @@ use flate2::{read::MultiGzDecoder, write::GzEncoder, Compression as GzCompressio
 use log::{debug, info}; // Added info
 use std::{
     fs::File,
-    io::{BufRead, BufReader, BufWriter, Read, Write}, // Added BufRead, Write, BufWriter, Read
+    io::{BufRead, BufReader, BufWriter, Write}, // Added BufRead, Write, BufWriter
     path::Path,
 };
 use xz2::{read::XzDecoder, write::XzEncoder};

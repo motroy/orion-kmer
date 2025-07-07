@@ -16,7 +16,7 @@ use crate::{
     cli::CountArgs,
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64, u64_to_seq},
-    utils::{get_input_reader, get_output_writer, track_progress_and_resources}, // Import I/O helpers
+    utils::{get_decompressed_input_reader, get_output_writer, track_progress_and_resources}, // Import I/O helpers
 };
 // use indicatif::ProgressBar; // Not needed if progress is per file
 
@@ -55,8 +55,8 @@ pub fn run_count(args: CountArgs) -> Result<()> {
             // Update progress bar message for the current file
             pb_files.set_message(format!("Processing: {}", path_str));
 
-            // Use get_input_reader to handle potential compression
-            let input_buf_reader = get_input_reader(input_path)
+            // Use get_decompressed_input_reader to handle potential compression
+            let input_buf_reader = get_decompressed_input_reader(input_path)
                 .with_context(|| format!("Failed to get input reader for file: {}", path_str))?;
 
             // Pass the BufRead to parse_fastx_reader
