@@ -3,8 +3,6 @@ use log::{debug, info}; // Removed warn
 use serde::Serialize;
 use std::{
     collections::{HashMap, HashSet},
-    fs::File,
-    io::BufWriter,
     // path::PathBuf, // Removed PathBuf, as it's not directly used as a type here
 };
 
@@ -13,7 +11,7 @@ use crate::{
     db_types::KmerDbV2,
     errors::OrionKmerError,
     kmer::{canonical_u64, seq_to_u64},
-    utils::{get_input_reader, get_output_writer, load_kmer_db_v2, track_progress_and_resources}, // Import the wrapper & I/O helpers
+    utils::{get_buffered_file_reader, get_output_writer, load_kmer_db_v2, track_progress_and_resources}, // Import the wrapper & I/O helpers
 };
 use csv;
 use needletail::{parse_fastx_reader, Sequence}; // Changed to parse_fastx_reader
@@ -141,10 +139,10 @@ pub fn run_classify(args: ClassifyArgs) -> Result<()> {
         &format!("Processing input file: {}", input_file_path_str),
         0, // 0 for indeterminate progress bar (spinner style) as we don't know total records easily
         |pb_input| {
-            // Use get_input_reader to handle potential compression
-            let input_buf_reader = get_input_reader(&args.input_file).with_context(|| {
+            // Use get_buffered_file_reader, needletail will handle decompression
+            let input_buf_reader = get_buffered_file_reader(&args.input_file).with_context(|| {
                 format!(
-                    "Failed to get input reader for file: {:?}",
+                    "Failed to get buffered file reader for file: {:?}",
                     args.input_file
                 )
             })?;

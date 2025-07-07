@@ -726,7 +726,7 @@ fn test_classify_output_tsv() -> Result<(), Box<dyn std::error::Error>> {
     // Total unique input is 8.
     let record_b = records_all_refs
         .iter()
-        .find(|r| r[2] == "db_refB.fa")
+        .find(|r| r[2] == *"db_refB.fa")
         .expect("db_refB.fa not found in TSV");
     assert_eq!(&record_b[3], "6"); // TotalKmersInReference for db_refB
     assert_eq!(&record_b[4], "1"); // InputKmersHittingReference for db_refB
