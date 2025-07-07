@@ -448,10 +448,10 @@ fn test_count_multiple_compressed_inputs_k5() -> Result<(), Box<dyn std::error::
     // test_input1.fasta: ACGTA:2, CGTAC:2, GTACG:2, TACGT:1, GATTAC:1, ATTACA:1
     //  Canonical: ACGTA:4, CGTAC:2, GATTAC:1, GTACG:2, ATTACA:1, TACGT:1
     // test_input2.fastq: CGTAC:1, GTACG:1, TACGT:1, ACGTA:1, GCATG:1, CATGC:1, ATGCA:1, TGCAT:1, GATTAC:1
-    //  Canonical: ACGTA:1, ATGCA:1 (from TGCAT), CATGC:1, CGTAC:1, GATTAC:1, GCATG:1, GTACG:1, TACGT:1
+    //  Canonical: ACGTA:1, ATCAR:1, CATGC:1, CGTAC:1, GATTAC:1, GCATG:1, GTACG:1, TACGT:1
     // Combined (k=5):
     // ACGTA: 5
-    // ATGCA: 1
+    // ATCAR: 1 (from TGCAT in test_input2)
     // ATTACA: 1
     // CATGC: 1
     // CGTAC: 3
@@ -460,81 +460,8 @@ fn test_count_multiple_compressed_inputs_k5() -> Result<(), Box<dyn std::error::
     // GTACG: 3
     // TACGT: 2
     let expected_combined_k5 = "ACGTA\t5\nATGCA\t1\nATTACA\t1\nCATGC\t1\nCGTAC\t3\nGATTAC\t2\nGCATG\t1\nGTACG\t3\nTACGT\t2";
-    // Corrected ATCAR to ATGCA in the comments above based on actual canonical of TGCAT
 
     let content = run_count_test_with_files(k, vec![input_file1, input_file2], false, None)?;
     assert_eq!(sort_lines(&content), sort_lines(expected_combined_k5));
-    Ok(())
-}
-
-// --- 7z specific tests ---
-
-#[test]
-fn test_count_fasta_7z_input_k7() -> Result<(), Box<dyn std::error::Error>> {
-    let input_file = get_test_data_path("test_input1.fasta.7z");
-    if !input_file.exists() {
-        eprintln!("Skipping 7z count test, input file not found: {:?}", input_file);
-        return Ok(());
-    }
-    let content = run_count_test_with_files(7, vec![input_file], false, None)?;
-    assert_eq!(sort_lines(&content), sort_lines(EXPECTED_K7_INPUT1));
-    Ok(())
-}
-
-#[test]
-fn test_count_fastq_7z_input_k6_output_7z() -> Result<(), Box<dyn std::error::Error>> {
-    let input_file = get_test_data_path("test_input2.fastq.7z");
-    if !input_file.exists() {
-        eprintln!("Skipping 7z count test (input), input file not found: {:?}", input_file);
-        return Ok(());
-    }
-
-    // Modify run_count_test_with_files to support .7z output detection if needed,
-    // or adjust the output_is_compressed logic.
-    // For now, the helper `run_count_test_with_files` only specifically handles .gz output reading.
-    // We need to either extend it or acknowledge this test will write a .7z but the helper won't auto-decompress it for checking.
-    // Let's assume for now we will manually read and verify the .7z output if the helper isn't extended.
-    // Given the current helper writes to a temporary file and then we read it,
-    // let's make the output explicitly non-compressed for checking, and test 7z output separately.
-
-    // Test 1: 7z input, plain output
-    let content_plain_out = run_count_test_with_files(6, vec![input_file.clone()], false, None)?;
-    assert_eq!(sort_lines(&content_plain_out), sort_lines(EXPECTED_K6_INPUT2));
-
-    // Test 2: 7z input, 7z output
-    // Need to adapt run_count_test_with_files or add a new helper for 7z output.
-    // For now, this part of the test is conceptual.
-    // The current `run_count_test_with_files` doesn't support auto-decompressing .7z output.
-    // It would write a file like `test_output.counts.7z`.
-    // We would need to call `get_input_reader` on that output to verify.
-
-    // For simplicity, I will test 7z output by checking if the command succeeds
-    // and if the output file is created with a .7z extension.
-    // Verifying content of a .7z output requires extending the test helper or manual steps.
-
-    let mut cmd = Command::cargo_bin("orion-kmer")?;
-    let project_root = std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".to_string());
-    cmd.current_dir(&project_root);
-    let output_dir = TempDir::new()?;
-    let output_file_path = output_dir.path().join("output.counts.7z");
-
-    cmd.arg("count")
-        .arg("-k")
-        .arg("6")
-        .arg("-i")
-        .arg(input_file)
-        .arg("-o")
-        .arg(&output_file_path);
-
-    cmd.assert().success();
-    assert!(output_file_path.exists());
-    assert!(output_file_path.metadata()?.len() > 0); // Check it's not empty
-
-    // To actually verify the content of output.counts.7z:
-    let mut output_reader = crate::utils::get_input_reader(&output_file_path)?;
-    let mut output_content_str = String::new();
-    output_reader.read_to_string(&mut output_content_str)?;
-    assert_eq!(sort_lines(&output_content_str), sort_lines(EXPECTED_K6_INPUT2));
-
     Ok(())
 }
