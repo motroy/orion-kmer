@@ -346,12 +346,14 @@ class EntrezQueryTool:
             # Platform/Instrument
             record['instrument'] = row.get('instrument_model', 'N/A')
             record['platform'] = "N/A"
-            if record['instrument'] and 'Illumina' in str(record['instrument']):
-                record['platform'] = 'ILLUMINA'
-            elif record['instrument'] and ('MinION' in str(record['instrument']) or 'PromethION' in str(record['instrument']) or 'Nanopore' in str(record['instrument'])):
-                record['platform'] = 'OXFORD_NANOPORE'
-            elif record['instrument'] and 'PacBio' in str(record['instrument']):
-                record['platform'] = 'PACBIO_SMRT'
+            if record['instrument']:
+                instr_str = str(record['instrument'])
+                if 'Illumina' in instr_str:
+                    record['platform'] = 'ILLUMINA'
+                elif 'MinION' in instr_str or 'PromethION' in instr_str or 'Nanopore' in instr_str:
+                    record['platform'] = 'OXFORD_NANOPORE'
+                elif 'PacBio' in instr_str or 'Sequel' in instr_str:
+                    record['platform'] = 'PACBIO_SMRT'
 
             record['library_strategy'] = row.get('library_strategy', 'N/A')
 
@@ -382,7 +384,7 @@ class EntrezQueryTool:
                     if 'ILLUMINA' in instr_upper: platforms.add('ILLUMINA')
                     elif 'BGI' in instr_upper: platforms.add('BGISEQ')
                     elif 'NANOPORE' in instr_upper or 'MINION' in instr_upper or 'PROMETHION' in instr_upper: platforms.add('OXFORD_NANOPORE')
-                    elif 'PACBIO' in instr_upper: platforms.add('PACBIO_SMRT')
+                    elif 'PACBIO' in instr_upper or 'SEQUEL' in instr_upper: platforms.add('PACBIO_SMRT')
                     else: platforms.add(instr_upper) # Fallback
             return list(platforms)
         except Exception as e:
