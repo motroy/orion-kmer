@@ -3,13 +3,15 @@
 NCBI Entrez CLI tool for querying samples with both short and long read data available.
 
 Enhanced with BioProject search, PubMed links, and validation mode.
+Refactored to use pysradb for SRA metadata and ENA links.
+Refactored to use metapub for PubMed queries.
 """
 
 import argparse
 import sys
 import yaml
 import logging
-from typing import List, Optional, Dict, Tuple
+from typing import List, Optional, Dict, Tuple, Set
 from urllib.parse import quote
 from urllib.request import urlopen
 from urllib.error import HTTPError, URLError
@@ -17,6 +19,9 @@ import xml.etree.ElementTree as ET
 import time
 import json
 import re
+import pandas as pd
+from pysradb.sraweb import SRAweb
+from metapub import PubMedFetcher
 
 # Configure logging
 logger = logging.getLogger('entrez_tool')
@@ -31,6 +36,8 @@ class EntrezQueryTool:
         self.email = email
         self.api_key = api_key
         self.delay = 0.34 if not api_key else 0.1
+        self.sra_web = SRAweb()
+        self.pubmed_fetcher = PubMedFetcher(apikey=api_key) if api_key else PubMedFetcher()
     
     def _build_url(self, endpoint: str, params: Dict[str, str]) -> str:
         """Build Entrez API URL with parameters."""
@@ -53,135 +60,51 @@ class EntrezQueryTool:
         except URLError as e:
             logger.error(f"URL Error: {e.reason}")
             return None
-    
+
     def search_pubmed(self, query: str, retmax: int = 20) -> List[Dict]:
-        """Search PubMed for publications and return article details with links."""
-        params = {
-            'db': 'pubmed',
-            'term': query,
-            'retmax': str(retmax),
-            'retmode': 'json'
-        }
-        
-        url = self._build_url('esearch.fcgi', params)
+        """Search PubMed for publications using metapub."""
         logger.info(f"[PubMed Search] Query: {query}")
-        
-        response = self._make_request(url)
-        if not response:
-            return []
-        
         try:
-            data = json.loads(response)
-            id_list = data.get('esearchresult', {}).get('idlist', [])
-            count = data.get('esearchresult', {}).get('count', '0')
-            logger.info(f"[PubMed] Found {count} publications, retrieving {len(id_list)}")
+            pmids = self.pubmed_fetcher.pmids_for_query(query, retmax=retmax)
+            logger.info(f"[PubMed] Found {len(pmids)} publications")
             
-            if not id_list:
+            if not pmids:
                 return []
             
-            # Fetch publication details
-            return self._fetch_pubmed_details(id_list)
-        
-        except json.JSONDecodeError:
-            logger.error("Error parsing PubMed results")
+            results = []
+            for pmid in pmids:
+                try:
+                    article = self.pubmed_fetcher.article_by_pmid(pmid)
+                    if article:
+                        results.append(article)
+                except Exception as e:
+                    logger.warning(f"Error fetching article for PMID {pmid}: {e}")
+            return results
+        except Exception as e:
+            logger.error(f"PubMed search failed: {e}")
             return []
-    
-    def _fetch_pubmed_details(self, pmid_list: List[str]) -> List[Dict]:
-        """Fetch PubMed article details."""
-        params = {
-            'db': 'pubmed',
-            'id': ','.join(pmid_list),
-            'retmode': 'xml'
-        }
-        
-        url = self._build_url('efetch.fcgi', params)
-        response = self._make_request(url)
-        
-        if not response:
-            return []
-        
-        return self._parse_pubmed_xml(response)
-    
-    def _parse_pubmed_xml(self, xml_data: str) -> List[Dict]:
-        """Parse PubMed XML response."""
-        results = []
-        
-        try:
-            root = ET.fromstring(xml_data)
-            
-            for article in root.findall('.//PubmedArticle'):
-                record = {}
-                
-                # PMID
-                pmid = article.find('.//PMID')
-                if pmid is not None:
-                    record['pmid'] = pmid.text
-                
-                # Title
-                title = article.find('.//ArticleTitle')
-                if title is not None:
-                    record['title'] = title.text
-                
-                # Authors
-                authors = []
-                for author in article.findall('.//Author'):
-                    last = author.find('.//LastName')
-                    first = author.find('.//ForeName')
-                    if last is not None:
-                        name = last.text
-                        if first is not None:
-                            name = f"{first.text} {name}"
-                        authors.append(name)
-                record['authors'] = authors[:3]  # First 3 authors
-                
-                # Journal and date
-                journal = article.find('.//Journal/Title')
-                if journal is not None:
-                    record['journal'] = journal.text
-                
-                pub_date = article.find('.//PubDate/Year')
-                if pub_date is not None:
-                    record['year'] = pub_date.text
-                
-                # Abstract
-                abstract = article.find('.//AbstractText')
-                if abstract is not None:
-                    record['abstract'] = abstract.text
-                
-                results.append(record)
-        
-        except ET.ParseError as e:
-            logger.error(f"XML Parse Error: {e}")
-        
-        return results
     
     def get_sra_from_pubmed(self, pmid: str) -> List[str]:
         """Get linked SRA accessions from a PubMed ID."""
+        # metapub doesn't seem to have direct elink support for SRA, so we keep using eutils directly.
         params = {
             'dbfrom': 'pubmed',
             'db': 'sra',
             'id': pmid,
             'retmode': 'json'
         }
-        
         url = self._build_url('elink.fcgi', params)
         response = self._make_request(url)
-        
-        if not response:
-            return []
-        
+        if not response: return []
         try:
             data = json.loads(response)
             linksets = data.get('linksets', [])
-            
             sra_ids = []
             for linkset in linksets:
                 for linksetdb in linkset.get('linksetdbs', []):
                     if linksetdb.get('dbto') == 'sra':
                         sra_ids.extend(linksetdb.get('links', []))
-            
             return sra_ids
-        
         except json.JSONDecodeError:
             return []
     
@@ -193,25 +116,17 @@ class EntrezQueryTool:
             'retmax': str(retmax),
             'retmode': 'json'
         }
-        
         url = self._build_url('esearch.fcgi', params)
         logger.info(f"[BioProject Search] Query: {query}")
-        
         response = self._make_request(url)
-        if not response:
-            return []
-        
+        if not response: return []
         try:
             data = json.loads(response)
             id_list = data.get('esearchresult', {}).get('idlist', [])
             count = data.get('esearchresult', {}).get('count', '0')
             logger.info(f"[BioProject] Found {count} projects, retrieving {len(id_list)}")
-            
-            if not id_list:
-                return []
-            
+            if not id_list: return []
             return self._fetch_bioproject_details(id_list)
-        
         except json.JSONDecodeError:
             logger.error("Error parsing BioProject results")
             return []
@@ -223,86 +138,60 @@ class EntrezQueryTool:
             'id': ','.join(id_list),
             'retmode': 'xml'
         }
-        
         url = self._build_url('efetch.fcgi', params)
         response = self._make_request(url)
-        
-        if not response:
-            return []
-        
+        if not response: return []
         return self._parse_bioproject_xml(response)
     
     def _parse_bioproject_xml(self, xml_data: str) -> List[Dict]:
         """Parse BioProject XML response."""
         results = []
-        
         try:
             root = ET.fromstring(xml_data)
-            
             for package in root.findall('.//Package'):
                 record = {}
-                
-                # Project accession
                 project = package.find('.//Project')
                 if project is not None:
                     accn = project.find('.//ProjectID/ArchiveID')
-                    if accn is not None:
-                        record['accession'] = accn.get('accession', 'N/A')
-                
-                # Title and description
+                    if accn is not None: record['accession'] = accn.get('accession', 'N/A')
                 descr = package.find('.//ProjectDescr')
                 if descr is not None:
                     title = descr.find('.//Title')
-                    if title is not None:
-                        record['title'] = title.text
-                    
+                    if title is not None: record['title'] = title.text
                     desc = descr.find('.//Description')
-                    if desc is not None:
-                        record['description'] = desc.text
-                
-                # Project type
+                    if desc is not None: record['description'] = desc.text
                 proj_type = package.find('.//ProjectType')
                 if proj_type is not None:
                     submission = proj_type.find('.//ProjectTypeSubmission')
-                    if submission is not None:
-                        record['project_type'] = submission.get('submission_type', 'N/A')
-                
-                # Organism
+                    if submission is not None: record['project_type'] = submission.get('submission_type', 'N/A')
                 organism = package.find('.//Organism')
                 if organism is not None:
                     org_name = organism.find('.//OrganismName')
-                    if org_name is not None:
-                        record['organism'] = org_name.text
-                
+                    if org_name is not None: record['organism'] = org_name.text
                 results.append(record)
-        
         except ET.ParseError as e:
             logger.error(f"XML Parse Error: {e}")
-        
         return results
     
     def get_sra_from_bioproject(self, bioproject_acc: str) -> List[str]:
         """Get SRA run accessions associated with a BioProject."""
-        # First, search SRA with the BioProject accession
         params = {
             'db': 'sra',
             'term': f'{bioproject_acc}[BioProject]',
             'retmax': '500',
             'retmode': 'json'
         }
-        
         url = self._build_url('esearch.fcgi', params)
         response = self._make_request(url)
-        
-        if not response:
-            return []
-        
+        if not response: return []
         try:
             data = json.loads(response)
             return data.get('esearchresult', {}).get('idlist', [])
         except json.JSONDecodeError:
             return []
     
+    # --- SRA Search Logic using pysradb ---
+
     def build_sra_search_query(self, 
                               environment: Optional[str] = None,
                               pathogens: Optional[List[str]] = None,
@@ -324,7 +213,7 @@ class EntrezQueryTool:
         if environment:
             query_parts.append(f'("{environment}"[Source] OR "{environment}"[All Fields])')
         
-        # For metagenomes, pathogens are better searched in description/title
+        # Pathogens
         if pathogens:
             pathogen_queries = []
             for p in pathogens:
@@ -342,34 +231,13 @@ class EntrezQueryTool:
         if has_long_reads:
             platform_parts.append('("OXFORD_NANOPORE"[Platform] OR "PACBIO_SMRT"[Platform])')
         
-        # If both are requested, the intention is usually "either one" for standard search,
-        # but if we want "hybrid" it's trickier in a single SRA query.
-        # The current logic joins them with OR, which means "has short OR has long".
-        # This matches the behavior of "I want samples that have sequencing data".
-
-        # However, if 'hybrid_only' is used (which sets both has_short=True and has_long=True),
-        # the user might expect "AND" logic if that were possible for a single run,
-        # but for SRA, a "Run" is usually one platform.
-        # So "hybrid" usually means "Same BioSample has runs from both platforms".
-        #
-        # For now, we will stick to the existing OR logic which retrieves candidates,
-        # and we can't easily enforce "AND" at the search query level for *Runs*.
-        #
-        # BUT, wait! The previous implementation used OR.
-        # If the user wants HYBRID, they probably want to ensure we search for BOTH types.
-        #
-        # Let's keep the OR logic here. If we wanted to enforce hybrid *strictly*,
-        # we would need to post-process the results to ensure a BioSample has both.
-        # Given the scope, enabling the flag to ensure both platforms are included in the OR query
-        # is the first step.
-
         if platform_parts:
             query_parts.append(f"({' OR '.join(platform_parts)})")
         
         return " AND ".join(query_parts)
     
     def search_sra(self, query: str, retmax: int = 100, retstart: int = 0) -> Tuple[List[str], int]:
-        """Search SRA database and return list of IDs and total count."""
+        """Search SRA database and return list of UIDs and total count using Entrez API."""
         params = {
             'db': 'sra',
             'term': query,
@@ -398,165 +266,132 @@ class EntrezQueryTool:
         except json.JSONDecodeError:
             logger.error("Error parsing SRA search results")
             return [], 0
-    
-    def fetch_sra_details(self, id_list: List[str]) -> List[Dict]:
-        """Fetch detailed information for given SRA IDs."""
-        if not id_list:
+
+    def get_accessions_from_uids(self, uids: List[str]) -> List[str]:
+        """Convert SRA UIDs to Accessions (SRR/ERR/DRR) using eSummary."""
+        if not uids:
             return []
         
         params = {
             'db': 'sra',
-            'id': ','.join(id_list),
-            'retmode': 'xml'
-        }
-        
-        url = self._build_url('efetch.fcgi', params)
-        response = self._make_request(url)
-        
-        if not response:
-            return []
-        
-        return self._parse_sra_xml(response)
-    
-    def _parse_sra_xml(self, xml_data: str) -> List[Dict]:
-        """Parse SRA XML response and extract relevant information."""
-        results = []
-        
-        try:
-            root = ET.fromstring(xml_data)
-            
-            for exp_pkg in root.findall('.//EXPERIMENT_PACKAGE'):
-                record = {}
-                
-                # Accessions
-                exp = exp_pkg.find('.//EXPERIMENT')
-                if exp is not None:
-                    record['experiment_accession'] = exp.get('accession', 'N/A')
-                
-                run = exp_pkg.find('.//RUN')
-                if run is not None:
-                    record['run_accession'] = run.get('accession', 'N/A')
-                
-                # Sample info
-                sample = exp_pkg.find('.//SAMPLE')
-                if sample is not None:
-                    record['sample_accession'] = sample.get('accession', 'N/A')
-                    sample_name = sample.find('.//SCIENTIFIC_NAME')
-                    if sample_name is not None:
-                        record['organism'] = sample_name.text
-                
-                # Study/BioProject
-                study = exp_pkg.find('.//STUDY')
-                if study is not None:
-                    record['study_accession'] = study.get('accession', 'N/A')
-                    ext_id = study.find('.//EXTERNAL_ID[@namespace="BioProject"]')
-                    if ext_id is not None:
-                        record['bioproject'] = ext_id.text
-                
-                # Platform
-                platform = exp_pkg.find('.//PLATFORM')
-                if platform is not None:
-                    for child in platform:
-                        record['platform'] = child.tag
-                        instr = child.find('.//INSTRUMENT_MODEL')
-                        if instr is not None:
-                            record['instrument'] = instr.text
-                
-                # Library strategy
-                lib_desc = exp_pkg.find('.//LIBRARY_DESCRIPTOR')
-                if lib_desc is not None:
-                    strategy = lib_desc.find('.//LIBRARY_STRATEGY')
-                    if strategy is not None:
-                        record['library_strategy'] = strategy.text
-                
-                # Sample attributes
-                attributes = {}
-                for attr in exp_pkg.findall('.//SAMPLE_ATTRIBUTE'):
-                    tag = attr.find('.//TAG')
-                    value = attr.find('.//VALUE')
-                    if tag is not None and value is not None:
-                        attributes[tag.text] = value.text
-                
-                record['sample_attributes'] = attributes
-                
-                if record:
-                    results.append(record)
-        
-        except ET.ParseError as e:
-            logger.error(f"XML Parse Error: {e}")
-        
-        return results
-    
-    def get_run_platforms_for_sample(self, sample_acc: str) -> List[str]:
-        """Get all sequencing platforms used for a specific BioSample."""
-        # Search SRA for runs associated with this sample
-        params = {
-            'db': 'sra',
-            'term': f'{sample_acc}[Accession]',
-            'retmax': '100',
+            'id': ','.join(uids),
             'retmode': 'json'
         }
-
-        url = self._build_url('esearch.fcgi', params)
+        
+        url = self._build_url('esummary.fcgi', params)
         response = self._make_request(url)
-
         if not response:
             return []
-
+        
+        accessions = []
         try:
             data = json.loads(response)
-            id_list = data.get('esearchresult', {}).get('idlist', [])
-            if not id_list:
-                return []
-
-            # Fetch summary to get platforms (lighter than full XML)
-            params = {
-                'db': 'sra',
-                'id': ','.join(id_list),
-                'retmode': 'json',
-                'version': '2.0'
-            }
-            url = self._build_url('esummary.fcgi', params)
-            response = self._make_request(url)
-
-            if not response:
-                return []
-
-            data = json.loads(response)
             result = data.get('result', {})
-            platforms = set()
-
-            for uid in id_list:
+            for uid in uids:
                 if uid in result:
-                    # Parse expxml or run info if available, but summary structure varies.
-                    # In ESUMMARY 2.0 for SRA, platform is often in 'platform' field
                     item = result[uid]
-                    if 'platform' in item and item['platform']:
-                        platforms.add(item['platform'].upper())
+                    # Extract Run Accession from 'runs' string if available
+                    runs_str = item.get('runs', '')
+                    matches = re.findall(r'acc="([SED]RR\d+)"', runs_str)
+                    if matches:
+                        accessions.extend(matches)
+                    else:
+                        expxml = item.get('expxml', '')
+                        match_exp = re.search(r'Experiment\s+acc="([SED]RX\d+)"', expxml, re.IGNORECASE)
+                        if match_exp:
+                            accessions.append(match_exp.group(1))
+        except Exception as e:
+            logger.error(f"Error converting UIDs to Accessions: {e}")
+        
+        return list(set(accessions))
 
-                    # Sometimes it is in expxml
-                    if 'expxml' in item:
-                        # Simple regex to find platform - check for different capitalization
-                        # <Platform instrument_model="...">ILLUMINA</Platform>
-                        match = re.search(r'<Platform\s+instrument_model="[^"]+">([^<]+)</Platform>', item['expxml'], re.IGNORECASE)
-                        if match:
-                            platforms.add(match.group(1).upper())
+    def fetch_sra_details(self, id_list: List[str]) -> List[Dict]:
+        """Fetch detailed information for given SRA UIDs using pysradb."""
+        if not id_list:
+            return []
 
-                        # Fallback: sometimes it's just <Platform>NAME</Platform>
-                        match_simple = re.search(r'<Platform>([^<]+)</Platform>', item['expxml'], re.IGNORECASE)
-                        if match_simple:
-                            platforms.add(match_simple.group(1).upper())
+        # 1. Convert UIDs to Accessions
+        accessions = self.get_accessions_from_uids(id_list)
+        if not accessions:
+            return []
 
-                    # Fallback to 'statistics' if present (sometimes has platform info?) - unlikely for summary
+        logger.info(f"Fetching metadata for {len(accessions)} accessions using pysradb...")
 
+        # 2. Fetch metadata using pysradb
+        try:
+            df = self.sra_web.sra_metadata(accessions, detailed=True)
+        except Exception as e:
+            logger.error(f"pysradb metadata fetch failed: {e}")
+            return []
+
+        # 3. Convert DataFrame to List[Dict]
+        return self._dataframe_to_results(df)
+
+    def _dataframe_to_results(self, df: pd.DataFrame) -> List[Dict]:
+        """Convert pysradb DataFrame to list of dictionaries matching legacy output."""
+        results = []
+        if df is None or df.empty:
+            return results
+
+        for _, row in df.iterrows():
+            record = {}
+            # Map columns
+            record['run_accession'] = row.get('run_accession', 'N/A')
+            record['experiment_accession'] = row.get('experiment_accession', 'N/A')
+            record['sample_accession'] = row.get('sample_accession', 'N/A')
+            record['study_accession'] = row.get('study_accession', 'N/A')
+            record['bioproject'] = row.get('bioproject', 'N/A')
+            record['organism'] = row.get('organism_name', 'N/A')
+
+            # Platform/Instrument
+            record['instrument'] = row.get('instrument_model', 'N/A')
+            record['platform'] = "N/A"
+            if record['instrument'] and 'Illumina' in str(record['instrument']):
+                record['platform'] = 'ILLUMINA'
+            elif record['instrument'] and ('MinION' in str(record['instrument']) or 'PromethION' in str(record['instrument']) or 'Nanopore' in str(record['instrument'])):
+                record['platform'] = 'OXFORD_NANOPORE'
+            elif record['instrument'] and 'PacBio' in str(record['instrument']):
+                record['platform'] = 'PACBIO_SMRT'
+
+            record['library_strategy'] = row.get('library_strategy', 'N/A')
+
+            # ENA Links
+            ena_links = []
+            for col in ['ena_fastq_ftp', 'ena_fastq_ftp_1', 'ena_fastq_ftp_2']:
+                if col in row and not pd.isna(row[col]):
+                    ena_links.append(row[col])
+
+            if ena_links:
+                record['ena_links'] = ena_links
+
+            results.append(record)
+        return results
+
+    def get_run_platforms_for_sample(self, sample_acc: str) -> List[str]:
+        """Get all sequencing platforms used for a specific BioSample using pysradb."""
+        try:
+            df = self.sra_web.sra_metadata(sample_acc, detailed=False)
+            if df is None or df.empty:
+                return []
+
+            platforms = set()
+            if 'instrument_model' in df.columns:
+                for instr in df['instrument_model']:
+                    if pd.isna(instr): continue
+                    instr_upper = str(instr).upper()
+                    if 'ILLUMINA' in instr_upper: platforms.add('ILLUMINA')
+                    elif 'BGI' in instr_upper: platforms.add('BGISEQ')
+                    elif 'NANOPORE' in instr_upper or 'MINION' in instr_upper or 'PROMETHION' in instr_upper: platforms.add('OXFORD_NANOPORE')
+                    elif 'PACBIO' in instr_upper: platforms.add('PACBIO_SMRT')
+                    else: platforms.add(instr_upper) # Fallback
             return list(platforms)
-
-        except json.JSONDecodeError:
+        except Exception as e:
+            logger.error(f"Error fetching platforms for sample {sample_acc}: {e}")
             return []
 
     def validate_accession(self, accession: str) -> Tuple[bool, str]:
         """Validate if an accession exists and return its type."""
-        # Determine database from accession prefix
+        # Use existing logic as it's simple
         db_map = {
             'SRR': 'sra', 'ERR': 'sra', 'DRR': 'sra',
             'SRX': 'sra', 'ERX': 'sra', 'DRX': 'sra',
@@ -633,6 +468,11 @@ def print_sra_results(results: List[Dict]):
         print(f"Instrument:           {record.get('instrument', 'N/A')}")
         print(f"Library Strategy:     {record.get('library_strategy', 'N/A')}")
         
+        if record.get('ena_links'):
+            print("ENA Links:")
+            for link in record['ena_links']:
+                print(f"  {link}")
+
         if record.get('sample_attributes'):
             print("\nSample Attributes:")
             for key, value in record['sample_attributes'].items():
@@ -665,8 +505,8 @@ def print_bioproject_results(results: List[Dict]):
         print()
 
 
-def print_pubmed_results(results: List[Dict]):
-    """Pretty print PubMed results."""
+def print_pubmed_results(results: List[any]):
+    """Pretty print PubMed results (metapub objects)."""
     if not results:
         print("No PubMed results found.")
         return
@@ -675,24 +515,23 @@ def print_pubmed_results(results: List[Dict]):
     print(f"Found {len(results)} Publications:")
     print(f"{'='*80}\n")
     
-    for i, record in enumerate(results, 1):
+    for i, article in enumerate(results, 1):
         print(f"--- Publication {i} ---")
-        print(f"PMID:    {record.get('pmid', 'N/A')}")
-        print(f"Title:   {record.get('title', 'N/A')}")
+        print(f"PMID:    {article.pmid}")
+        print(f"Title:   {article.title}")
         
-        if record.get('authors'):
-            authors_str = ", ".join(record['authors'])
-            if len(record['authors']) == 3:
-                authors_str += ", et al."
+        if article.authors:
+            authors_str = ", ".join(article.authors)
+            if len(article.authors) > 5:
+                authors_str = ", ".join(article.authors[:5]) + ", et al."
             print(f"Authors: {authors_str}")
         
-        if 'journal' in record:
-            journal_str = record['journal']
-            if 'year' in record:
-                journal_str += f" ({record['year']})"
-            print(f"Journal: {journal_str}")
+        journal_str = article.journal or ""
+        if article.year:
+            journal_str += f" ({article.year})"
+        print(f"Journal: {journal_str}")
         
-        print(f"Link:    https://pubmed.ncbi.nlm.nih.gov/{record.get('pmid', '')}/")
+        print(f"Link:    https://pubmed.ncbi.nlm.nih.gov/{article.pmid}/")
         print()
 
 
@@ -875,8 +714,8 @@ Examples:
         if args.get_sra and results:
             logger.info("Fetching linked SRA data for publications...")
             all_sra = []
-            for pub in results[:5]:  # Limit to first 5 to avoid too many requests
-                pmid = pub.get('pmid')
+            for article in results[:5]:  # Limit to first 5
+                pmid = article.pmid
                 if pmid:
                     sra_ids = tool.get_sra_from_pubmed(pmid)
                     if sra_ids:
@@ -892,8 +731,19 @@ Examples:
                 logger.info("No linked SRA data found")
 
         if args.output:
+            # Need to serialize metapub objects manually or Convert them
+            serializable_results = []
+            for article in results:
+                serializable_results.append({
+                    'pmid': article.pmid,
+                    'title': article.title,
+                    'authors': article.authors,
+                    'journal': article.journal,
+                    'year': article.year,
+                    'abstract': article.abstract
+                })
             with open(args.output, 'w') as f:
-                json.dump(results, f, indent=2)
+                json.dump(serializable_results, f, indent=2)
             logger.info(f"Results saved to {args.output}")
         return
 
@@ -917,20 +767,24 @@ Examples:
 
             batch_size = 50
             start = 0
-            max_search_limit = 1000  # Safety limit to prevent infinite loops
+            max_search_limit = 1000  # Safety limit
 
             while len(valid_samples) < args.max_results and start < max_search_limit:
-                # Fetch batch of IDs
-                results, total_count = tool.search_sra(query, retmax=batch_size, retstart=start)
+                # Fetch batch of UIDs
+                results_uids, total_count = tool.search_sra(query, retmax=batch_size, retstart=start)
 
-                if not results:
+                if not results_uids:
                     break
 
-                # Fetch details for this batch
-                batch_details = tool.fetch_sra_details(results)
+                # Convert to accessions (needed for pysradb)
+                # Note: this conversion might return SRR or SRX.
+                # get_run_platforms_for_sample expects Sample Accession usually, but can work with others?
+                # Actually, we need to know the Sample Accession for each Run to check for hybrid.
+
+                # Let's get metadata for these runs using pysradb first
+                batch_details = tool.fetch_sra_details(results_uids)
 
                 for record in batch_details:
-                    # If we have enough, stop processing
                     if len(valid_samples) >= args.max_results:
                         break
 
@@ -940,6 +794,8 @@ Examples:
 
                     # Check each sample only once
                     if sample_acc in processed_samples:
+                        # If already valid, we might want to add this run too?
+                        # The original logic just added the record if valid.
                         if sample_acc in valid_samples:
                             final_details.append(record)
                         continue
@@ -947,6 +803,7 @@ Examples:
                     processed_samples.add(sample_acc)
                     logger.info(f"Checking sample {sample_acc}...")
 
+                    # Use pysradb to check platforms for this sample
                     platforms = tool.get_run_platforms_for_sample(sample_acc)
 
                     has_illumina_bgi = any(p in ['ILLUMINA', 'BGISEQ'] for p in platforms)
@@ -967,8 +824,8 @@ Examples:
 
         else:
             # Standard search
-            results, _ = tool.search_sra(query, retmax=args.max_results)
-            final_details = tool.fetch_sra_details(results)
+            results_uids, _ = tool.search_sra(query, retmax=args.max_results)
+            final_details = tool.fetch_sra_details(results_uids)
 
         print_sra_results(final_details)
 
