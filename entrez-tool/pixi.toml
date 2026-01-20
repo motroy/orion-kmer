@@ -1,0 +1,16 @@
+[project]
+name = "entrez-tool"
+version = "0.1.0"
+description = "NCBI Entrez CLI tool for querying clinical metagenomics samples"
+authors = ["Jules <jules@example.com>"]
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-64", "win-64"]
+
+[dependencies]
+python = "3.12.*"
+pyyaml = "*"
+
+[tasks]
+test = "python entrez_query.py --help"
+validate = "python entrez_query.py --validate SRR12345678"
+run = "python entrez_query.py"

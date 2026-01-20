@@ -757,3 +757,45 @@ Examples:
             all_sra = []
             for pub in results[:5]:  # Limit to first 5 to avoid too many requests
                 pmid = pub.get('pmid')
+                if pmid:
+                    sra_ids = tool.get_sra_from_pubmed(pmid)
+                    if sra_ids:
+                        all_sra.extend(sra_ids)
+
+            if all_sra:
+                # Remove duplicates
+                all_sra = list(set(all_sra))
+                print(f"Found {len(all_sra)} unique SRA runs linked to publications")
+                sra_results = tool.fetch_sra_details(all_sra[:args.max_results])
+                print_sra_results(sra_results)
+            else:
+                print("No linked SRA data found")
+
+        if args.output and results:
+            with open(args.output, 'w') as f:
+                json.dump(results, f, indent=2)
+            print(f"\nResults saved to {args.output}")
+        return
+
+    # SRA search mode (default)
+    if args.sra:
+        query = tool.build_sra_search_query(
+            environment=environment,
+            pathogens=pathogens,
+            host=host,
+            has_short_reads=has_short,
+            has_long_reads=has_long
+        )
+
+        results = tool.search_sra(query, retmax=args.max_results)
+        details = tool.fetch_sra_details(results)
+        print_sra_results(details)
+
+        if args.output and details:
+            with open(args.output, 'w') as f:
+                json.dump(details, f, indent=2)
+            print(f"\nResults saved to {args.output}")
+
+
+if __name__ == "__main__":
+    main()
