@@ -1,0 +1,4 @@
+2026-01-20 11:56:56,044 - INFO - Filtering for hybrid samples (both Short and Long reads)...
+2026-01-20 11:56:56,044 - INFO - [SRA Search] Query: ("human gut metagenome"[All Fields]) AND (("OXFORD_NANOPORE"[Platform] OR "PACBIO_SMRT"[Platform]))
+2026-01-20 11:56:56,524 - ERROR - HTTP Error 429: Too Many Requests
+2026-01-20 11:56:56,524 - INFO - Found 0 hybrid samples after checking 0 candidates.
