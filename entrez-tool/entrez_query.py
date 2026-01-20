@@ -364,31 +364,36 @@ class EntrezQueryTool:
         
         return " AND ".join(query_parts)
     
-    def search_sra(self, query: str, retmax: int = 100) -> List[str]:
-        """Search SRA database and return list of IDs."""
+    def search_sra(self, query: str, retmax: int = 100, retstart: int = 0) -> Tuple[List[str], int]:
+        """Search SRA database and return list of IDs and total count."""
         params = {
             'db': 'sra',
             'term': query,
             'retmax': str(retmax),
+            'retstart': str(retstart),
             'retmode': 'json'
         }
         
         url = self._build_url('esearch.fcgi', params)
-        logger.info(f"[SRA Search] Query: {query}")
+        if retstart == 0:
+            logger.info(f"[SRA Search] Query: {query}")
+        else:
+            logger.info(f"[SRA Search] Fetching batch starting at {retstart}...")
         
         response = self._make_request(url)
         if not response:
-            return []
+            return [], 0
         
         try:
             data = json.loads(response)
             id_list = data.get('esearchresult', {}).get('idlist', [])
-            count = data.get('esearchresult', {}).get('count', '0')
-            logger.info(f"[SRA] Found {count} total results, retrieving {len(id_list)} records")
-            return id_list
+            count = int(data.get('esearchresult', {}).get('count', '0'))
+            if retstart == 0:
+                logger.info(f"[SRA] Found {count} total results, retrieving first batch")
+            return id_list, count
         except json.JSONDecodeError:
             logger.error("Error parsing SRA search results")
-            return []
+            return [], 0
     
     def fetch_sra_details(self, id_list: List[str]) -> List[Dict]:
         """Fetch detailed information for given SRA IDs."""
@@ -887,53 +892,73 @@ Examples:
             has_long_reads=has_long
         )
 
-        # If hybrid-only, we might need to fetch more results to filter
-        search_retmax = args.max_results * 5 if args.hybrid_only else args.max_results
-
-        results = tool.search_sra(query, retmax=search_retmax)
-        details = tool.fetch_sra_details(results)
+        final_details = []
 
         if args.hybrid_only:
             logger.info("Filtering for hybrid samples (both Short and Long reads)...")
-            hybrid_details = []
             processed_samples = set()
             valid_samples = set()
 
-            for record in details:
-                sample_acc = record.get('sample_accession')
-                if not sample_acc or sample_acc == 'N/A':
-                    continue
+            batch_size = 50
+            start = 0
+            max_search_limit = 1000  # Safety limit to prevent infinite loops
 
-                # Check each sample only once
-                if sample_acc in processed_samples:
-                    if sample_acc in valid_samples:
-                        hybrid_details.append(record)
-                    continue
+            while len(valid_samples) < args.max_results and start < max_search_limit:
+                # Fetch batch of IDs
+                results, total_count = tool.search_sra(query, retmax=batch_size, retstart=start)
 
-                processed_samples.add(sample_acc)
-                logger.info(f"Checking sample {sample_acc}...")
+                if not results:
+                    break
 
-                platforms = tool.get_run_platforms_for_sample(sample_acc)
+                # Fetch details for this batch
+                batch_details = tool.fetch_sra_details(results)
 
-                has_illumina_bgi = any(p in ['ILLUMINA', 'BGISEQ'] for p in platforms)
-                has_long = any(p in ['OXFORD_NANOPORE', 'PACBIO_SMRT'] for p in platforms)
+                for record in batch_details:
+                    # If we have enough, stop processing
+                    if len(valid_samples) >= args.max_results:
+                        break
 
-                if has_illumina_bgi and has_long:
-                    logger.info(f"Sample {sample_acc}: HYBRID FOUND!")
-                    valid_samples.add(sample_acc)
-                    hybrid_details.append(record)
-                else:
-                    logger.info(f"Sample {sample_acc}: Platforms: {', '.join(platforms)}")
+                    sample_acc = record.get('sample_accession')
+                    if not sample_acc or sample_acc == 'N/A':
+                        continue
 
-            # Limit to requested max results
-            details = hybrid_details[:args.max_results]
-            logger.info(f"Found {len(valid_samples)} hybrid samples.")
+                    # Check each sample only once
+                    if sample_acc in processed_samples:
+                        if sample_acc in valid_samples:
+                            final_details.append(record)
+                        continue
 
-        print_sra_results(details)
+                    processed_samples.add(sample_acc)
+                    logger.info(f"Checking sample {sample_acc}...")
+
+                    platforms = tool.get_run_platforms_for_sample(sample_acc)
+
+                    has_illumina_bgi = any(p in ['ILLUMINA', 'BGISEQ'] for p in platforms)
+                    has_long = any(p in ['OXFORD_NANOPORE', 'PACBIO_SMRT'] for p in platforms)
+
+                    if has_illumina_bgi and has_long:
+                        logger.info(f"Sample {sample_acc}: HYBRID FOUND!")
+                        valid_samples.add(sample_acc)
+                        final_details.append(record)
+                    else:
+                        logger.info(f"Sample {sample_acc}: Platforms: {', '.join(platforms)}")
+
+                start += batch_size
+                if start >= total_count:
+                    break
+
+            logger.info(f"Found {len(valid_samples)} hybrid samples after checking {len(processed_samples)} candidates.")
+
+        else:
+            # Standard search
+            results, _ = tool.search_sra(query, retmax=args.max_results)
+            final_details = tool.fetch_sra_details(results)
+
+        print_sra_results(final_details)
 
         if args.output:
             with open(args.output, 'w') as f:
-                json.dump(details, f, indent=2)
+                json.dump(final_details, f, indent=2)
             logger.info(f"Results saved to {args.output}")
 
 
