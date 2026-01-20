@@ -800,7 +800,9 @@ Examples:
     has_long = not args.no_long_reads
     
     if args.hybrid_only:
-        has_short = True
+        # Optimization: When looking for hybrid, search for the rarer technology (Long Reads)
+        # to filter candidates, then check for Short Reads.
+        has_short = False
         has_long = True
 
     # Initialize tool
