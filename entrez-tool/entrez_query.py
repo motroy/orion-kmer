@@ -9,6 +9,7 @@ Enhanced with BioProject search, PubMed links, and validation mode.
 import argparse
 import sys
 import yaml
+import logging
 from typing import List, Optional, Dict, Tuple
 from urllib.parse import quote
 from urllib.request import urlopen
@@ -18,6 +19,9 @@ import time
 import json
 import re
 
+# Configure logging
+logger = logging.getLogger('entrez_tool')
+logger.setLevel(logging.INFO)
 
 class EntrezQueryTool:
     """Tool for querying NCBI Entrez databases for metagenomics samples."""
@@ -45,10 +49,10 @@ class EntrezQueryTool:
             with urlopen(url, timeout=30) as response:
                 return response.read().decode('utf-8')
         except HTTPError as e:
-            print(f"HTTP Error {e.code}: {e.reason}", file=sys.stderr)
+            logger.error(f"HTTP Error {e.code}: {e.reason}")
             return None
         except URLError as e:
-            print(f"URL Error: {e.reason}", file=sys.stderr)
+            logger.error(f"URL Error: {e.reason}")
             return None
     
     def search_pubmed(self, query: str, retmax: int = 20) -> List[Dict]:
@@ -61,7 +65,7 @@ class EntrezQueryTool:
         }
         
         url = self._build_url('esearch.fcgi', params)
-        print(f"\n[PubMed Search] Query: {query}", file=sys.stderr)
+        logger.info(f"[PubMed Search] Query: {query}")
         
         response = self._make_request(url)
         if not response:
@@ -71,8 +75,7 @@ class EntrezQueryTool:
             data = json.loads(response)
             id_list = data.get('esearchresult', {}).get('idlist', [])
             count = data.get('esearchresult', {}).get('count', '0')
-            print(f"[PubMed] Found {count} publications, retrieving {len(id_list)}\n", 
-                  file=sys.stderr)
+            logger.info(f"[PubMed] Found {count} publications, retrieving {len(id_list)}")
             
             if not id_list:
                 return []
@@ -81,7 +84,7 @@ class EntrezQueryTool:
             return self._fetch_pubmed_details(id_list)
         
         except json.JSONDecodeError:
-            print("Error parsing PubMed results", file=sys.stderr)
+            logger.error("Error parsing PubMed results")
             return []
     
     def _fetch_pubmed_details(self, pmid_list: List[str]) -> List[Dict]:
@@ -149,7 +152,7 @@ class EntrezQueryTool:
                 results.append(record)
         
         except ET.ParseError as e:
-            print(f"XML Parse Error: {e}", file=sys.stderr)
+            logger.error(f"XML Parse Error: {e}")
         
         return results
     
@@ -193,7 +196,7 @@ class EntrezQueryTool:
         }
         
         url = self._build_url('esearch.fcgi', params)
-        print(f"\n[BioProject Search] Query: {query}", file=sys.stderr)
+        logger.info(f"[BioProject Search] Query: {query}")
         
         response = self._make_request(url)
         if not response:
@@ -203,8 +206,7 @@ class EntrezQueryTool:
             data = json.loads(response)
             id_list = data.get('esearchresult', {}).get('idlist', [])
             count = data.get('esearchresult', {}).get('count', '0')
-            print(f"[BioProject] Found {count} projects, retrieving {len(id_list)}\n", 
-                  file=sys.stderr)
+            logger.info(f"[BioProject] Found {count} projects, retrieving {len(id_list)}")
             
             if not id_list:
                 return []
@@ -212,7 +214,7 @@ class EntrezQueryTool:
             return self._fetch_bioproject_details(id_list)
         
         except json.JSONDecodeError:
-            print("Error parsing BioProject results", file=sys.stderr)
+            logger.error("Error parsing BioProject results")
             return []
     
     def _fetch_bioproject_details(self, id_list: List[str]) -> List[Dict]:
@@ -276,7 +278,7 @@ class EntrezQueryTool:
                 results.append(record)
         
         except ET.ParseError as e:
-            print(f"XML Parse Error: {e}", file=sys.stderr)
+            logger.error(f"XML Parse Error: {e}")
         
         return results
     
@@ -372,7 +374,7 @@ class EntrezQueryTool:
         }
         
         url = self._build_url('esearch.fcgi', params)
-        print(f"\n[SRA Search] Query: {query}\n", file=sys.stderr)
+        logger.info(f"[SRA Search] Query: {query}")
         
         response = self._make_request(url)
         if not response:
@@ -382,11 +384,10 @@ class EntrezQueryTool:
             data = json.loads(response)
             id_list = data.get('esearchresult', {}).get('idlist', [])
             count = data.get('esearchresult', {}).get('count', '0')
-            print(f"[SRA] Found {count} total results, retrieving {len(id_list)} records\n", 
-                  file=sys.stderr)
+            logger.info(f"[SRA] Found {count} total results, retrieving {len(id_list)} records")
             return id_list
         except json.JSONDecodeError:
-            print("Error parsing SRA search results", file=sys.stderr)
+            logger.error("Error parsing SRA search results")
             return []
     
     def fetch_sra_details(self, id_list: List[str]) -> List[Dict]:
@@ -473,7 +474,7 @@ class EntrezQueryTool:
                     results.append(record)
         
         except ET.ParseError as e:
-            print(f"XML Parse Error: {e}", file=sys.stderr)
+            logger.error(f"XML Parse Error: {e}")
         
         return results
     
@@ -584,10 +585,10 @@ def load_config(config_path: str) -> Dict:
         with open(config_path, 'r') as f:
             return yaml.safe_load(f)
     except FileNotFoundError:
-        print(f"Config file not found: {config_path}", file=sys.stderr)
+        logger.error(f"Config file not found: {config_path}")
         sys.exit(1)
     except yaml.YAMLError as e:
-        print(f"Error parsing YAML: {e}", file=sys.stderr)
+        logger.error(f"Error parsing YAML: {e}")
         sys.exit(1)
 
 
@@ -744,10 +745,24 @@ Examples:
     parser.add_argument('--hybrid-only', action='store_true',
                        help='Require both short and long reads for the same experiment (simulated by requiring both)')
     parser.add_argument('--output', '-o', help='Output file (JSON format)')
+    parser.add_argument('--log', help='Log file path')
     parser.add_argument('--get-sra', action='store_true',
                        help='For BioProject/PubMed: also fetch linked SRA data')
     
     args = parser.parse_args()
+
+    # Setup logging
+    log_format = '%(asctime)s - %(levelname)s - %(message)s'
+    if args.log:
+        logging.basicConfig(filename=args.log, level=logging.INFO, format=log_format)
+        # Also log to stderr
+        console = logging.StreamHandler()
+        console.setLevel(logging.INFO)
+        formatter = logging.Formatter(log_format)
+        console.setFormatter(formatter)
+        logger.addHandler(console)
+    else:
+        logging.basicConfig(level=logging.INFO, format='%(message)s')
     
     # Default to SRA search if no mode specified
     if not any([args.sra, args.bioproject, args.pubmed, args.from_bioproject, 
@@ -793,44 +808,44 @@ Examples:
     
     # From BioProject mode
     if args.from_bioproject:
-        print(f"\nFetching SRA runs from BioProject: {args.from_bioproject}")
+        logger.info(f"Fetching SRA runs from BioProject: {args.from_bioproject}")
         sra_ids = tool.get_sra_from_bioproject(args.from_bioproject)
         
         if sra_ids:
-            print(f"Found {len(sra_ids)} associated SRA runs")
+            logger.info(f"Found {len(sra_ids)} associated SRA runs")
             results = tool.fetch_sra_details(sra_ids[:args.max_results])
             print_sra_results(results)
         else:
-            print("No SRA data found for this BioProject")
+            logger.info("No SRA data found for this BioProject")
         
-        if args.output and results:
+        if args.output:
             with open(args.output, 'w') as f:
                 json.dump(results, f, indent=2)
-            print(f"\nResults saved to {args.output}")
+            logger.info(f"Results saved to {args.output}")
         return
     
     # From PubMed mode
     if args.from_pubmed:
-        print(f"\nFetching SRA data linked to PMID: {args.from_pubmed}")
+        logger.info(f"Fetching SRA data linked to PMID: {args.from_pubmed}")
         sra_ids = tool.get_sra_from_pubmed(args.from_pubmed)
         
         if sra_ids:
-            print(f"Found {len(sra_ids)} linked SRA runs")
+            logger.info(f"Found {len(sra_ids)} linked SRA runs")
             results = tool.fetch_sra_details(sra_ids[:args.max_results])
             print_sra_results(results)
         else:
-            print("No SRA data linked to this publication")
+            logger.info("No SRA data linked to this publication")
         
-        if args.output and results:
+        if args.output:
             with open(args.output, 'w') as f:
                 json.dump(results, f, indent=2)
-            print(f"\nResults saved to {args.output}")
+            logger.info(f"Results saved to {args.output}")
         return
     
     # PubMed search mode
     if args.pubmed:
         if not keywords:
-            print("Error: --keywords required for PubMed search", file=sys.stderr)
+            logger.error("Error: --keywords required for PubMed search")
             sys.exit(1)
         
         query = " AND ".join([f'"{k}"' for k in keywords])
@@ -838,7 +853,7 @@ Examples:
         print_pubmed_results(results)
         
         if args.get_sra and results:
-            print("\nFetching linked SRA data for publications...\n")
+            logger.info("Fetching linked SRA data for publications...")
             all_sra = []
             for pub in results[:5]:  # Limit to first 5 to avoid too many requests
                 pmid = pub.get('pmid')
@@ -850,16 +865,16 @@ Examples:
             if all_sra:
                 # Remove duplicates
                 all_sra = list(set(all_sra))
-                print(f"Found {len(all_sra)} unique SRA runs linked to publications")
+                logger.info(f"Found {len(all_sra)} unique SRA runs linked to publications")
                 sra_results = tool.fetch_sra_details(all_sra[:args.max_results])
                 print_sra_results(sra_results)
             else:
-                print("No linked SRA data found")
+                logger.info("No linked SRA data found")
 
-        if args.output and results:
+        if args.output:
             with open(args.output, 'w') as f:
                 json.dump(results, f, indent=2)
-            print(f"\nResults saved to {args.output}")
+            logger.info(f"Results saved to {args.output}")
         return
 
     # SRA search mode (default)
@@ -879,7 +894,7 @@ Examples:
         details = tool.fetch_sra_details(results)
 
         if args.hybrid_only:
-            print("\nFiltering for hybrid samples (both Short and Long reads)...")
+            logger.info("Filtering for hybrid samples (both Short and Long reads)...")
             hybrid_details = []
             processed_samples = set()
             valid_samples = set()
@@ -896,7 +911,7 @@ Examples:
                     continue
 
                 processed_samples.add(sample_acc)
-                print(f"Checking sample {sample_acc}...", end='', file=sys.stderr)
+                logger.info(f"Checking sample {sample_acc}...")
 
                 platforms = tool.get_run_platforms_for_sample(sample_acc)
 
@@ -904,22 +919,22 @@ Examples:
                 has_long = any(p in ['OXFORD_NANOPORE', 'PACBIO_SMRT'] for p in platforms)
 
                 if has_illumina_bgi and has_long:
-                    print(" HYBRID FOUND!", file=sys.stderr)
+                    logger.info(f"Sample {sample_acc}: HYBRID FOUND!")
                     valid_samples.add(sample_acc)
                     hybrid_details.append(record)
                 else:
-                    print(f" (Platforms: {', '.join(platforms)})", file=sys.stderr)
+                    logger.info(f"Sample {sample_acc}: Platforms: {', '.join(platforms)}")
 
             # Limit to requested max results
             details = hybrid_details[:args.max_results]
-            print(f"\nFound {len(valid_samples)} hybrid samples.")
+            logger.info(f"Found {len(valid_samples)} hybrid samples.")
 
         print_sra_results(details)
 
-        if args.output and details:
+        if args.output:
             with open(args.output, 'w') as f:
                 json.dump(details, f, indent=2)
-            print(f"\nResults saved to {args.output}")
+            logger.info(f"Results saved to {args.output}")
 
 
 if __name__ == "__main__":
