@@ -1,0 +1,79 @@
+# Configuration file for NCBI Entrez metagenomics query tool
+# This file supports multiple search strategies
+
+# =============================================================================
+# API CREDENTIALS
+# =============================================================================
+
+# Email address (REQUIRED by NCBI API)
+email: "your.email@example.com"
+
+# Optional: NCBI API key for higher rate limits (10 requests/sec vs 3/sec)
+# Get one at: https://www.ncbi.nlm.nih.gov/account/settings/
+# api_key: "your_api_key_here"
+
+
+# =============================================================================
+# HYBRID ASSEMBLY SEARCH (samples with BOTH short and long reads)
+# =============================================================================
+
+# For hybrid assembly, you want samples that have been sequenced with
+# BOTH short reads (Illumina/BGI) AND long reads (Nanopore/PacBio)
+
+# Sample environment/source
+environment: "blood"
+
+# Host organism
+host: "Homo sapiens"
+
+# Keywords for broader searches (BioProject/PubMed)
+keywords:
+  - "Klebsiella"
+  - "blood"
+  - "metagenome"
+
+# Maximum results - for hybrid searches, set higher since filtering reduces results
+max_results: 20
+
+
+# =============================================================================
+# ALTERNATIVE: PATHOGEN-SPECIFIC SEARCH
+# =============================================================================
+
+# Uncomment for pathogen-specific searches (less reliable for metagenomes)
+# pathogens:
+#   - "Klebsiella pneumoniae"
+#   - "Escherichia coli"
+
+
+# =============================================================================
+# EXAMPLE CONFIGURATIONS FOR HYBRID ASSEMBLY
+# =============================================================================
+
+# Example 1: Blood metagenomes with hybrid data
+# environment: "blood"
+# host: "Homo sapiens"
+# max_results: 30
+# Then run with: --hybrid-only
+
+# Example 2: Respiratory samples for hybrid assembly
+# environment: "respiratory"
+# host: "Homo sapiens"
+# keywords:
+#   - "pneumonia"
+#   - "metagenome"
+# max_results: 25
+
+# Example 3: CSF metagenomes (cerebrospinal fluid)
+# environment: "csf"
+# host: "Homo sapiens"
+# max_results: 15
+
+# Example 4: Find via BioProject (most reliable for hybrid data)
+# keywords:
+#   - "clinical metagenomics"
+#   - "hybrid assembly"
+#   - "Illumina"
+#   - "Nanopore"
+# max_results: 20
+# Then run with: --bioproject --get-sra --hybrid-only
