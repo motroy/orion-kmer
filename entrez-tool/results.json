@@ -1,0 +1,21 @@
+[
+  {
+    "experiment_accession": "SRX15488055",
+    "run_accession": "SRR19434805",
+    "sample_accession": "SRS13203368",
+    "organism": "Homo sapiens",
+    "study_accession": "SRP377478",
+    "bioproject": "PRJNA843181",
+    "platform": "PACBIO_SMRT",
+    "instrument": "Sequel",
+    "library_strategy": "AMPLICON",
+    "sample_attributes": {
+      "isolate": "PE_10",
+      "age": "46 months",
+      "biomaterial_provider": "The First Hospital of Zibo",
+      "sex": "male",
+      "tissue": "stool",
+      "BioSampleModel": "Human"
+    }
+  }
+]
