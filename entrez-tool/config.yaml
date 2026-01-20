@@ -27,10 +27,26 @@ environment: "blood"
 host: "Homo sapiens"
 
 # Keywords for broader searches (BioProject/PubMed)
+# ESKAPE pathogens: Enterococcus faecium, Staphylococcus aureus, Klebsiella pneumoniae,
+# Acinetobacter baumannii, Pseudomonas aeruginosa, and Enterobacter species.
 keywords:
-  - "Klebsiella"
+  - "Enterococcus faecium"
+  - "Staphylococcus aureus"
+  - "Klebsiella pneumoniae"
+  - "Acinetobacter baumannii"
+  - "Pseudomonas aeruginosa"
+  - "Enterobacter"
   - "blood"
   - "metagenome"
+
+# Pathogens list for specific filtering (if supported by custom logic)
+pathogens:
+  - "Enterococcus faecium"
+  - "Staphylococcus aureus"
+  - "Klebsiella pneumoniae"
+  - "Acinetobacter baumannii"
+  - "Pseudomonas aeruginosa"
+  - "Enterobacter"
 
 # Maximum results - for hybrid searches, set higher since filtering reduces results
 max_results: 20
