@@ -488,7 +488,7 @@ class EntrezQueryTool:
         # Search SRA for runs associated with this sample
         params = {
             'db': 'sra',
-            'term': f'{sample_acc}[Sample]',
+            'term': f'{sample_acc}[Accession]',
             'retmax': '100',
             'retmode': 'json'
         }
