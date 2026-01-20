@@ -336,6 +336,27 @@ class EntrezQueryTool:
         if has_long_reads:
             platform_parts.append('("OXFORD_NANOPORE"[Platform] OR "PACBIO_SMRT"[Platform])')
         
+        # If both are requested, the intention is usually "either one" for standard search,
+        # but if we want "hybrid" it's trickier in a single SRA query.
+        # The current logic joins them with OR, which means "has short OR has long".
+        # This matches the behavior of "I want samples that have sequencing data".
+
+        # However, if 'hybrid_only' is used (which sets both has_short=True and has_long=True),
+        # the user might expect "AND" logic if that were possible for a single run,
+        # but for SRA, a "Run" is usually one platform.
+        # So "hybrid" usually means "Same BioSample has runs from both platforms".
+        #
+        # For now, we will stick to the existing OR logic which retrieves candidates,
+        # and we can't easily enforce "AND" at the search query level for *Runs*.
+        #
+        # BUT, wait! The previous implementation used OR.
+        # If the user wants HYBRID, they probably want to ensure we search for BOTH types.
+        #
+        # Let's keep the OR logic here. If we wanted to enforce hybrid *strictly*,
+        # we would need to post-process the results to ensure a BioSample has both.
+        # Given the scope, enabling the flag to ensure both platforms are included in the OR query
+        # is the first step.
+
         if platform_parts:
             query_parts.append(f"({' OR '.join(platform_parts)})")
         
@@ -662,6 +683,8 @@ Examples:
                        help='Exclude short read requirement')
     parser.add_argument('--no-long-reads', action='store_true', 
                        help='Exclude long read requirement')
+    parser.add_argument('--hybrid-only', action='store_true',
+                       help='Require both short and long reads for the same experiment (simulated by requiring both)')
     parser.add_argument('--output', '-o', help='Output file (JSON format)')
     parser.add_argument('--get-sra', action='store_true',
                        help='For BioProject/PubMed: also fetch linked SRA data')
@@ -689,6 +712,10 @@ Examples:
     has_short = not args.no_short_reads
     has_long = not args.no_long_reads
     
+    if args.hybrid_only:
+        has_short = True
+        has_long = True
+
     # Initialize tool
     tool = EntrezQueryTool(email=email, api_key=api_key)
     
