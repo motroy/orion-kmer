@@ -477,6 +477,64 @@ class EntrezQueryTool:
         
         return results
     
+    def get_run_platforms_for_sample(self, sample_acc: str) -> List[str]:
+        """Get all sequencing platforms used for a specific BioSample."""
+        # Search SRA for runs associated with this sample
+        params = {
+            'db': 'sra',
+            'term': f'{sample_acc}[Sample]',
+            'retmax': '100',
+            'retmode': 'json'
+        }
+
+        url = self._build_url('esearch.fcgi', params)
+        response = self._make_request(url)
+
+        if not response:
+            return []
+
+        try:
+            data = json.loads(response)
+            id_list = data.get('esearchresult', {}).get('idlist', [])
+            if not id_list:
+                return []
+
+            # Fetch summary to get platforms (lighter than full XML)
+            params = {
+                'db': 'sra',
+                'id': ','.join(id_list),
+                'retmode': 'json',
+                'version': '2.0'
+            }
+            url = self._build_url('esummary.fcgi', params)
+            response = self._make_request(url)
+
+            if not response:
+                return []
+
+            data = json.loads(response)
+            result = data.get('result', {})
+            platforms = set()
+
+            for uid in id_list:
+                if uid in result:
+                    # Parse expxml or run info if available, but summary structure varies.
+                    # In ESUMMARY 2.0 for SRA, platform is often in 'platform' field
+                    item = result[uid]
+                    if 'platform' in item:
+                        platforms.add(item['platform'].upper())
+                    # Sometimes it is in expxml
+                    elif 'expxml' in item:
+                        # Simple regex to find platform
+                        match = re.search(r'<Platform instrument_model="[^"]+">([^<]+)</Platform>', item['expxml'])
+                        if match:
+                            platforms.add(match.group(1).upper())
+
+            return list(platforms)
+
+        except json.JSONDecodeError:
+            return []
+
     def validate_accession(self, accession: str) -> Tuple[bool, str]:
         """Validate if an accession exists and return its type."""
         # Determine database from accession prefix
@@ -814,8 +872,48 @@ Examples:
             has_long_reads=has_long
         )
 
-        results = tool.search_sra(query, retmax=args.max_results)
+        # If hybrid-only, we might need to fetch more results to filter
+        search_retmax = args.max_results * 5 if args.hybrid_only else args.max_results
+
+        results = tool.search_sra(query, retmax=search_retmax)
         details = tool.fetch_sra_details(results)
+
+        if args.hybrid_only:
+            print("\nFiltering for hybrid samples (both Short and Long reads)...")
+            hybrid_details = []
+            processed_samples = set()
+            valid_samples = set()
+
+            for record in details:
+                sample_acc = record.get('sample_accession')
+                if not sample_acc or sample_acc == 'N/A':
+                    continue
+
+                # Check each sample only once
+                if sample_acc in processed_samples:
+                    if sample_acc in valid_samples:
+                        hybrid_details.append(record)
+                    continue
+
+                processed_samples.add(sample_acc)
+                print(f"Checking sample {sample_acc}...", end='', file=sys.stderr)
+
+                platforms = tool.get_run_platforms_for_sample(sample_acc)
+
+                has_illumina_bgi = any(p in ['ILLUMINA', 'BGISEQ'] for p in platforms)
+                has_long = any(p in ['OXFORD_NANOPORE', 'PACBIO_SMRT'] for p in platforms)
+
+                if has_illumina_bgi and has_long:
+                    print(" HYBRID FOUND!", file=sys.stderr)
+                    valid_samples.add(sample_acc)
+                    hybrid_details.append(record)
+                else:
+                    print(f" (Platforms: {', '.join(platforms)})", file=sys.stderr)
+
+            # Limit to requested max results
+            details = hybrid_details[:args.max_results]
+            print(f"\nFound {len(valid_samples)} hybrid samples.")
+
         print_sra_results(details)
 
         if args.output and details:
