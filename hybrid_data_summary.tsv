@@ -1,0 +1,980 @@
+BioSample ID	Sample Type	Environment	Instruments
+SAMEA116119882	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117831135	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831166	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6631728	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631732	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631739	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631789	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631794	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631795	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631828	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA9943607	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456424	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456470	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN14089884	crustacean metagenome	gill	Ion Torrent S5 XL, PacBio RS II
+SAMN15921176	soil metagenome	temperate natural grassland	Illumina MiSeq, Sequel II
+SAMN15921177	soil metagenome	tropical grasslands & savannas	Illumina MiSeq, Sequel II
+SAMN15921200	soil metagenome	temperate natural grassland	Illumina MiSeq, Sequel II
+SAMN15921215	soil metagenome	temperate broadleaf & mixed forest	Illumina MiSeq, Sequel II
+SAMN15921238	soil metagenome	temperate broadleaf & mixed forest	Illumina MiSeq, Sequel II
+SAMN15921240	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921278	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921282	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921291	soil metagenome	deserts and xeric shrublands	Illumina MiSeq, Sequel II
+SAMN15921315	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921323	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921360	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921399	soil metagenome	temperate broadleaf & mixed forest	Illumina MiSeq, Sequel II
+SAMN15921419	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921420	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921427	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921444	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921462	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921500	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921505	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921592	soil metagenome	anthropogenic ecosystem	Illumina MiSeq, Sequel II
+SAMN21442474	mollusc metagenome	Hydrothermal vent	Illumina HiSeq X, Illumina MiSeq, MinION
+SAMN22304450	clinical metagenome	wound	Illumina MiSeq, MinION
+SAMN33214201	marine metagenome	Filtered marine water; Bermuda Atlantic Time Series Expedition 348	Ion Torrent S5, MinION
+SAMN37316514	sediment metagenome	Sediments from a chloroalkane-contaminated site in 2001. Cultures have been maintained in anaerobic minimal medium ever since, with chloroform, ethanol, and lactate their carbon and energy sources.	Illumina MiSeq, Sequel II
+SAMN37739125	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816808	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816829	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816839	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816841	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816863	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816883	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816886	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816887	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334563	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42797919	sponge metagenome	East Sea of Korea	Illumina MiSeq, Sequel IIe
+SAMEA117491907	wastewater metagenome	Sulfonamide resistance gene sul4 is hosted by common wastewater sludge bacteria and found in various newly described contexts and hosts including clinically relevant species	Illumina NovaSeq 6000, PacBio RS II
+SAMEA117831167	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6631731	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631741	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631753	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631755	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631805	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631829	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA9943599	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN05216606	anaerobic digester metagenome	anaerobic digester metagenome Metagenome	Illumina MiSeq, PacBio RS II
+SAMN08456386	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456433	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456451	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456456	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456457	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456468	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN13443175	metagenome	Microalgal culture	Illumina MiSeq, MinION
+SAMN14341560	bioreactor metagenome	activated sludge	Illumina HiSeq 2500, MinION
+SAMN15921179	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921191	soil metagenome	tropical grasslands & savannas	Illumina MiSeq, Sequel II
+SAMN15921269	soil metagenome	subtropical shrubland	Illumina MiSeq, Sequel II
+SAMN15921306	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921308	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921321	soil metagenome	varia	Illumina MiSeq, Sequel II
+SAMN15921356	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921403	soil metagenome	mountain	Illumina MiSeq, Sequel II
+SAMN15921413	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921416	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921425	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921437	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921475	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN16575659	wastewater metagenome	wastewater	Illumina HiSeq 2500, MinION
+SAMN19601271	human gut metagenome	Human Gut Virome Raw Sequence Reads	Illumina NovaSeq 6000, MinION
+SAMN23235378	gut metagenome	feces	Illumina MiSeq, PacBio RS II
+SAMN37739126	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN37739127	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN37739128	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816779	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816782	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816783	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816796	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816846	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816849	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816851	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816872	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816878	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334564	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334571	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334574	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334576	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMEA116119875	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117491909	wastewater metagenome	Sulfonamide resistance gene sul4 is hosted by common wastewater sludge bacteria and found in various newly described contexts and hosts including clinically relevant species	Illumina NovaSeq 6000, PacBio RS II
+SAMEA117831131	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831138	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831143	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831147	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831152	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831154	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6126157	sediment metagenome	Seagrass associated sediment metagenomes	Illumina HiSeq 3000, Sequel
+SAMEA6631745	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631758	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631772	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631775	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631784	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580828	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA9943605	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456396	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456425	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456448	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN14089852	seawater metagenome	seawater	Illumina HiSeq 2500, PacBio RS II
+SAMN15921186	soil metagenome	temperate natural grassland	Illumina MiSeq, Sequel II
+SAMN15921197	soil metagenome	temperate natural grassland	Illumina MiSeq, Sequel II
+SAMN15921199	soil metagenome	temperate broadleaf & mixed forest	Illumina MiSeq, Sequel II
+SAMN15921204	soil metagenome	temperate natural grassland	Illumina MiSeq, Sequel II
+SAMN15921209	soil metagenome	montane grassland	Illumina MiSeq, Sequel II
+SAMN15921211	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921221	soil metagenome	subtropical dry broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921317	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921325	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921381	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921384	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921401	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921402	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921418	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921487	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921508	soil metagenome	tropical shrubland	Illumina MiSeq, Sequel II
+SAMN15921598	soil metagenome	tropical coniferous forest	Illumina MiSeq, Sequel II
+SAMN17245385	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN41816788	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816810	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816812	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816819	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816820	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816821	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816859	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816867	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816874	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334582	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334590	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN50298528	plant metagenome	Plant sample	Illumina NovaSeq X, PacBio RS
+SAMEA116119906	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117831122	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831163	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831165	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6631723	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631735	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631776	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631781	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631798	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631809	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631811	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631813	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631832	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580841	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA7580843	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA9943594	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMEA9943613	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMEA9943619	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456371	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456399	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN13925155	wood decay metagenome	temperate mixed forest biome [ENVO:01000212]	Illumina HiSeq 2500, Illumina MiSeq, Sequel II
+SAMN14329652	endosymbiont of Lamellibrachia barhami	Diffuse zone	Illumina HiSeq 2500, MinION
+SAMN14593423	human oral metagenome	human-oral	Illumina MiSeq, MinION, NextSeq 500
+SAMN15921174	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921208	soil metagenome	subtropical shrubland	Illumina MiSeq, Sequel II
+SAMN15921220	soil metagenome	temperate broadleaf & mixed forest	Illumina MiSeq, Sequel II
+SAMN15921222	soil metagenome	tropical grasslands & savannas	Illumina MiSeq, Sequel II
+SAMN15921229	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921263	soil metagenome	montane shrubland	Illumina MiSeq, Sequel II
+SAMN15921289	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921310	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921327	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921366	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921428	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921445	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921466	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921467	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921477	soil metagenome	tropical shrubland	Illumina MiSeq, Sequel II
+SAMN15921507	soil metagenome	desert	Illumina MiSeq, Sequel II
+SAMN25696378	synthetic metagenome	Human gut mock community	GridION, Illumina NovaSeq 6000, Sequel II
+SAMN36379043	marine sediment metagenome	ENVO:00000464	Illumina MiSeq, MinION
+SAMN37739122	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816822	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816835	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816844	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816882	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816885	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816894	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334561	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334580	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMEA116119870	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119904	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117831121	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831141	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6631721	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631802	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631823	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631831	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580823	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA7580824	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA9943596	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMEA9943618	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456380	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456394	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN14089872	marine sediment metagenome	sediment	Illumina HiSeq 2500, PacBio RS II
+SAMN14089878	marine sediment metagenome	sediment	Illumina HiSeq 2500, PacBio RS II
+SAMN14089886	crustacean metagenome	gill	Ion Torrent S5 XL, PacBio RS II
+SAMN15921182	soil metagenome	tropical grasslands & savannas	Illumina MiSeq, Sequel II
+SAMN15921189	soil metagenome	temperate natural grassland	Illumina MiSeq, Sequel II
+SAMN15921218	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921235	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921253	soil metagenome	grassland	Illumina MiSeq, Sequel II
+SAMN15921258	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921272	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921274	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921296	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921300	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921303	soil metagenome	temperate grassland	Illumina MiSeq, Sequel II
+SAMN15921309	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921346	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921397	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921398	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921406	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921424	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921450	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921472	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921485	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921491	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921514	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN17245386	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN17245396	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN22304446	clinical metagenome	wound	Illumina MiSeq, MinION
+SAMN33571975	human feces metagenome	Quantifying bias introduced by sample collection in relative and absolute microbiome measurements	Illumina NovaSeq 6000, PromethION
+SAMN37739121	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816799	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816861	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334560	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334585	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334586	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN49717218	Staphylococcus aureus	skin	Illumina MiniSeq, MinION
+SAMEA116119897	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117831128	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6126162	sediment metagenome	Seagrass associated sediment metagenomes	Illumina HiSeq 3000, Sequel
+SAMEA6126163	sediment metagenome	Seagrass associated sediment metagenomes	Illumina HiSeq 3000, Sequel
+SAMEA6631724	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631729	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631743	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631750	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631779	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631800	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631830	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580832	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA7580842	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA7580845	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA9943591	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMEA9943604	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMEA9943621	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456395	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456419	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456423	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456429	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456458	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN14089887	crustacean metagenome	gill	Ion Torrent S5 XL, PacBio RS II
+SAMN15921212	soil metagenome	temperate seminatural grassland	Illumina MiSeq, Sequel II
+SAMN15921216	soil metagenome	temperate natural grassland	Illumina MiSeq, Sequel II
+SAMN15921225	soil metagenome	temperate seminatural grassland	Illumina MiSeq, Sequel II
+SAMN15921226	soil metagenome	temperate natural grassland	Illumina MiSeq, Sequel II
+SAMN15921292	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921301	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921337	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921383	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921404	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921439	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921512	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921516	soil metagenome	temperate seminatural grassland	Illumina MiSeq, Sequel II
+SAMN16575665	wastewater metagenome	wastewater	Illumina HiSeq 2500, MinION
+SAMN17245392	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN22304449	clinical metagenome	wound	Illumina MiSeq, MinION
+SAMN37739117	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816786	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816806	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816827	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816850	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816852	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816854	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816881	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816891	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334557	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334581	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN47504785	soil metagenome	ENVO:00005775	GridION, Illumina NovaSeq 6000
+SAMEA116119868	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119892	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117831127	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831149	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831160	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831161	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831164	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6631726	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631738	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631760	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631810	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631819	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580825	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA7580831	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMN06649846	sediment metagenome	Gulf of Mexico marine sediment	Illumina MiSeq, Ion Torrent PGM, NextSeq 500, PacBio RS II
+SAMN08456401	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456444	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456462	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456473	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN15921193	soil metagenome	temperate broadleaf & mixed forest	Illumina MiSeq, Sequel II
+SAMN15921242	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921250	soil metagenome	montane shrubland	Illumina MiSeq, Sequel II
+SAMN15921266	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921275	soil metagenome	mediterranean forest, woodland and scrub	Illumina MiSeq, Sequel II
+SAMN15921283	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921298	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921307	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921364	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921376	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921387	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921405	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921409	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921448	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921469	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921479	soil metagenome	desert	Illumina MiSeq, Sequel II
+SAMN15921482	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921483	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921498	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921501	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921502	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN16575658	wastewater metagenome	wastewater	Illumina HiSeq 2500, MinION
+SAMN16575661	aquatic metagenome	surface water	Illumina HiSeq 2500, MinION
+SAMN17245388	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN21442473	mollusc metagenome	Hydrothermal vent	Illumina HiSeq X, Illumina MiSeq, MinION
+SAMN37739119	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816809	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816823	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816857	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816893	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334573	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMEA116119872	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119874	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119876	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119886	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119894	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117491905	wastewater metagenome	Sulfonamide resistance gene sul4 is hosted by common wastewater sludge bacteria and found in various newly described contexts and hosts including clinically relevant species	Illumina NovaSeq 6000, PacBio RS II
+SAMEA117831151	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6126156	sediment metagenome	Seagrass associated sediment metagenomes	Illumina HiSeq 3000, Sequel
+SAMEA6631733	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631757	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631771	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631773	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631797	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631821	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631827	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580826	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA7580833	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA7580837	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMN08456378	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456392	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456400	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN13443174	metagenome	Microalgal culture	Illumina MiSeq, MinION
+SAMN15296135	Escherichia coli O157:H7 str. EDL933	irrigation water pre-enrichment spiked with ten fold dilutions of STEC EDL 933 O157:H7 Metagenome	GridION, Illumina MiSeq
+SAMN15921175	soil metagenome	deserts and xeric shrublands	Illumina MiSeq, Sequel II
+SAMN15921190	soil metagenome	subtropical shrubland	Illumina MiSeq, Sequel II
+SAMN15921192	soil metagenome	deserts and xseric shrublands	Illumina MiSeq, Sequel II
+SAMN15921198	soil metagenome	subtropical shrubland	Illumina MiSeq, Sequel II
+SAMN15921227	soil metagenome	subtropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921231	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921279	soil metagenome	tropical seasonal forest/savanna	Illumina MiSeq, Sequel II
+SAMN15921285	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921313	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921340	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921385	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921386	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921388	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921395	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921429	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921454	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921474	soil metagenome	subtropical coniferous forest	Illumina MiSeq, Sequel II
+SAMN22304433	clinical metagenome	wound	Illumina MiSeq, MinION
+SAMN41816803	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816815	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816818	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816840	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816866	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816868	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334583	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN46066753	sediment metagenome	river sediment	Illumina NovaSeq 6000, Sequel IIe
+SAMN47891059	Kerria lacca	Reared on Flemingia semialata	Illumina NovaSeq 6000, PromethION
+SAMEA116119890	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119902	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117831136	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831139	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831140	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831146	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831157	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6126155	sediment metagenome	Seagrass associated sediment metagenomes	Illumina HiSeq 3000, Sequel
+SAMEA6631720	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631754	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631761	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631774	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631786	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631826	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580827	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMN06268365	hot springs metagenome	Yellowstone National Park, Wyoming, USA	Illumina HiSeq 2500, PacBio RS
+SAMN08456375	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456452	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456461	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456467	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN13925168	wood decay metagenome	temperate mixed forest biome [ENVO:01000212]	Illumina HiSeq 2500, Illumina MiSeq, Sequel II
+SAMN14593418	human oral metagenome	human-oral	Illumina MiSeq, MinION, NextSeq 500
+SAMN15921178	soil metagenome	deserts and xeric shrublands	Illumina MiSeq, Sequel II
+SAMN15921194	soil metagenome	deserts and xeric shrublands	Illumina MiSeq, Sequel II
+SAMN15921230	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921270	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921277	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921280	soil metagenome	mountain	Illumina MiSeq, Sequel II
+SAMN15921287	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921319	soil metagenome	tropical seasonal forest/savanna	Illumina MiSeq, Sequel II
+SAMN15921331	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921334	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921342	soil metagenome	tropical seasonal forest/savanna	Illumina MiSeq, Sequel II
+SAMN15921391	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921436	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921470	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921492	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921496	soil metagenome	desert	Illumina MiSeq, Sequel II
+SAMN15921509	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN16795851	freshwater metagenome	terrestrial biome [ENVO:00000446]	GridION, Illumina NovaSeq 6000
+SAMN17245390	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN17245395	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN22304430	clinical metagenome	wound	Illumina MiSeq, MinION
+SAMN33571974	human feces metagenome	Quantifying bias introduced by sample collection in relative and absolute microbiome measurements	Illumina NovaSeq 6000, PromethION
+SAMN33571992	human feces metagenome	Quantifying bias introduced by sample collection in relative and absolute microbiome measurements	Illumina NovaSeq 6000, PromethION
+SAMN41816826	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816890	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334556	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334559	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334578	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMEA116119877	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119885	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117491911	wastewater metagenome	Sulfonamide resistance gene sul4 is hosted by common wastewater sludge bacteria and found in various newly described contexts and hosts including clinically relevant species	Illumina NovaSeq 6000, PacBio RS II
+SAMEA117831125	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA118264915	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6631787	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631822	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631824	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA9943620	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456376	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456383	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456387	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456393	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456446	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456471	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN14593424	human oral metagenome	human-oral	Illumina MiSeq, MinION, NextSeq 500
+SAMN15921196	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921201	soil metagenome	temperate natural grassland	Illumina MiSeq, Sequel II
+SAMN15921213	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921237	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921239	soil metagenome	subtropical dry broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921243	soil metagenome	temperate broadleaf & mixed forest	Illumina MiSeq, Sequel II
+SAMN15921245	soil metagenome	tropical seasonal forest/savanna	Illumina MiSeq, Sequel II
+SAMN15921251	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921256	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921259	soil metagenome	mountain	Illumina MiSeq, Sequel II
+SAMN15921264	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921281	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921311	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921352	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921354	soil metagenome	montane shrubland	Illumina MiSeq, Sequel II
+SAMN15921358	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921367	soil metagenome	temperate broadleaf & mixed forest	Illumina MiSeq, Sequel II
+SAMN15921370	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921400	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921408	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921476	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921494	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921504	soil metagenome	tropical broadleaf forest	Illumina MiSeq, Sequel II
+SAMN16575660	wastewater metagenome	wastewater	Illumina HiSeq 2500, MinION
+SAMN16575667	aquatic metagenome	surface water	Illumina HiSeq 2500, MinION
+SAMN16575668	aquatic metagenome	surface water	Illumina HiSeq 2500, MinION
+SAMN37739130	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816804	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816817	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816824	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816837	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816875	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816892	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN47504789	soil metagenome	ENVO:00005775	GridION, Illumina NovaSeq 6000
+SAMEA116119869	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119881	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119883	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117491913	wastewater metagenome	Sulfonamide resistance gene sul4 is hosted by common wastewater sludge bacteria and found in various newly described contexts and hosts including clinically relevant species	Illumina NovaSeq 6000, PacBio RS II
+SAMEA117831132	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6126160	sediment metagenome	Seagrass associated sediment metagenomes	Illumina HiSeq 3000, Sequel
+SAMEA6631718	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631762	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631767	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631833	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMN06267783	hypersaline lake metagenome	Hot Lake, Washington, USA	Illumina HiSeq 2500, PacBio RS
+SAMN08456384	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456447	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456459	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN13925167	wood decay metagenome	temperate mixed forest biome [ENVO:01000212]	Illumina HiSeq 2500, Illumina MiSeq, Sequel II
+SAMN14089885	crustacean metagenome	gill	Ion Torrent S5 XL, PacBio RS II
+SAMN15921187	soil metagenome	subtropical shrubland	Illumina MiSeq, Sequel II
+SAMN15921188	soil metagenome	temperate seminatural grassland	Illumina MiSeq, Sequel II
+SAMN15921228	soil metagenome	tropical dry broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921233	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921236	soil metagenome	desert	Illumina MiSeq, Sequel II
+SAMN15921276	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921297	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921302	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921338	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921359	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921365	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921372	soil metagenome	mountain	Illumina MiSeq, Sequel II
+SAMN15921380	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921393	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921442	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921449	soil metagenome	montane shrubland	Illumina MiSeq, Sequel II
+SAMN15921452	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921468	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921473	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921489	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921506	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN16575662	aquatic metagenome	surface water	Illumina HiSeq 2500, MinION
+SAMN17245393	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN33571936	human feces metagenome	Quantifying bias introduced by sample collection in relative and absolute microbiome measurements	Illumina NovaSeq 6000, PromethION
+SAMN41816789	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816794	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816831	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816842	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816855	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816880	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816889	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334566	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334572	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334589	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMEA116119891	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119898	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117831129	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831134	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831137	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6631725	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631752	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631763	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631766	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631806	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631816	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631825	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6633763	Agaricus bisporus	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580830	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA7580836	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA9943595	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456373	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456381	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456445	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456453	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456464	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456465	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456474	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN13443172	metagenome	culture enrichment	Illumina MiSeq, MinION
+SAMN15921205	soil metagenome	tropical grasslands & savannas	Illumina MiSeq, Sequel II
+SAMN15921254	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921265	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921284	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921286	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921322	soil metagenome	mountain	Illumina MiSeq, Sequel II
+SAMN15921332	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921333	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921421	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921451	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921460	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921478	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921486	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921503	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921510	soil metagenome	subtropical grasslands & savannas	Illumina MiSeq, Sequel II
+SAMN19600299	human gut metagenome	Human Gut Virome Raw Sequence Reads	Illumina NovaSeq 6000, MinION
+SAMN22064502	bioreactor sludge metagenome	WWTP digester sludge	Illumina NovaSeq 6000, Sequel IIe
+SAMN22304436	clinical metagenome	wound	Illumina MiSeq, MinION
+SAMN33571998	human feces metagenome	Quantifying bias introduced by sample collection in relative and absolute microbiome measurements	Illumina NovaSeq 6000, PromethION
+SAMN37739124	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816807	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816848	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816876	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN46374544	freshwater metagenome	shoreline [ENVO:00000486]|epilithon [ENVO:03605001]	Illumina NovaSeq X Plus, MinION
+SAMN47504788	soil metagenome	ENVO:00005775	GridION, Illumina NovaSeq 6000
+SAMN49717220	Staphylococcus aureus	skin	Illumina MiniSeq, MinION
+SAMEA116119878	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119907	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117491906	wastewater metagenome	Sulfonamide resistance gene sul4 is hosted by common wastewater sludge bacteria and found in various newly described contexts and hosts including clinically relevant species	Illumina NovaSeq 6000, PacBio RS II
+SAMEA117831158	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6126161	sediment metagenome	Seagrass associated sediment metagenomes	Illumina HiSeq 3000, Sequel
+SAMEA6631744	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631777	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631785	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631804	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6792969	blank sample	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6792970	blank sample	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA9943597	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456374	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456398	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456455	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456460	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456463	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN15921181	soil metagenome	temperate natural grassland	Illumina MiSeq, Sequel II
+SAMN15921207	soil metagenome	montane grassland	Illumina MiSeq, Sequel II
+SAMN15921217	soil metagenome	temperate coniferous forest	Illumina MiSeq, Sequel II
+SAMN15921248	soil metagenome	temperate grassland	Illumina MiSeq, Sequel II
+SAMN15921268	soil metagenome	desert	Illumina MiSeq, Sequel II
+SAMN15921273	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921294	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921329	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921351	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921394	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921396	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921410	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921411	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921422	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921430	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921455	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921488	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921490	soil metagenome	desert	Illumina MiSeq, Sequel II
+SAMN15921513	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN17245389	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN17245394	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN18839206	viral metagenome	organic waste	MinION, NextSeq 550
+SAMN19798906	cold spring metagenome	Alkaline Spring	Illumina HiSeq 4000, Illumina MiSeq, Illumina NovaSeq 6000, MinION
+SAMN23235374	gut metagenome	feces	Illumina HiSeq 2500, Illumina MiSeq, PacBio RS II
+SAMN41816777	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816790	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816792	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816828	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816832	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816865	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816870	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334569	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334570	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMEA116119871	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119889	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119895	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119899	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117831124	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831130	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831150	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831153	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6126158	sediment metagenome	Seagrass associated sediment metagenomes	Illumina HiSeq 3000, Sequel
+SAMEA6631742	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631770	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631780	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631783	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631799	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631817	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580829	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA9943592	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMEA9943612	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456421	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN13191044	synthetic metagenome	Comparative evaluation of second and third generation sequencing technologies for 16S rRNA based identification	Illumina MiSeq, MinION
+SAMN14089876	marine sediment metagenome	sediment	Illumina HiSeq 2500, PacBio RS II
+SAMN15921185	soil metagenome	tropical grasslands & savannas	Illumina MiSeq, Sequel II
+SAMN15921232	soil metagenome	subtropical dry broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921241	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921244	soil metagenome	deserts and xeric shrublands	Illumina MiSeq, Sequel II
+SAMN15921252	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921255	soil metagenome	subtropical dry broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921267	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921324	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921344	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921348	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921375	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921377	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921389	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921390	soil metagenome	subtropical dry broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921392	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921407	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921412	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921417	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921459	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921464	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921471	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921590	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN37739115	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816778	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816811	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816834	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816869	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334562	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334588	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMEA116119873	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119884	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119896	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119900	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119905	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117831118	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831155	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831159	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831168	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6126159	sediment metagenome	Seagrass associated sediment metagenomes	Illumina HiSeq 3000, Sequel
+SAMEA6631727	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631730	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631764	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631768	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631782	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631793	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631801	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631814	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580835	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA7580840	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA9943623	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456372	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN13443173	metagenome	culture enrichment	Illumina MiSeq, MinION
+SAMN13925154	wood decay metagenome	temperate mixed forest biome [ENVO:01000212]	Illumina HiSeq 2500, Illumina MiSeq, Sequel II
+SAMN15921247	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921305	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921318	soil metagenome	subtropical shrubland	Illumina MiSeq, Sequel II
+SAMN15921335	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921341	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921343	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921347	soil metagenome	deserts and xeric shrublands	Illumina MiSeq, Sequel II
+SAMN15921349	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921363	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921414	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921426	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921443	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921456	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921458	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN16575669	wastewater metagenome	hospital wastewater	Illumina HiSeq 2500, MinION
+SAMN22304447	clinical metagenome	wound	Illumina MiSeq, MinION
+SAMN23235375	gut metagenome	feces	Illumina HiSeq 2500, Illumina MiSeq, PacBio RS II
+SAMN33572003	human feces metagenome	Quantifying bias introduced by sample collection in relative and absolute microbiome measurements	Illumina NovaSeq 6000, PromethION
+SAMN37739129	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816793	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816800	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816833	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816836	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816895	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334591	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN49717217	Staphylococcus aureus	skin	Illumina MiniSeq, MinION
+SAMEA116119888	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119893	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119903	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117491908	wastewater metagenome	Sulfonamide resistance gene sul4 is hosted by common wastewater sludge bacteria and found in various newly described contexts and hosts including clinically relevant species	Illumina NovaSeq 6000, PacBio RS II
+SAMEA117831144	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6631736	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631748	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631790	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631796	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631807	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631820	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580846	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMN08456397	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456402	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456466	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456475	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN14089870	marine sediment metagenome	sediment	Illumina HiSeq 2500, PacBio RS II
+SAMN14089875	marine sediment metagenome	sediment	Illumina HiSeq 2500, PacBio RS II
+SAMN15921195	soil metagenome	deserts and xeric shrublands	Illumina MiSeq, Sequel II
+SAMN15921262	soil metagenome	montane shrubland	Illumina MiSeq, Sequel II
+SAMN15921314	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921320	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921326	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921328	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921339	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921355	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921368	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921374	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921433	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921434	soil metagenome	grassland	Illumina MiSeq, Sequel II
+SAMN15921457	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921463	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921495	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN16575663	wastewater metagenome	hospital wastewater	Illumina HiSeq 2500, MinION
+SAMN17245387	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN41816780	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816797	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816843	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816845	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816853	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816860	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816871	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816873	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816888	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816896	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334575	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334577	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN43219648	root metagenome	Plant root	Illumina NovaSeq 6000, Sequel
+SAMN49717219	Staphylococcus aureus	skin	Illumina MiniSeq, MinION
+SAMN49717221	Staphylococcus aureus	skin	Illumina MiniSeq, MinION
+SAMEA116119879	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117831120	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831162	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6631734	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631747	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631751	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631769	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631778	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631788	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631803	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631808	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631818	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580834	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA9943593	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456422	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456426	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456428	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456443	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456454	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN09092435	soil metagenome	Soil from Angelo Coast Range Reserve	Illumina HiSeq 2500, Sequel
+SAMN11479303	milk metagenome	milk metagenome Raw sequence reads	Ion Torrent PGM, MinION
+SAMN15921202	soil metagenome	subtropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921203	soil metagenome	tropical dry broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921246	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921249	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921260	soil metagenome	mountain	Illumina MiSeq, Sequel II
+SAMN15921293	soil metagenome	temperate broadleaf & mixed forest	Illumina MiSeq, Sequel II
+SAMN15921312	soil metagenome	mountain	Illumina MiSeq, Sequel II
+SAMN15921330	soil metagenome	temperate broadleaf & mixed forest	Illumina MiSeq, Sequel II
+SAMN15921423	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921438	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921447	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921465	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921484	soil metagenome	mediterranean forest, woodland and scrub	Illumina MiSeq, Sequel II
+SAMN15921497	soil metagenome	mountain	Illumina MiSeq, Sequel II
+SAMN15921499	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN16575666	aquatic metagenome	surface water	Illumina HiSeq 2500, MinION
+SAMN17245391	metagenome	flooded rice paddy soil	Illumina MiSeq, PacBio RS II
+SAMN22304427	clinical metagenome	wound	Illumina MiSeq, MinION
+SAMN33571948	human feces metagenome	Quantifying bias introduced by sample collection in relative and absolute microbiome measurements	Illumina NovaSeq 6000, PromethION
+SAMN33571956	human feces metagenome	Quantifying bias introduced by sample collection in relative and absolute microbiome measurements	Illumina NovaSeq 6000, PromethION
+SAMN41816781	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816813	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816814	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816830	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816864	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816884	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334565	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334587	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN47504787	soil metagenome	ENVO:00005775	GridION, Illumina NovaSeq 6000
+SAMEA117491912	wastewater metagenome	Sulfonamide resistance gene sul4 is hosted by common wastewater sludge bacteria and found in various newly described contexts and hosts including clinically relevant species	Illumina NovaSeq 6000, PacBio RS II
+SAMEA117831123	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831126	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831133	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831142	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831145	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6631719	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631722	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631737	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631792	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6633762	Agaricus bisporus	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA7580838	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA9943600	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMEA9943611	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN08456382	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456403	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456420	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456432	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456449	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456450	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456469	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456472	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN10236717	synthetic metagenome	mock community containing 12 organisms: Thioclava sp. ES.032, Psychrobacter sp. LV10R520-6, Propionibacteriaceae bacterium ES.041, Muricauda sp. ES.050, Micromonospora echinofusca DSM 43913, Micromonospora echinaurantiaca DSM 43904, Micromonospora coxensis DSM 45161, Marinobacter sp. LV10R510-8, Marinobacter sp. LV10MA510-1, Halomonas sp. HL-93, Halomonas sp. HL-4 and Cohaesibacter sp. ES.047.	Illumina HiSeq 2500, MinION, PacBio RS II
+SAMN10450715	microbial mat metagenome	Microbial diversity and function in Antarctic paleomats	Illumina MiSeq, Illumina MiniSeq, PacBio RS II
+SAMN15921183	soil metagenome	mediterranean forest, woodland and scrub	Illumina MiSeq, Sequel II
+SAMN15921210	soil metagenome	temperate seminatural grassland	Illumina MiSeq, Sequel II
+SAMN15921224	soil metagenome	temperate seminatural grassland	Illumina MiSeq, Sequel II
+SAMN15921234	soil metagenome	temperate coniferous forest	Illumina MiSeq, Sequel II
+SAMN15921257	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921304	soil metagenome	mountain	Illumina MiSeq, Sequel II
+SAMN15921336	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921357	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921379	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921431	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921435	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921440	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921493	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921511	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN23235377	gut metagenome	feces	Illumina HiSeq 2500, Illumina MiSeq, PacBio RS II
+SAMN37739113	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN37864940	wastewater metagenome	sludge collected from a pilot-scale biological nutrient removal reactor	Illumina NovaSeq 6000, Sequel IIe
+SAMN41816785	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816795	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816816	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816838	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816856	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816858	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816862	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334579	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN53874609	metagenome	soil sample	Illumina NovaSeq 6000, PacBio RS II
+SAMD00114506	insect gut metagenome	insecta-associated habitat	Illumina MiSeq, PacBio RS II
+SAMEA116119880	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119887	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA116119901	human skin metagenome	Characterisation of the forehead and armpit skin microbiome of healthy individuals using shotgun metagenomics and 16S rRNA gene sequencing	Illumina MiSeq, Sequel II
+SAMEA117831119	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831148	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA117831156	canine gut metagenome	Shanghai pet dog gut microbiome	Illumina NovaSeq 6000, PromethION
+SAMEA6631791	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA6631815	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA7580839	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMEA7580844	mixed sample	A Peak into the Plasmidome of Global Sewage	MinION, NextSeq 500
+SAMN08456427	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN08456431	root metagenome	18S SSU rRNA gene fragments and ITS2 fungal genes from Plantago lanceolata roots	Illumina MiSeq, PacBio RS II
+SAMN13531066	salt lake metagenome	salt lake metagenome Metagenome	Illumina HiSeq 2500, MinION
+SAMN15921184	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921261	soil metagenome	woodland/shrubland	Illumina MiSeq, Sequel II
+SAMN15921295	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921316	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921350	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921361	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921369	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921382	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921415	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921432	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921441	soil metagenome	mountain	Illumina MiSeq, Sequel II
+SAMN15921446	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN15921453	soil metagenome	boreal forest	Illumina MiSeq, Sequel II
+SAMN15921461	soil metagenome	tropical coniferous forest	Illumina MiSeq, Sequel II
+SAMN15921481	soil metagenome	tundra	Illumina MiSeq, Sequel II
+SAMN16575664	wastewater metagenome	wastewater	Illumina HiSeq 2500, MinION
+SAMN16954465	soil metagenome	lower terrace	Illumina HiSeq 2500, MinION
+SAMN20165958	activated sludge metagenome	activated sludge	GridION, Illumina NovaSeq 6000
+SAMN23235376	gut metagenome	feces	Illumina HiSeq 2500, Illumina MiSeq, PacBio RS II
+SAMN33571938	human feces metagenome	Quantifying bias introduced by sample collection in relative and absolute microbiome measurements	Illumina NovaSeq 6000, PromethION
+SAMN33571961	human feces metagenome	Quantifying bias introduced by sample collection in relative and absolute microbiome measurements	Illumina NovaSeq 6000, PromethION
+SAMN37739116	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN37739118	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN37739123	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816784	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816787	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816791	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816798	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816801	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816802	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816805	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334555	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334558	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334567	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334568	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN47504786	soil metagenome	ENVO:00005775	GridION, Illumina NovaSeq 6000
+SAMD00253460	mixed culture metagenome	acid hot spring [ENVO_00002120]	Illumina MiSeq, PacBio RS II
+SAMEA6631740	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631746	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631749	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631756	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631759	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631765	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, Ion Torrent S5, PacBio RS II
+SAMEA6631812	soil metagenome	Long- and short-read metabarcoding technologies reveal similar spatio-temporal structures in fungal communities	Illumina MiSeq, PacBio RS II
+SAMEA9943606	metagenome	Exploring semi-quantitative metagenomics studies using Oxford Nanopore sequencing : a computational and experimental protocol	Illumina MiSeq, MinION
+SAMN15921288	soil metagenome	tropical dry broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921299	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921345	soil metagenome	deserts and xeric shrublands	Illumina MiSeq, Sequel II
+SAMN15921353	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921362	soil metagenome	temperate forest	Illumina MiSeq, Sequel II
+SAMN15921373	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN15921378	soil metagenome	tropical forest	Illumina MiSeq, Sequel II
+SAMN15921480	soil metagenome	tropical moist broadleaf forest	Illumina MiSeq, Sequel II
+SAMN22304448	clinical metagenome	wound	Illumina MiSeq, MinION
+SAMN37739114	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN37739120	soil metagenome	arable field	Illumina MiSeq, Sequel II
+SAMN41816825	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816847	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816877	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN41816879	pig gut metagenome	stool	Illumina MiSeq, MinION
+SAMN42334554	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN42334584	human saliva metagenome	saliva	Illumina HiSeq 2500, Illumina MiSeq, Sequel
+SAMN43219647	root metagenome	Plant root	Illumina NovaSeq 6000, Sequel
+SAMN47504790	soil metagenome	ENVO:00005775	GridION, Illumina NovaSeq 6000
+SAMN51265550	hot springs metagenome	sediment from geothermal spring	Illumina NovaSeq 6000, Sequel IIe
