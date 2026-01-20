@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-NCBI Entrez CLI tool for querying clinical metagenomics samples
-with both short and long read data available.
+NCBI Entrez CLI tool for querying samples with both short and long read data available.
 
 Enhanced with BioProject search, PubMed links, and validation mode.
 """
@@ -24,7 +23,7 @@ logger = logging.getLogger('entrez_tool')
 logger.setLevel(logging.INFO)
 
 class EntrezQueryTool:
-    """Tool for querying NCBI Entrez databases for metagenomics samples."""
+    """Tool for querying NCBI Entrez databases for samples."""
     
     BASE_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
     
@@ -308,13 +307,18 @@ class EntrezQueryTool:
                               environment: Optional[str] = None,
                               pathogens: Optional[List[str]] = None,
                               host: Optional[str] = None,
+                              keywords: Optional[List[str]] = None,
                               has_short_reads: bool = True,
                               has_long_reads: bool = True) -> str:
         """Build SRA search query based on parameters."""
         query_parts = []
         
-        # Base metagenomics filter
-        query_parts.append("metagenome[All Fields]")
+        # Keywords filter
+        if keywords:
+            keyword_queries = []
+            for k in keywords:
+                keyword_queries.append(f'"{k}"[All Fields]')
+            query_parts.append(f"({' AND '.join(keyword_queries)})")
         
         # Environment filter
         if environment:
@@ -694,7 +698,7 @@ def print_pubmed_results(results: List[Dict]):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Query NCBI for clinical metagenomics samples with short/long reads',
+        description='Query NCBI for samples with short/long reads',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -742,7 +746,7 @@ Examples:
     parser.add_argument('--host', '-H', 
                        help='Host organism (e.g., "Homo sapiens")')
     parser.add_argument('--keywords', '-k', nargs='+',
-                       help='Keywords for BioProject/PubMed search')
+                       help='Keywords for search')
     
     # API parameters
     parser.add_argument('--email', default='user@example.com', 
@@ -899,6 +903,7 @@ Examples:
             environment=environment,
             pathogens=pathogens,
             host=host,
+            keywords=keywords,
             has_short_reads=has_short,
             has_long_reads=has_long
         )
