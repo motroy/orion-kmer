@@ -527,14 +527,23 @@ class EntrezQueryTool:
                     # Parse expxml or run info if available, but summary structure varies.
                     # In ESUMMARY 2.0 for SRA, platform is often in 'platform' field
                     item = result[uid]
-                    if 'platform' in item:
+                    if 'platform' in item and item['platform']:
                         platforms.add(item['platform'].upper())
+
                     # Sometimes it is in expxml
-                    elif 'expxml' in item:
-                        # Simple regex to find platform
-                        match = re.search(r'<Platform instrument_model="[^"]+">([^<]+)</Platform>', item['expxml'])
+                    if 'expxml' in item:
+                        # Simple regex to find platform - check for different capitalization
+                        # <Platform instrument_model="...">ILLUMINA</Platform>
+                        match = re.search(r'<Platform\s+instrument_model="[^"]+">([^<]+)</Platform>', item['expxml'], re.IGNORECASE)
                         if match:
                             platforms.add(match.group(1).upper())
+
+                        # Fallback: sometimes it's just <Platform>NAME</Platform>
+                        match_simple = re.search(r'<Platform>([^<]+)</Platform>', item['expxml'], re.IGNORECASE)
+                        if match_simple:
+                            platforms.add(match_simple.group(1).upper())
+
+                    # Fallback to 'statistics' if present (sometimes has platform info?) - unlikely for summary
 
             return list(platforms)
 
