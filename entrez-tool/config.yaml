@@ -21,7 +21,7 @@ email: "your.email@example.com"
 # BOTH short reads (Illumina/BGI) AND long reads (Nanopore/PacBio)
 
 # Sample environment/source
-environment: "blood"
+environment: "gut"
 
 # Host organism
 host: "Homo sapiens"
@@ -29,9 +29,9 @@ host: "Homo sapiens"
 # Keywords for broader searches (BioProject/PubMed)
 # ESKAPE pathogens: Enterococcus faecium, Staphylococcus aureus, Klebsiella pneumoniae,
 # Acinetobacter baumannii, Pseudomonas aeruginosa, and Enterobacter species.
-keywords:
-  - "blood"
-  - "metagenome"
+#keywords:
+#  - "blood"
+#  - "metagenome"
 
 # Pathogens list for specific filtering (if supported by custom logic)
 # pathogens:
