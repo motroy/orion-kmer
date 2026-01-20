@@ -27,53 +27,20 @@ environment: "blood"
 host: "Homo sapiens"
 
 # Keywords for broader searches (BioProject/PubMed)
+# ESKAPE pathogens: Enterococcus faecium, Staphylococcus aureus, Klebsiella pneumoniae,
+# Acinetobacter baumannii, Pseudomonas aeruginosa, and Enterobacter species.
 keywords:
-  - "Klebsiella"
   - "blood"
   - "metagenome"
 
-# Maximum results - for hybrid searches, set higher since filtering reduces results
-max_results: 20
-
-
-# =============================================================================
-# ALTERNATIVE: PATHOGEN-SPECIFIC SEARCH
-# =============================================================================
-
-# Uncomment for pathogen-specific searches (less reliable for metagenomes)
+# Pathogens list for specific filtering (if supported by custom logic)
 # pathogens:
+#   - "Enterococcus faecium"
+#   - "Staphylococcus aureus"
 #   - "Klebsiella pneumoniae"
-#   - "Escherichia coli"
+#   - "Acinetobacter baumannii"
+#   - "Pseudomonas aeruginosa"
+#   - "Enterobacter"
 
-
-# =============================================================================
-# EXAMPLE CONFIGURATIONS FOR HYBRID ASSEMBLY
-# =============================================================================
-
-# Example 1: Blood metagenomes with hybrid data
-# environment: "blood"
-# host: "Homo sapiens"
-# max_results: 30
-# Then run with: --hybrid-only
-
-# Example 2: Respiratory samples for hybrid assembly
-# environment: "respiratory"
-# host: "Homo sapiens"
-# keywords:
-#   - "pneumonia"
-#   - "metagenome"
-# max_results: 25
-
-# Example 3: CSF metagenomes (cerebrospinal fluid)
-# environment: "csf"
-# host: "Homo sapiens"
-# max_results: 15
-
-# Example 4: Find via BioProject (most reliable for hybrid data)
-# keywords:
-#   - "clinical metagenomics"
-#   - "hybrid assembly"
-#   - "Illumina"
-#   - "Nanopore"
-# max_results: 20
-# Then run with: --bioproject --get-sra --hybrid-only
+# Maximum results - for hybrid searches, set higher since filtering reduces results
+max_results: 50
