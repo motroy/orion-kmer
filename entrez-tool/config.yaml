@@ -43,4 +43,4 @@ host: "Homo sapiens"
 #   - "Enterobacter"
 
 # Maximum results - for hybrid searches, set higher since filtering reduces results
-max_results: 50
+max_results: 100
